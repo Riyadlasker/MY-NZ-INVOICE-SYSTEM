@@ -484,7 +484,7 @@
             document.getElementById('in_logo_file').value = '';
 
             passengers = [
-                { name: 'MR MD RIYAD LASKER', classType: 'Economy', route: 'KUL - KTM', pnr: 'CZBOMP', fare: 500.00 }
+                { name: 'MR MD RIYAD LASKER', classType: 'Economy', route: 'DAC - KUL', pnr: 'CZBOMP', fare: 500.00 }
             ];
 
             renderPassengerInputs();
@@ -519,7 +519,7 @@
         }
 
         function addPassenger() {
-            passengers.push({ name: '', classType: 'Economy', route: 'DAC - KUL', pnr: '', fare: 0 });
+            passengers.push({ name: '', classType: '', route: '', pnr: '', fare: 0 });
             renderPassengerInputs();
             render();
         }
