@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NZ Travel Receipt Studio - Exact Logo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Exact A4 Print Stylesheet */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .invoice-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+            }
+            #previewSection {
+                display: block !important;
+            }
+            @page {
+                size: A4 portrait;
+                margin: 12mm 15mm;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col">
+
+    <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-3 sticky top-0 z-50 flex justify-between items-center no-print">
+        <div class="flex items-center space-x-2.5">
+            <div class="h-8 w-8 md:h-9 md:w-9 bg-[#173a8a] rounded-lg flex items-center justify-center font-bold text-white shadow-md text-sm md:text-base">
+                ✈
+            </div>
+            <div>
+                <h1 class="font-bold text-xs md:text-sm tracking-wide text-white leading-tight">NZ INVOICE SYSTEM</h1>
+                <p class="text-[10px] text-slate-400">Phone & PC Responsive Studio</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="loadDefaultData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-slate-700 transition">
+                Reset
+            </button>
+            <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 md:px-5 md:py-2 rounded-lg shadow flex items-center gap-1.5 transition active:scale-95">
+                <span>🖨️</span>
+                <span class="hidden sm:inline">Print / Save PDF</span>
+                <span class="sm:hidden">Print</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[57px] z-40 no-print">
+        <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
+            <span>✍️</span> Edit Form
+        </button>
+        <button id="tabPreviewBtn" onclick="switchMobileTab('preview')" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
+            <span>👁️</span> Receipt Preview
+        </button>
+    </div>
+
+    <main class="max-w-[1600px] w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+        
+        <div id="formSection" class="lg:col-span-5 space-y-4 no-print block">
+            
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
+                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>🏢</span> Agency Profile & Logo
+                </h2>
+                <div class="space-y-2.5 text-xs">
+                    <div>
+                        <label class="text-slate-400 block mb-1">Company Name</label>
+                        <input type="text" id="in_company" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Address</label>
+                        <input type="text" id="in_address" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="text-slate-400 block mb-1">Telephone(s)</label>
+                            <input type="text" id="in_tel" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Email</label>
+                            <input type="text" id="in_email" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                    </div>
+                    <div class="pt-1">
+                        <label class="text-slate-400 block mb-1">Upload Custom Logo (Optional)</label>
+                        <input type="file" id="in_logo_file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-blue-300 hover:file:bg-slate-700 cursor-pointer" onchange="handleLogoUpload(event)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
+                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>📋</span> Receipt Information
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                    <div>
+                        <label class="text-slate-400 block mb-1">Branch Name</label>
+                        <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Submission Date</label>
+                        <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Receipt Number</label>
+                        <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Status</label>
+                        <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Reference Number</label>
+                        <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Currency</label>
+                        <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Issue Date</label>
+                        <input type="text" id="in_issue_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                    <div>
+                        <label class="text-slate-400 block mb-1">Flight Date</label>
+                        <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>👥</span> Passenger List
+                    </h2>
+                    <button onclick="addPassenger()" class="text-xs bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-semibold px-3 py-1.5 rounded-lg border border-blue-500/30 transition">
+                        + Add Row
+                    </button>
+                </div>
+                <div id="passenger_inputs" class="space-y-3"></div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3 shadow-lg">
+                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span>💰</span> Other Charges
+                </h2>
+                <div class="text-xs">
+                    <label class="text-slate-400 block mb-1">Ancillary Cost</label>
+                    <input type="number" id="in_ancillary" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                </div>
+            </div>
+
+            <div class="lg:hidden pt-2">
+                <button onclick="switchMobileTab('preview')" class="w-full py-3 bg-[#173a8a] text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
+                    <span>👁️</span> View Form Preview
+                </button>
+            </div>
+
+        </div>
+
+        <div id="previewSection" class="lg:col-span-7 flex justify-center items-start overflow-x-auto w-full pb-8 lg:pb-0 hidden lg:flex">
+            
+            <div class="invoice-sheet w-full max-w-[800px] min-w-[340px] sm:min-w-[700px] bg-white p-6 sm:p-10 md:p-12 shadow-2xl rounded-lg border border-slate-200 text-slate-800 min-h-[1050px] flex flex-col justify-between">
+                
+                <div>
+                    <div class="flex justify-between items-start">
+                        
+                        <div id="logoContainer" class="flex flex-col items-center">
+                            <div id="vectorLogo" class="flex flex-col items-center">
+                                <svg class="w-20 h-16 text-[#737882]" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g transform="translate(68, 5) rotate(18)">
+                                        <path d="M12 0 C11.5 0 10.8 1.5 10.8 3 L10.8 13 L0.5 20 C-0.2 20.5 0 21.5 1 21.5 L10.8 19 L10.8 28 L7.5 31 C7 31.5 7.2 32.5 8 32.5 L12 31.5 L16 32.5 C16.8 32.5 17 31.5 16.5 31 L13.2 28 L13.2 19 L23 21.5 C24 21.5 24.2 20.5 23.5 20 L13.2 13 L13.2 3 C13.2 1.5 12.5 0 12 0 Z" fill="#737882"/>
+                                    </g>
+                                    <path d="M80 43 C 81 55, 87 75, 110 80 C 130 84, 138 72, 126 66 C 114 60, 95 68, 92 84" stroke="#737882" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                                    <text x="80" y="86" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#737882" text-anchor="middle" letter-spacing="1">LASKER</text>
+                                    <text x="80" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" fill="#8c919d" text-anchor="middle" letter-spacing="5">TRAVEL</text>
+                                </svg>
+                            </div>
+                            <img id="customLogoImg" class="max-h-20 object-contain hidden" alt="Agency Logo">
+                        </div>
+
+                        <div class="text-right text-[10px] sm:text-[11px] leading-[1.4] text-slate-700 max-w-[280px] sm:max-w-[400px]">
+                            <h2 class="text-base sm:text-lg font-black text-[#173a8a] tracking-wide uppercase mb-1" id="out_company">LASKER TRAVELS</h2>
+                            <p><strong>Address:</strong> <span id="out_address"></span></p>
+                            <p><strong>Tel:</strong> <span id="out_tel"></span></p>
+                            <p><strong>Email:</strong> <span id="out_email"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="relative my-6 sm:my-7 text-center">
+                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                        <div class="relative flex justify-center">
+                            <span class="bg-white px-6 sm:px-8 text-xl sm:text-2xl font-black tracking-widest text-[#173a8a]">RECEIPT</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#f0f3fa] rounded-lg p-3.5 sm:p-5 border border-[#e2e8f5] grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-2 text-[10px] sm:text-[11px]">
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Branch Name</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_branch"></span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Receipt Number</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_receipt">610274</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Reference Number</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_ref">NZ2398868452213235</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Issue Date</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_issue_date">19 Jun 26</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Submission Date</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_sub_date">15 Aug 2026</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Status</span>
+                                <span class="text-slate-900 font-black flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_status">CONFIRMED</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Currency</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_currency">MYR</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-slate-600 min-w-[110px] sm:min-w-[130px]">Flight Date</span>
+                                <span class="text-slate-800 font-semibold flex-1 flex">
+                                    <span class="mr-2">:</span>
+                                    <span id="out_flight_date">20 Jun 26</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 sm:mt-6 border border-[#e2e8f5] rounded-lg bg-[#f0f3fa]/50 p-3 sm:p-4 overflow-hidden">
+                        <h3 class="text-xs font-bold text-slate-800 mb-2.5 tracking-wide">Passenger Details</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-[10px] sm:text-[11px] text-left bg-white rounded-md overflow-hidden border border-slate-200 shadow-sm min-w-[500px] sm:min-w-full">
+                                <thead class="bg-[#0e2a80] text-white">
+                                    <tr>
+                                        <th class="py-2.5 px-3 font-bold w-10 text-center">S/N</th>
+                                        <th class="py-2.5 px-3 font-bold">Passenger Name</th>
+                                        <th class="py-2.5 px-3 font-bold">Class</th>
+                                        <th class="py-2.5 px-3 font-bold">Route</th>
+                                        <th class="py-2.5 px-3 font-bold">PNR</th>
+                                        <th class="py-2.5 px-3 text-right font-bold">Total (Including Tax)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="out_passenger_table" class="divide-y divide-slate-100">
+                                    </tbody>
+                                <tfoot>
+                                    <tr class="font-black bg-[#fbfcfd] border-t border-slate-200 text-slate-900">
+                                        <td colspan="5" class="py-2.5 px-3 text-left">Total:</td>
+                                        <td class="py-2.5 px-3 text-right" id="out_table_total">0.00</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 sm:mt-6 flex justify-end">
+                        <div class="w-64 sm:w-72 text-[10px] sm:text-[11px] space-y-1.5">
+                            <div class="flex justify-between text-slate-600">
+                                <span>Subtotal:</span>
+                                <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
+                            </div>
+                            <div class="flex justify-between text-slate-600">
+                                <span>Ancillary Cost:</span>
+                                <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
+                            </div>
+                            <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-xs sm:text-sm text-slate-900">
+                                <span>Total Payable Amount:</span>
+                                <span id="out_total_payable">0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 border-b border-slate-200 pb-3">
+                        <p class="text-[11px] sm:text-[12px] font-bold text-slate-800 tracking-tight">
+                            Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mt-16 sm:mt-20 flex justify-between text-[10px] sm:text-[11px] text-slate-500 pt-6">
+                    <div class="border-t border-slate-400 pt-1.5 w-32 sm:w-40 text-center font-medium">Verified By</div>
+                    <div class="border-t border-slate-400 pt-1.5 w-32 sm:w-40 text-center font-medium">Approved by</div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let passengers = [];
+
+        function switchMobileTab(tab) {
+            const formSec = document.getElementById('formSection');
+            const prevSec = document.getElementById('previewSection');
+            const formBtn = document.getElementById('tabFormBtn');
+            const prevBtn = document.getElementById('tabPreviewBtn');
+
+            if (tab === 'form') {
+                formSec.classList.remove('hidden');
+                formSec.classList.add('block');
+                prevSec.classList.add('hidden');
+                prevSec.classList.remove('flex');
+                
+                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
+                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
+            } else {
+                formSec.classList.add('hidden');
+                formSec.classList.remove('block');
+                prevSec.classList.remove('hidden');
+                prevSec.classList.add('flex');
+
+                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
+                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('customLogoImg');
+                    const vector = document.getElementById('vectorLogo');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    vector.classList.add('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadDefaultData() {
+            document.getElementById('in_company').value = "LASKER TRAVELS";
+            document.getElementById('in_address').value = "22-A, Leboh Pasar Besar, City Centre, Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur";
+            document.getElementById('in_tel').value = "1670097592, 107044401";
+            document.getElementById('in_email').value = "laskertravel1@gmail.com";
+            
+            document.getElementById('in_receipt').value = "610274";
+            document.getElementById('in_ref').value = "NZ2398868452213235";
+            document.getElementById('in_branch').value = "";
+            document.getElementById('in_status').value = "CONFIRMED";
+            document.getElementById('in_sub_date').value = "15 Aug 2026";
+            document.getElementById('in_issue_date').value = "19 Jun 26";
+            document.getElementById('in_flight_date').value = "20 Jun 26";
+            document.getElementById('in_currency').value = "MYR";
+            document.getElementById('in_ancillary').value = "0.00";
+
+            // Reset logo to exact vector
+            document.getElementById('customLogoImg').classList.add('hidden');
+            document.getElementById('vectorLogo').classList.remove('hidden');
+            document.getElementById('in_logo_file').value = '';
+
+            passengers = [
+                { name: 'MR BIRENDRA KUMAR YADAV', classType: 'Economy', route: 'KUL - KTM', pnr: 'CZBOMP', fare: 549.00 }
+            ];
+
+            renderPassengerInputs();
+            render();
+        }
+
+        function renderPassengerInputs() {
+            const container = document.getElementById('passenger_inputs');
+            container.innerHTML = '';
+            passengers.forEach((p, index) => {
+                container.innerHTML += `
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative">
+                        <div class="flex justify-between items-center text-[11px] font-bold text-slate-400">
+                            <span>Passenger #${index + 1}</span>
+                            ${passengers.length > 1 ? `
+                                <button onclick="removePassenger(${index})" class="text-rose-400 hover:text-rose-300 font-semibold text-xs">
+                                    ✕ Remove
+                                </button>
+                            ` : ''}
+                        </div>
+                        <input type="text" placeholder="Full Name" value="${p.name}" oninput="updatePassenger(${index}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <input type="text" placeholder="Class" value="${p.classType}" oninput="updatePassenger(${index}, 'classType', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                            <input type="text" placeholder="Route" value="${p.route}" oninput="updatePassenger(${index}, 'route', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                            <input type="text" placeholder="PNR" value="${p.pnr}" oninput="updatePassenger(${index}, 'pnr', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                            <input type="number" placeholder="Fare" value="${p.fare || ''}" step="0.01" oninput="updatePassenger(${index}, 'fare', parseFloat(this.value) || 0)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addPassenger() {
+            passengers.push({ name: '', classType: 'Economy', route: 'KUL - KTM', pnr: '', fare: 0 });
+            renderPassengerInputs();
+            render();
+        }
+
+        function removePassenger(index) {
+            passengers.splice(index, 1);
+            renderPassengerInputs();
+            render();
+        }
+
+        function updatePassenger(index, field, value) {
+            passengers[index][field] = value;
+            render();
+        }
+
+        function numberToWords(amount) {
+            const units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+            function convert(n) {
+                if (n === 0) return "";
+                if (n < 20) return units[n];
+                if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? " " + units[n % 10] : "");
+                if (n < 1000) return units[Math.floor(n / 100)] + " Hundred" + (n % 100 !== 0 ? " " + convert(n % 100) : "");
+                if (n < 100000) return convert(Math.floor(n / 1000)) + " Thousand" + (n % 1000 !== 0 ? " " + convert(n % 1000) : "");
+                if (n < 10000000) return convert(Math.floor(n / 100000)) + " Lakh" + (n % 100000 !== 0 ? " " + convert(n % 100000) : "");
+                return n.toString();
+            }
+
+            const intVal = Math.floor(amount);
+            const decVal = Math.round((amount - intVal) * 100);
+
+            if (intVal === 0 && decVal === 0) return "Zero";
+
+            let result = "";
+            if (intVal > 0) {
+                result += convert(intVal);
+            }
+            if (decVal > 0) {
+                result += (result ? " and " : "") + convert(decVal) + " Cents";
+            }
+
+            return result.trim();
+        }
+
+        function render() {
+            // Agency
+            const comp = document.getElementById('in_company').value || 'LASKER TRAVELS';
+            document.getElementById('out_company').innerText = comp;
+            document.getElementById('out_address').innerText = document.getElementById('in_address').value;
+            document.getElementById('out_tel').innerText = document.getElementById('in_tel').value;
+            document.getElementById('out_email').innerText = document.getElementById('in_email').value;
+
+            // Metadata
+            document.getElementById('out_receipt').innerText = document.getElementById('in_receipt').value;
+            document.getElementById('out_ref').innerText = document.getElementById('in_ref').value;
+            document.getElementById('out_branch').innerText = document.getElementById('in_branch').value;
+            document.getElementById('out_status').innerText = document.getElementById('in_status').value;
+            document.getElementById('out_sub_date').innerText = document.getElementById('in_sub_date').value;
+            document.getElementById('out_issue_date').innerText = document.getElementById('in_issue_date').value;
+            document.getElementById('out_flight_date').innerText = document.getElementById('in_flight_date').value;
+            document.getElementById('out_currency').innerText = document.getElementById('in_currency').value;
+
+            // Passenger Table
+            const tbody = document.getElementById('out_passenger_table');
+            tbody.innerHTML = '';
+            let subtotal = 0;
+
+            passengers.forEach((p, idx) => {
+                const fareVal = parseFloat(p.fare) || 0;
+                subtotal += fareVal;
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-2 px-3 text-center text-slate-600 font-medium">${idx + 1}</td>
+                        <td class="py-2 px-3 uppercase font-semibold text-slate-900">${p.name || '-'}</td>
+                        <td class="py-2 px-3 text-slate-700">${p.classType || '-'}</td>
+                        <td class="py-2 px-3 font-bold text-slate-900">${p.route || '-'}</td>
+                        <td class="py-2 px-3 text-slate-700 uppercase font-mono">${p.pnr || '-'}</td>
+                        <td class="py-2 px-3 text-right font-medium text-slate-900">${fareVal.toFixed(2)}</td>
+                    </tr>
+                `;
+            });
+
+            // Financial Summary
+            const ancillary = parseFloat(document.getElementById('in_ancillary').value) || 0;
+            const total = subtotal + ancillary;
+
+            document.getElementById('out_table_total').innerText = subtotal.toFixed(2);
+            document.getElementById('out_subtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('out_ancillary').innerText = ancillary.toFixed(2);
+            document.getElementById('out_total_payable').innerText = total.toFixed(2);
+            document.getElementById('out_amount_words').innerText = numberToWords(total);
+        }
+
+        // Initialize application
+        loadDefaultData();
+    </script>
+</body>
+</html>
