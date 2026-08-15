@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NZ Travel Receipt Studio - Exact Universal View</title>
+    <title>NZ Travel Receipt Studio - Perfect Phone & PC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,30 +21,26 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Fixed Width Container for True Responsive Scale */
-        .preview-wrapper {
+        /* Fixed Standard A4 Canvas Dimensions (PC & Mobile Master) */
+        .invoice-sheet {
+            width: 760px !important;
+            min-width: 760px !important;
+            max-width: 760px !important;
+            min-height: 1050px !important;
+            background-color: #ffffff !important;
+            transform-origin: top center;
+        }
+
+        /* Mobile Dynamic Scale Container */
+        .preview-outer-wrap {
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            overflow-x: auto;
+            overflow: hidden;
         }
 
-        .invoice-sheet {
-            width: 780px;
-            min-width: 780px;
-            background-color: #ffffff !important;
-        }
-
-        /* Responsive Zoom scaling for Mobile screens */
-        @media screen and (max-width: 768px) {
-            .preview-wrapper {
-                overflow-x: auto;
-                padding-bottom: 2rem;
-            }
-        }
-
-        /* Exact A4 Print Stylesheet */
+        /* Exact A4 Print Stylesheet (Overrides scales for clean paper print) */
         @media print {
             .no-print {
                 display: none !important;
@@ -55,11 +51,12 @@
                 margin: 0 !important;
                 width: 100% !important;
             }
-            .preview-wrapper {
+            .preview-outer-wrap {
                 overflow: visible !important;
                 display: block !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                height: auto !important;
             }
             .invoice-sheet {
                 box-shadow: none !important;
@@ -70,6 +67,7 @@
                 min-width: 100% !important;
                 max-width: 100% !important;
                 min-height: auto !important;
+                transform: none !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-between !important;
@@ -109,7 +107,7 @@
             </div>
             <div>
                 <h1 class="font-bold text-xs md:text-sm tracking-wide text-white leading-tight">NZ INVOICE SYSTEM</h1>
-                <p class="text-[10px] text-slate-400">Phone & PC Universal View</p>
+                <p class="text-[10px] text-slate-400">Phone & PC Universal Engine</p>
             </div>
         </div>
         <div class="flex items-center space-x-2">
@@ -238,8 +236,9 @@
         </div>
 
         <div id="previewSection" class="lg:col-span-7 hidden lg:block">
-            <div class="preview-wrapper">
-                <div class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-lg border border-slate-200 text-slate-800 min-h-[1050px] flex flex-col justify-between">
+            <div id="previewWrapper" class="preview-outer-wrap">
+                
+                <div id="printableInvoice" class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-sm border border-slate-200 text-slate-800 flex flex-col justify-between">
                     
                     <div>
                         <div class="flex justify-between items-start">
@@ -364,40 +363,62 @@
                         <div class="mt-6 flex justify-end">
                             <div class="w-72 text-[11px] space-y-1.5">
                                 <div class="flex justify-between text-slate-600">
-                                <span>Subtotal:</span>
-                                <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
+                                    <span>Subtotal:</span>
+                                    <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
+                                </div>
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Ancillary Cost:</span>
+                                    <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
+                                </div>
+                                <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
+                                    <span>Total Payable Amount:</span>
+                                    <span id="out_total_payable">0.00</span>
+                                </div>
                             </div>
-                            <div class="flex justify-between text-slate-600">
-                                <span>Ancillary Cost:</span>
-                                <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
-                            </div>
-                            <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
-                                <span>Total Payable Amount:</span>
-                                <span id="out_total_payable">0.00</span>
-                            </div>
+                        </div>
+
+                        <div class="mt-4 border-b border-slate-200 pb-3">
+                            <p class="text-[12px] font-bold text-slate-800 tracking-tight">
+                                Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
+                            </p>
                         </div>
                     </div>
 
-                    <div class="mt-4 border-b border-slate-200 pb-3">
-                        <p class="text-[12px] font-bold text-slate-800 tracking-tight">
-                            Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
-                        </p>
+                    <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
+                        <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
+                        <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
                     </div>
-                </div>
 
-                <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
-                    <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
-                    <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
                 </div>
-
             </div>
         </div>
-    </div>
 
     </main>
 
     <script>
         let passengers = [];
+
+        // Automatic Scaler: Scale down full 760px invoice to fit any mobile phone screen
+        function autoScaleInvoice() {
+            const container = document.getElementById('previewWrapper');
+            const sheet = document.getElementById('printableInvoice');
+            if (!container || !sheet) return;
+
+            // Only scale on screens narrower than 800px
+            const containerWidth = container.offsetWidth || window.innerWidth - 32;
+            const targetWidth = 760;
+
+            if (window.innerWidth < 1024) {
+                const scale = Math.min(containerWidth / targetWidth, 1);
+                sheet.style.transform = `scale(${scale})`;
+                container.style.height = `${sheet.offsetHeight * scale + 40}px`;
+            } else {
+                sheet.style.transform = 'none';
+                container.style.height = 'auto';
+            }
+        }
+
+        window.addEventListener('resize', autoScaleInvoice);
 
         function switchMobileTab(tab) {
             const formSec = document.getElementById('formSection');
@@ -423,6 +444,7 @@
                 formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(autoScaleInvoice, 50);
             }
         }
 
@@ -467,6 +489,7 @@
 
             renderPassengerInputs();
             render();
+            setTimeout(autoScaleInvoice, 100);
         }
 
         function renderPassengerInputs() {
@@ -585,9 +608,11 @@
             document.getElementById('out_ancillary').innerText = ancillary.toFixed(2);
             document.getElementById('out_total_payable').innerText = total.toFixed(2);
             document.getElementById('out_amount_words').innerText = numberToWords(total);
+
+            autoScaleInvoice();
         }
 
-        // Initialize application
+        // Initialize Application
         loadDefaultData();
     </script>
 </body>
