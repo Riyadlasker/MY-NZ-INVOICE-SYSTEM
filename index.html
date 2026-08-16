@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LASKER iTECH </title>
+    <title>LASKER iTECH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +21,23 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Fixed Standard A4 Canvas Dimensions (PC & Mobile Master) */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .auth-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(15, 23, 42, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Fixed Standard A4 Canvas Dimensions */
         .invoice-sheet {
             width: 760px !important;
             min-width: 760px !important;
@@ -40,7 +56,7 @@
             overflow: hidden;
         }
 
-        /* Exact A4 Print Stylesheet (Overrides scales for clean paper print) */
+        /* Exact A4 Print Stylesheet */
         @media print {
             .no-print {
                 display: none !important;
@@ -84,7 +100,6 @@
             }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -98,313 +113,636 @@
         }
     </style>
 </head>
-<body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col">
+<body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col selection:bg-blue-600 selection:text-white">
 
-    <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-3 sticky top-0 z-50 flex justify-between items-center no-print">
-        <div class="flex items-center space-x-2.5">
-            <div class="h-8 w-8 md:h-9 md:w-9 bg-[#173a8a] rounded-lg flex items-center justify-center font-bold text-white shadow-md text-sm md:text-base">
-                ✈
-            </div>
-            <div>
-                <h1 class="font-bold text-xs md:text-sm tracking-wide text-white leading-tight">LASKER iTECH</h1>
-                <p class="text-[10px] text-slate-400">Phone & PC Universal Engine</p>
-            </div>
-        </div>
-        <div class="flex items-center space-x-2">
-            <button onclick="loadDefaultData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium px-3 py-1.5 md:px-4 md:py-2 rounded-lg border border-slate-700 transition">
-                Reset
-            </button>
-            <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 md:px-5 md:py-2 rounded-lg shadow flex items-center gap-1.5 transition active:scale-95">
-                <span>🖨️</span>
-                <span class="hidden sm:inline">Print / Save PDF</span>
-                <span class="sm:hidden">Print</span>
-            </button>
-        </div>
-    </header>
+    <div id="authScreen" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="auth-glow -top-16 -left-16"></div>
+        <div class="auth-glow -bottom-16 -right-16 bg-indigo-900/20"></div>
 
-    <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[57px] z-40 no-print">
-        <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
-            <span>✍️</span> Edit Form
-        </button>
-        <button id="tabPreviewBtn" onclick="switchMobileTab('preview')" class="flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
-            <span>👁️</span> Receipt Preview
-        </button>
-    </div>
-
-    <main class="max-w-[1600px] w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-        
-        <div id="formSection" class="lg:col-span-5 space-y-4 no-print block">
+        <div class="glass-card w-full max-w-[460px] rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative z-10 my-auto">
             
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
-                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>🏢</span> Agency Profile & Logo
-                </h2>
-                <div class="space-y-2.5 text-xs">
-                    <div>
-                        <label class="text-slate-400 block mb-1">Company Name</label>
-                        <input type="text" id="in_company" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Address</label>
-                        <input type="text" id="in_address" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        <div>
-                            <label class="text-slate-400 block mb-1">Telephone(s)</label>
-                            <input type="text" id="in_tel" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Email</label>
-                            <input type="text" id="in_email" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                    </div>
-                    <div class="pt-1">
-                        <label class="text-slate-400 block mb-1">Upload Custom Logo (Optional)</label>
-                        <input type="file" id="in_logo_file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-blue-300 hover:file:bg-slate-700 cursor-pointer" onchange="handleLogoUpload(event)">
-                    </div>
+            <div class="flex flex-col items-center text-center mb-5">
+                <div class="h-13 w-13 p-3 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/30 mb-2.5">
+                    🛡️
                 </div>
+                <h2 class="text-xl font-black tracking-tight text-white">LASKER iTECH</h2>
+                <p class="text-[11px] text-slate-400">High-Security Encrypted Access Portal</p>
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
-                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>📋</span> Receipt Information
-                </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                    <div>
-                        <label class="text-slate-400 block mb-1">Branch Name</label>
-                        <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Submission Date</label>
-                        <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Receipt Number</label>
-                        <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Status</label>
-                        <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Reference Number</label>
-                        <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Currency</label>
-                        <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Issue Date</label>
-                        <input type="text" id="in_issue_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                    <div>
-                        <label class="text-slate-400 block mb-1">Flight Date</label>
-                        <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3.5 shadow-lg">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>👥</span> Passenger List
-                    </h2>
-                    <button onclick="addPassenger()" class="text-xs bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-semibold px-3 py-1.5 rounded-lg border border-blue-500/30 transition">
-                        + Add Row
-                    </button>
-                </div>
-                <div id="passenger_inputs" class="space-y-3"></div>
-            </div>
-
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 md:p-5 text-white space-y-3 shadow-lg">
-                <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <span>💰</span> Other Charges
-                </h2>
-                <div class="text-xs">
-                    <label class="text-slate-400 block mb-1">Ancillary Cost</label>
-                    <input type="number" id="in_ancillary" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                </div>
-            </div>
-
-            <div class="lg:hidden pt-2">
-                <button onclick="switchMobileTab('preview')" class="w-full py-3 bg-[#173a8a] text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
-                    <span>👁️</span> View Form Preview
+            <div class="flex bg-slate-900/90 p-1 rounded-2xl border border-slate-800 mb-5">
+                <button id="authTabLogin" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300">
+                    Sign In
+                </button>
+                <button id="authTabRegister" onclick="switchAuthTab('register')" class="flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all duration-300">
+                    Create Account
                 </button>
             </div>
 
-        </div>
+            <div id="authAlert" class="hidden text-xs p-3.5 rounded-xl mb-4 text-center font-semibold transition-all"></div>
 
-        <div id="previewSection" class="lg:col-span-7 hidden lg:block">
-            <div id="previewWrapper" class="preview-outer-wrap">
-                
-                <div id="printableInvoice" class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-sm border border-slate-200 text-slate-800 flex flex-col justify-between">
-                    
-                    <div>
-                        <div class="flex justify-between items-start">
-                            
-                            <div id="logoContainer" class="flex flex-col items-center">
-                                <div id="vectorLogo" class="flex flex-col items-center">
-                                    <svg class="w-20 h-16 text-[#737882]" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <g transform="translate(68, 5) rotate(18)">
-                                            <path d="M12 0 C11.5 0 10.8 1.5 10.8 3 L10.8 13 L0.5 20 C-0.2 20.5 0 21.5 1 21.5 L10.8 19 L10.8 28 L7.5 31 C7 31.5 7.2 32.5 8 32.5 L12 31.5 L16 32.5 C16.8 32.5 17 31.5 16.5 31 L13.2 28 L13.2 19 L23 21.5 C24 21.5 24.2 20.5 23.5 20 L13.2 13 L13.2 3 C13.2 1.5 12.5 0 12 0 Z" fill="#737882"/>
-                                        </g>
-                                        <path d="M80 43 C 81 55, 87 75, 110 80 C 130 84, 138 72, 126 66 C 114 60, 95 68, 92 84" stroke="#737882" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                                        <text x="80" y="86" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#737882" text-anchor="middle" letter-spacing="1">LASKER</text>
-                                        <text x="80" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" fill="#8c919d" text-anchor="middle" letter-spacing="5">TRAVEL</text>
-                                    </svg>
-                                </div>
-                                <img id="customLogoImg" class="max-h-20 object-contain hidden" alt="Agency Logo">
-                            </div>
-
-                            <div class="text-right text-[11px] leading-[1.4] text-slate-700 max-w-[380px]">
-                                <h2 class="text-lg font-black text-[#173a8a] tracking-wide uppercase mb-1" id="out_company" style="color: #173a8a !important;">LASKER TRAVELS</h2>
-                                <p><strong>Address:</strong> <span id="out_address"></span></p>
-                                <p><strong>Tel:</strong> <span id="out_tel"></span></p>
-                                <p><strong>Email:</strong> <span id="out_email"></span></p>
-                            </div>
-                        </div>
-
-                        <div class="relative my-7 text-center">
-                            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-                            <div class="relative flex justify-center">
-                                <span class="bg-white px-8 text-2xl font-black tracking-widest text-[#173a8a]" style="color: #173a8a !important; background-color: #ffffff !important;">RECEIPT</span>
-                            </div>
-                        </div>
-
-                        <div class="rounded-lg p-5 border border-[#e2e8f5] grid grid-cols-2 gap-x-12 gap-y-2.5 text-[11px]" style="background-color: #f0f3fa !important;">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Branch Name</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_branch"></span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Receipt Number</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_receipt">610274</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Reference Number</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_ref">NZ2398868452213235</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Issue Date</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_issue_date">19 Jun 26</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="space-y-2.5">
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Submission Date</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_sub_date">15 Aug 2026</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Status</span>
-                                    <span class="text-slate-900 font-black flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_status">CONFIRMED</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Currency</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_currency">MYR</span>
-                                    </span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span class="text-slate-600 min-w-[130px]">Flight Date</span>
-                                    <span class="text-slate-800 font-semibold flex-1 flex">
-                                        <span class="mr-2">:</span>
-                                        <span id="out_flight_date">20 Jun 26</span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 border border-[#e2e8f5] rounded-lg p-4 overflow-hidden" style="background-color: #f0f3fa !important;">
-                            <h3 class="text-xs font-bold text-slate-800 mb-2.5 tracking-wide">Passenger Details</h3>
-                            <table class="w-full text-[11px] text-left bg-white rounded-md overflow-hidden border border-slate-200 shadow-sm" style="background-color: #ffffff !important;">
-                                <thead style="background-color: #0e2a80 !important; color: #ffffff !important;">
-                                    <tr>
-                                        <th class="py-2.5 px-3 font-bold w-12 text-center text-white">S/N</th>
-                                        <th class="py-2.5 px-3 font-bold text-white">Passenger Name</th>
-                                        <th class="py-2.5 px-3 font-bold text-white">Class</th>
-                                        <th class="py-2.5 px-3 font-bold text-white">Route</th>
-                                        <th class="py-2.5 px-3 font-bold text-white">PNR</th>
-                                        <th class="py-2.5 px-3 text-right font-bold text-white">Total (Including Tax)</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="out_passenger_table" class="divide-y divide-slate-100">
-                                </tbody>
-                                <tfoot>
-                                    <tr class="font-black border-t border-slate-200 text-slate-900" style="background-color: #f8fafc !important;">
-                                        <td colspan="5" class="py-2.5 px-3 text-left">Total:</td>
-                                        <td class="py-2.5 px-3 text-right" id="out_table_total">0.00</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-
-                        <div class="mt-6 flex justify-end">
-                            <div class="w-72 text-[11px] space-y-1.5">
-                                <div class="flex justify-between text-slate-600">
-                                    <span>Subtotal:</span>
-                                    <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
-                                </div>
-                                <div class="flex justify-between text-slate-600">
-                                    <span>Ancillary Cost:</span>
-                                    <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
-                                </div>
-                                <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
-                                    <span>Total Payable Amount:</span>
-                                    <span id="out_total_payable">0.00</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 border-b border-slate-200 pb-3">
-                            <p class="text-[12px] font-bold text-slate-800 tracking-tight">
-                                Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
-                            </p>
-                        </div>
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">👤</span>
+                        <input type="text" id="loginUsername" required placeholder="Enter username" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
                     </div>
-
-                    <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
-                        <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
-                        <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
-                    </div>
-
                 </div>
+
+                <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">🔒</span>
+                        <input type="password" id="loginPassword" required placeholder="Enter password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-3 pl-10 pr-10 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">
+                            👁️
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-blue-600/30 transition duration-200 active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+                    <span>Sign In Securely</span>
+                    <span>→</span>
+                </button>
+            </form>
+
+            <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-3.5 hidden">
+                <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">New Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">👤</span>
+                        <input type="text" id="regUsername" required placeholder="Choose unique username (min 4 chars)" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Hardened Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">🔑</span>
+                        <input type="password" id="regPassword" required oninput="evaluatePasswordStrength(this.value)" placeholder="Enter a strong password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-10 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                        <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">
+                            👁️
+                        </button>
+                    </div>
+
+                    <div class="mt-2 space-y-1">
+                        <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden flex">
+                            <div id="strengthBar" class="h-full w-0 transition-all duration-300 bg-rose-500"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px]">
+                            <span class="text-slate-400">Strength: <strong id="strengthLabel" class="text-rose-400">Too Weak</strong></span>
+                            <span class="text-slate-500 font-mono">SHA-256 Protected</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 mt-2 space-y-1 text-[10px]">
+                        <div id="rule-len" class="text-slate-500 flex items-center gap-1.5 transition"><span>○</span> Minimum 8 characters</div>
+                        <div id="rule-upper" class="text-slate-500 flex items-center gap-1.5 transition"><span>○</span> At least 1 uppercase letter (A-Z)</div>
+                        <div id="rule-lower" class="text-slate-500 flex items-center gap-1.5 transition"><span>○</span> At least 1 lowercase letter (a-z)</div>
+                        <div id="rule-num" class="text-slate-500 flex items-center gap-1.5 transition"><span>○</span> At least 1 number (0-9)</div>
+                        <div id="rule-sym" class="text-slate-500 flex items-center gap-1.5 transition"><span>○</span> At least 1 special character (!@#$%^&*)</div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Confirm Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">✅</span>
+                        <input type="password" id="regConfirmPassword" required placeholder="Re-enter hardened password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-lg shadow-emerald-600/30 transition duration-200 active:scale-[0.98] mt-2 flex items-center justify-center gap-2">
+                    <span>Create Secure Account</span>
+                    <span>🛡️</span>
+                </button>
+            </form>
+
+            <div class="mt-5 pt-3.5 border-t border-slate-800 text-center text-[10px] text-slate-500">
+                🔒 Protected by End-to-End Client SHA-256 Encryption
             </div>
         </div>
+    </div>
 
-    </main>
+    <div id="appContainer" class="hidden flex-col flex-1">
+        
+        <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-3 sticky top-0 z-50 flex justify-between items-center no-print backdrop-blur-md">
+            <div class="flex items-center space-x-3">
+                <div class="h-9 w-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center font-bold text-white shadow-md text-sm">
+                    ✈
+                </div>
+                <div>
+                    <h1 class="font-black text-xs md:text-sm tracking-wide text-white leading-tight">LASKER iTECH</h1>
+                    <div class="flex items-center gap-1.5">
+                        <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="currentLoggedUser" class="text-[10px] text-slate-300 font-semibold uppercase tracking-wider"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="loadDefaultData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold px-3 py-1.5 md:px-4 md:py-2 rounded-xl border border-slate-700 transition">
+                    Reset
+                </button>
+                <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 md:px-5 md:py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
+                    <span>🖨️</span>
+                    <span class="hidden sm:inline">Print / Save PDF</span>
+                    <span class="sm:hidden">Print</span>
+                </button>
+                <button onclick="handleLogout()" title="Sign Out" class="text-xs bg-rose-500/10 hover:bg-rose-600 text-rose-300 hover:text-white font-bold px-3 py-1.5 md:px-3.5 md:py-2 rounded-xl border border-rose-500/20 transition flex items-center gap-1">
+                    <span>🚪</span>
+                    <span class="hidden md:inline">Sign Out</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[57px] z-40 no-print">
+            <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
+                <span>✍️</span> Edit Form
+            </button>
+            <button id="tabPreviewBtn" onclick="switchMobileTab('preview')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
+                <span>👁️</span> Receipt Preview
+            </button>
+        </div>
+
+        <main class="max-w-[1600px] w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+            
+            <div id="formSection" class="lg:col-span-5 space-y-4 no-print block">
+                
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>🏢</span> Agency Profile & Logo
+                    </h2>
+                    <div class="space-y-2.5 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">Company Name</label>
+                            <input type="text" id="in_company" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Address</label>
+                            <input type="text" id="in_address" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="text-slate-400 block mb-1">Telephone(s)</label>
+                                <input type="text" id="in_tel" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Email</label>
+                                <input type="text" id="in_email" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                            </div>
+                        </div>
+                        <div class="pt-1">
+                            <label class="text-slate-400 block mb-1">Upload Custom Logo (Optional)</label>
+                            <input type="file" id="in_logo_file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-blue-300 hover:file:bg-slate-700 cursor-pointer" onchange="handleLogoUpload(event)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>📋</span> Receipt Information
+                    </h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">Branch Name</label>
+                            <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Submission Date</label>
+                            <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Receipt Number</label>
+                            <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Status</label>
+                            <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Reference Number</label>
+                            <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Currency</label>
+                            <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Issue Date</label>
+                            <input type="text" id="in_issue_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Flight Date</label>
+                            <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>👥</span> Passenger List
+                        </h2>
+                        <button onclick="addPassenger()" class="text-xs bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-semibold px-3 py-1.5 rounded-xl border border-blue-500/30 transition">
+                            + Add Row
+                        </button>
+                    </div>
+                    <div id="passenger_inputs" class="space-y-3"></div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3 shadow-xl">
+                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                        <span>💰</span> Other Charges
+                    </h2>
+                    <div class="text-xs">
+                        <label class="text-slate-400 block mb-1">Ancillary Cost</label>
+                        <input type="number" id="in_ancillary" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
+                    </div>
+                </div>
+
+                <div class="lg:hidden pt-2">
+                    <button onclick="switchMobileTab('preview')" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
+                        <span>👁️</span> View Form Preview
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="previewSection" class="lg:col-span-7 hidden lg:block">
+                <div id="previewWrapper" class="preview-outer-wrap">
+                    
+                    <div id="printableInvoice" class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-sm border border-slate-200 text-slate-800 flex flex-col justify-between">
+                        
+                        <div>
+                            <div class="flex justify-between items-start">
+                                
+                                <div id="logoContainer" class="flex flex-col items-center">
+                                    <div id="vectorLogo" class="flex flex-col items-center">
+                                        <svg class="w-20 h-16 text-[#737882]" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <g transform="translate(68, 5) rotate(18)">
+                                                <path d="M12 0 C11.5 0 10.8 1.5 10.8 3 L10.8 13 L0.5 20 C-0.2 20.5 0 21.5 1 21.5 L10.8 19 L10.8 28 L7.5 31 C7 31.5 7.2 32.5 8 32.5 L12 31.5 L16 32.5 C16.8 32.5 17 31.5 16.5 31 L13.2 28 L13.2 19 L23 21.5 C24 21.5 24.2 20.5 23.5 20 L13.2 13 L13.2 3 C13.2 1.5 12.5 0 12 0 Z" fill="#737882"/>
+                                            </g>
+                                            <path d="M80 43 C 81 55, 87 75, 110 80 C 130 84, 138 72, 126 66 C 114 60, 95 68, 92 84" stroke="#737882" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                                            <text x="80" y="86" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#737882" text-anchor="middle" letter-spacing="1">LASKER</text>
+                                            <text x="80" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" fill="#8c919d" text-anchor="middle" letter-spacing="5">TRAVEL</text>
+                                        </svg>
+                                    </div>
+                                    <img id="customLogoImg" class="max-h-20 object-contain hidden" alt="Agency Logo">
+                                </div>
+
+                                <div class="text-right text-[11px] leading-[1.4] text-slate-700 max-w-[380px]">
+                                    <h2 class="text-lg font-black text-[#173a8a] tracking-wide uppercase mb-1" id="out_company" style="color: #173a8a !important;">LASKER TRAVELS</h2>
+                                    <p><strong>Address:</strong> <span id="out_address"></span></p>
+                                    <p><strong>Tel:</strong> <span id="out_tel"></span></p>
+                                    <p><strong>Email:</strong> <span id="out_email"></span></p>
+                                </div>
+                            </div>
+
+                            <div class="relative my-7 text-center">
+                                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                                <div class="relative flex justify-center">
+                                    <span class="bg-white px-8 text-2xl font-black tracking-widest text-[#173a8a]" style="color: #173a8a !important; background-color: #ffffff !important;">RECEIPT</span>
+                                </div>
+                            </div>
+
+                            <div class="rounded-lg p-5 border border-[#e2e8f5] grid grid-cols-2 gap-x-12 gap-y-2.5 text-[11px]" style="background-color: #f0f3fa !important;">
+                                <div class="space-y-2.5">
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Branch Name</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_branch"></span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Receipt Number</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_receipt">610274</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Reference Number</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_ref">NZ2398868452213235</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Issue Date</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_issue_date">19 Jun 26</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2.5">
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Submission Date</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_sub_date">15 Aug 2026</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Status</span>
+                                        <span class="text-slate-900 font-black flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_status">CONFIRMED</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Currency</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_currency">MYR</span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-slate-600 min-w-[130px]">Flight Date</span>
+                                        <span class="text-slate-800 font-semibold flex-1 flex">
+                                            <span class="mr-2">:</span>
+                                            <span id="out_flight_date">20 Jun 26</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 border border-[#e2e8f5] rounded-lg p-4 overflow-hidden" style="background-color: #f0f3fa !important;">
+                                <h3 class="text-xs font-bold text-slate-800 mb-2.5 tracking-wide">Passenger Details</h3>
+                                <table class="w-full text-[11px] text-left bg-white rounded-md overflow-hidden border border-slate-200 shadow-sm" style="background-color: #ffffff !important;">
+                                    <thead style="background-color: #0e2a80 !important; color: #ffffff !important;">
+                                        <tr>
+                                            <th class="py-2.5 px-3 font-bold w-12 text-center text-white">S/N</th>
+                                            <th class="py-2.5 px-3 font-bold text-white">Passenger Name</th>
+                                            <th class="py-2.5 px-3 font-bold text-white">Class</th>
+                                            <th class="py-2.5 px-3 font-bold text-white">Route</th>
+                                            <th class="py-2.5 px-3 font-bold text-white">PNR</th>
+                                            <th class="py-2.5 px-3 text-right font-bold text-white">Total (Including Tax)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="out_passenger_table" class="divide-y divide-slate-100">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="font-black border-t border-slate-200 text-slate-900" style="background-color: #f8fafc !important;">
+                                            <td colspan="5" class="py-2.5 px-3 text-left">Total:</td>
+                                            <td class="py-2.5 px-3 text-right" id="out_table_total">0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <div class="w-72 text-[11px] space-y-1.5">
+                                    <div class="flex justify-between text-slate-600">
+                                        <span>Subtotal:</span>
+                                        <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
+                                    </div>
+                                    <div class="flex justify-between text-slate-600">
+                                        <span>Ancillary Cost:</span>
+                                        <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
+                                    </div>
+                                    <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
+                                        <span>Total Payable Amount:</span>
+                                        <span id="out_total_payable">0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 border-b border-slate-200 pb-3">
+                                <p class="text-[12px] font-bold text-slate-800 tracking-tight">
+                                    Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
+                            <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
+                            <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
 
     <script>
+        // SHA-256 Hash generator using Native Web Crypto API
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Default root user (admin / Admin@2026#)
+        // Hash for "Admin@2026#" = e0e0d00f72365287f3dddf664fc8c615aa4bc3b26c2e26466f81a70081d6aa04
+        const defaultUsers = {
+            "admin": "e0e0d00f72365287f3dddf664fc8c615aa4bc3b26c2e26466f81a70081d6aa04"
+        };
+
+        function getUsers() {
+            const users = localStorage.getItem('secure_app_users_v2');
+            return users ? JSON.parse(users) : defaultUsers;
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('secure_app_users_v2', JSON.stringify(users));
+        }
+
+        function showAlert(msg, isSuccess = false) {
+            const box = document.getElementById('authAlert');
+            box.innerText = msg;
+            box.className = `text-xs p-3.5 rounded-xl mb-4 text-center font-semibold border ${
+                isSuccess 
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
+                : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+            }`;
+            box.classList.remove('hidden');
+        }
+
+        function togglePasswordVisibility(fieldId, btn) {
+            const field = document.getElementById(fieldId);
+            if (field.type === "password") {
+                field.type = "text";
+                btn.innerText = "🙈";
+            } else {
+                field.type = "password";
+                btn.innerText = "👁️";
+            }
+        }
+
+        function switchAuthTab(type) {
+            document.getElementById('authAlert').classList.add('hidden');
+            const logTab = document.getElementById('authTabLogin');
+            const regTab = document.getElementById('authTabRegister');
+            const logForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+
+            if (type === 'login') {
+                logTab.className = "flex-1 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md transition-all duration-300";
+                regTab.className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all duration-300";
+                logForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            } else {
+                regTab.className = "flex-1 py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md transition-all duration-300";
+                logTab.className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition-all duration-300";
+                regForm.classList.remove('hidden');
+                logForm.classList.add('hidden');
+            }
+        }
+
+        // Live Password Hardness Validator
+        function evaluatePasswordStrength(p) {
+            const hasLen = p.length >= 8;
+            const hasUpper = /[A-Z]/.test(p);
+            const hasLower = /[a-z]/.test(p);
+            const hasNum = /[0-9]/.test(p);
+            const hasSym = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(p);
+
+            const updateRule = (id, valid) => {
+                const el = document.getElementById(id);
+                if (valid) {
+                    el.className = "text-emerald-400 flex items-center gap-1.5 font-medium";
+                    el.innerHTML = `<span>✔</span> ${el.innerText.replace(/^[○✔]\s*/, '')}`;
+                } else {
+                    el.className = "text-slate-500 flex items-center gap-1.5";
+                    el.innerHTML = `<span>○</span> ${el.innerText.replace(/^[○✔]\s*/, '')}`;
+                }
+            };
+
+            updateRule('rule-len', hasLen);
+            updateRule('rule-upper', hasUpper);
+            updateRule('rule-lower', hasLower);
+            updateRule('rule-num', hasNum);
+            updateRule('rule-sym', hasSym);
+
+            const score = [hasLen, hasUpper, hasLower, hasNum, hasSym].filter(Boolean).length;
+            const bar = document.getElementById('strengthBar');
+            const label = document.getElementById('strengthLabel');
+
+            if (score <= 1) {
+                bar.style.width = "20%";
+                bar.className = "h-full transition-all duration-300 bg-rose-500";
+                label.innerText = "Very Weak";
+                label.className = "text-rose-400";
+            } else if (score === 2 || score === 3) {
+                bar.style.width = "50%";
+                bar.className = "h-full transition-all duration-300 bg-amber-500";
+                label.innerText = "Medium (Needs More)";
+                label.className = "text-amber-400";
+            } else if (score === 4) {
+                bar.style.width = "80%";
+                bar.className = "h-full transition-all duration-300 bg-blue-500";
+                label.innerText = "Good";
+                label.className = "text-blue-400";
+            } else if (score === 5) {
+                bar.style.width = "100%";
+                bar.className = "h-full transition-all duration-300 bg-emerald-500";
+                label.innerText = "Hard & Secure ✔";
+                label.className = "text-emerald-400 font-bold";
+            }
+
+            return score === 5;
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUsername').value.trim();
+            const p = document.getElementById('loginPassword').value;
+            const users = getUsers();
+
+            const pHash = await sha256(p);
+
+            if (users[u] && users[u] === pHash) {
+                showAlert("Authentication Verified! Entering...", true);
+                setTimeout(() => {
+                    sessionStorage.setItem('current_user', u);
+                    checkAuth();
+                }, 400);
+            } else {
+                showAlert("Invalid username or password!");
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const u = document.getElementById('regUsername').value.trim();
+            const p = document.getElementById('regPassword').value;
+            const cp = document.getElementById('regConfirmPassword').value;
+
+            if (u.length < 4) {
+                showAlert("Username must be at least 4 characters!");
+                return;
+            }
+
+            // Hard Password Requirement Check
+            const isHard = evaluatePasswordStrength(p);
+            if (!isHard) {
+                showAlert("Password is not strong enough! Please fulfill all 5 requirements.");
+                return;
+            }
+
+            if (p !== cp) {
+                showAlert("Passwords do not match!");
+                return;
+            }
+
+            const users = getUsers();
+            if (users[u]) {
+                showAlert("Username already taken! Choose another.");
+                return;
+            }
+
+            const pHash = await sha256(p);
+            users[u] = pHash;
+            saveUsers(users);
+
+            showAlert("Account created with Hard Encryption!", true);
+            setTimeout(() => {
+                sessionStorage.setItem('current_user', u);
+                checkAuth();
+            }, 600);
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('current_user');
+            checkAuth();
+        }
+
+        function checkAuth() {
+            const currentUser = sessionStorage.getItem('current_user');
+            const authScreen = document.getElementById('authScreen');
+            const appContainer = document.getElementById('appContainer');
+
+            if (currentUser) {
+                authScreen.classList.add('hidden');
+                appContainer.classList.remove('hidden');
+                appContainer.classList.add('flex');
+                document.getElementById('currentLoggedUser').innerText = currentUser;
+                autoScaleInvoice();
+            } else {
+                authScreen.classList.remove('hidden');
+                appContainer.classList.add('hidden');
+                appContainer.classList.remove('flex');
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('authAlert').classList.add('hidden');
+            }
+        }
+
+        // ================= INVOICE GENERATOR CORE =================
         let passengers = [];
 
-        // Automatic Scaler: Scale down full 760px invoice to fit any mobile phone screen
         function autoScaleInvoice() {
             const container = document.getElementById('previewWrapper');
             const sheet = document.getElementById('printableInvoice');
             if (!container || !sheet) return;
 
-            // Only scale on screens narrower than 800px
             const containerWidth = container.offsetWidth || window.innerWidth - 32;
             const targetWidth = 760;
 
@@ -432,16 +770,16 @@
                 prevSec.classList.add('hidden');
                 prevSec.classList.remove('block');
                 
-                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
-                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
+                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
+                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
             } else {
                 formSec.classList.add('hidden');
                 formSec.classList.remove('block');
                 prevSec.classList.remove('hidden');
                 prevSec.classList.add('block');
 
-                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
-                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
+                prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
+                formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTimeout(autoScaleInvoice, 50);
@@ -562,14 +900,12 @@
         }
 
         function render() {
-            // Agency
             const comp = document.getElementById('in_company').value || 'LASKER TRAVELS';
             document.getElementById('out_company').innerText = comp;
             document.getElementById('out_address').innerText = document.getElementById('in_address').value;
             document.getElementById('out_tel').innerText = document.getElementById('in_tel').value;
             document.getElementById('out_email').innerText = document.getElementById('in_email').value;
 
-            // Metadata
             document.getElementById('out_receipt').innerText = document.getElementById('in_receipt').value;
             document.getElementById('out_ref').innerText = document.getElementById('in_ref').value;
             document.getElementById('out_branch').innerText = document.getElementById('in_branch').value;
@@ -579,7 +915,6 @@
             document.getElementById('out_flight_date').innerText = document.getElementById('in_flight_date').value;
             document.getElementById('out_currency').innerText = document.getElementById('in_currency').value;
 
-            // Passenger Table
             const tbody = document.getElementById('out_passenger_table');
             tbody.innerHTML = '';
             let subtotal = 0;
@@ -599,7 +934,6 @@
                 `;
             });
 
-            // Financial Summary
             const ancillary = parseFloat(document.getElementById('in_ancillary').value) || 0;
             const total = subtotal + ancillary;
 
@@ -612,7 +946,8 @@
             autoScaleInvoice();
         }
 
-        // Initialize Application
+        // Initialize App
+        checkAuth();
         loadDefaultData();
     </script>
 </body>
