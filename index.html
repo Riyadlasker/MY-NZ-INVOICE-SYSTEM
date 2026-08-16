@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LASKER iTECH</title>
+    <title>LASKER iTECH - Portal & Ticket Hub</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+            box-sizing: border-box;
         }
 
         body {
@@ -37,7 +41,7 @@
             pointer-events: none;
         }
 
-        /* Fixed Standard A4 Canvas Dimensions */
+        /* INVOICE CANVAS DIMENSIONS */
         .invoice-sheet {
             width: 760px !important;
             min-width: 760px !important;
@@ -47,7 +51,6 @@
             transform-origin: top center;
         }
 
-        /* Mobile Dynamic Scale Container */
         .preview-outer-wrap {
             width: 100%;
             display: flex;
@@ -56,7 +59,544 @@
             overflow: hidden;
         }
 
-        /* Exact A4 Print Stylesheet */
+        /* ================= ORIGINAL AIR TICKET STYLES ================= */
+        .airticket-module-root {
+            font-family: 'Roboto', sans-serif;
+            color: #1e293b;
+        }
+
+        .airticket-module-root .form-container {
+            max-width: 950px;
+            margin: 0 auto 25px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .panel-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .airticket-module-root .panel-header h2 {
+            font-size: 17px;
+            color: #0b25b7;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .airticket-module-root .trip-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .airticket-module-root .trip-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #334155;
+            transition: all 0.2s;
+        }
+
+        .airticket-module-root .trip-btn.active {
+            background: #0b25b7;
+            color: #fff;
+            border-color: #0b25b7;
+        }
+
+        .airticket-module-root .form-section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 15px 0 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border-left: 4px solid #0b25b7;
+        }
+
+        .airticket-module-root .transit-badge-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .airticket-module-root .transit-badge-box span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4338ca;
+        }
+
+        .airticket-module-root .transit-badge-box strong {
+            background: #4338ca;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .airticket-module-root .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .airticket-module-root .form-group {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .airticket-module-root .form-group label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .airticket-module-root .form-group input, 
+        .airticket-module-root .form-group select {
+            padding: 7px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            width: 100%;
+            background: #ffffff;
+            color: #1e293b;
+        }
+
+        .airticket-module-root .form-group input:focus, 
+        .airticket-module-root .form-group select:focus {
+            border-color: #0b25b7;
+        }
+
+        .airticket-module-root .input-clear-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .airticket-module-root .input-clear-wrap input {
+            padding-right: 28px !important;
+        }
+
+        .airticket-module-root .clear-btn {
+            position: absolute;
+            right: 8px;
+            background: #e2e8f0;
+            border: none;
+            color: #64748b;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .airticket-module-root .clear-btn:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        /* PASSENGER CARD BOX STYLES */
+        .airticket-module-root .passenger-card-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .airticket-module-root .passenger-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .airticket-module-root .passenger-card-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #0b25b7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .airticket-module-root .passenger-input-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .airticket-module-root .passenger-input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .airticket-module-root .btn-add {
+            background: #0b25b7;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .airticket-module-root .btn-del-box {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            padding: 3px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .airticket-module-root .btn-del-box:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .airticket-module-root .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 15px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 12px;
+        }
+
+        .airticket-module-root .btn-ticket {
+            padding: 9px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .airticket-module-root .btn-primary-ticket { background: #0b25b7; color: white; }
+        .airticket-module-root .btn-print-ticket { background: #15803d; color: white; }
+
+        /* TICKET PREVIEW CARD */
+        .airticket-module-root .ticket-wrapper {
+            max-width: 950px;
+            margin: 0 auto;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px;
+        }
+
+        .airticket-module-root .ticket-container {
+            width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #cbd5e1;
+        }
+
+        .airticket-module-root .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 24px 30px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .airticket-module-root .agent-branding {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .airticket-module-root .agency-logo-preview {
+            max-width: 130px;
+            max-height: 60px;
+            object-fit: contain;
+            display: none;
+        }
+
+        .airticket-module-root .agent-info h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .airticket-module-root .agent-info p {
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .airticket-module-root .agent-info span {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .airticket-module-root .ticket-title-area {
+            text-align: right;
+        }
+
+        .airticket-module-root .ticket-title-area h1 {
+            color: #0b25b7;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .airticket-module-root .ticket-title-area .issue-date {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .airticket-module-root .ticket-title-area .issue-date strong {
+            color: #0f172a;
+            display: block;
+            font-size: 12px;
+        }
+
+        .airticket-module-root .section-bar {
+            background-color: #0b25b7 !important;
+            color: #ffffff !important;
+            padding: 9px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .airticket-module-root .passenger-section {
+            padding: 8px 25px 12px;
+        }
+
+        .airticket-module-root .passenger-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .airticket-module-root .passenger-table th {
+            text-align: left;
+            font-size: 11px;
+            color: #64748b;
+            padding: 8px 0;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .passenger-table td {
+            padding: 10px 0;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .airticket-module-root .itinerary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .airticket-module-root .itinerary-table th {
+            background: #f8fafc;
+            font-size: 11px;
+            color: #475569;
+            padding: 10px 16px;
+            text-align: left;
+            text-transform: uppercase;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .itinerary-table td {
+            padding: 14px 16px;
+            font-size: 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .flight-carrier strong {
+            font-size: 13px;
+            color: #0f172a;
+            display: block;
+        }
+
+        .airticket-module-root .flight-carrier span {
+            color: #64748b;
+            font-size: 11px;
+        }
+
+        .airticket-module-root .airport-block .airport-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .airticket-module-root .airport-block .time-date {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .airticket-module-root .duration-col {
+            text-align: center;
+            color: #0b25b7;
+        }
+
+        .airticket-module-root .duration-col i {
+            font-size: 15px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .airticket-module-root .duration-col span {
+            font-size: 11px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .airticket-module-root .transit-row td {
+            background-color: #e8ecfc !important;
+            text-align: center;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0b25b7;
+        }
+
+        .airticket-module-root .transit-row span {
+            color: #334155;
+            font-weight: normal;
+        }
+
+        .airticket-module-root .baggage-content {
+            padding: 16px 20px;
+        }
+
+        .airticket-module-root .baggage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .airticket-module-root .baggage-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 12px 16px;
+            background: #ffffff;
+        }
+
+        .airticket-module-root .baggage-card .route {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0b25b7;
+            margin-bottom: 5px;
+        }
+
+        .airticket-module-root .baggage-card .info-line {
+            font-size: 12px;
+            color: #475569;
+            margin-bottom: 2px;
+        }
+
+        .airticket-module-root .baggage-card .info-line strong {
+            color: #0f172a;
+        }
+
+        .airticket-module-root .baggage-note {
+            background-color: #f8fafc;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.5;
+            border: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .baggage-note strong {
+            color: #15803d;
+        }
+
+        .airticket-module-root .terms-header {
+            padding: 14px 20px 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .airticket-module-root .terms-content {
+            padding: 12px 20px 25px;
+        }
+
+        .airticket-module-root .terms-item {
+            margin-bottom: 10px;
+        }
+
+        .airticket-module-root .terms-item strong {
+            font-size: 11px;
+            color: #1e293b;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        .airticket-module-root .terms-item p {
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        /* 100% PRECISE PRINT RULES */
         @media print {
             .no-print {
                 display: none !important;
@@ -67,14 +607,33 @@
                 margin: 0 !important;
                 width: 100% !important;
             }
-            .preview-outer-wrap {
+
+            /* Module Receipt print */
+            body.print-receipt #moduleTicket {
+                display: none !important;
+            }
+            body.print-receipt #moduleReceipt {
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            body.print-receipt #formSection {
+                display: none !important;
+            }
+            body.print-receipt #previewSection {
+                display: block !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            body.print-receipt .preview-outer-wrap {
                 overflow: visible !important;
                 display: block !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 height: auto !important;
             }
-            .invoice-sheet {
+            body.print-receipt .invoice-sheet {
                 box-shadow: none !important;
                 border: none !important;
                 padding: 0 !important;
@@ -88,39 +647,79 @@
                 flex-direction: column !important;
                 justify-content: space-between !important;
             }
-            #previewSection {
+
+            /* Module Ticket print */
+            body.print-ticket #moduleReceipt {
+                display: none !important;
+            }
+            body.print-ticket #moduleTicket {
                 display: block !important;
-                width: 100% !important;
                 padding: 0 !important;
                 margin: 0 !important;
             }
+            body.print-ticket .form-container {
+                display: none !important;
+            }
+            body.print-ticket .ticket-wrapper {
+                overflow: visible !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            body.print-ticket .ticket-container {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto !important;
+            }
+
             @page {
                 size: A4 portrait;
-                margin: 12mm 15mm;
+                margin: 10mm;
             }
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col selection:bg-blue-600 selection:text-white">
+<body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col selection:bg-blue-600 selection:text-white print-receipt">
+
+    <datalist id="global_airports">
+        <option value="Hazrat Shahjalal International Airport (DAC)">Dhaka, Bangladesh</option>
+        <option value="Shah Amanat International Airport (CGP)">Chittagong, Bangladesh</option>
+        <option value="Osmani International Airport (ZYL)">Sylhet, Bangladesh</option>
+        <option value="Cox's Bazar Airport (CXB)">Cox's Bazar, Bangladesh</option>
+        <option value="Saidpur Airport (SPD)">Saidpur, Bangladesh</option>
+        <option value="Kuala Lumpur International Airport (KUL)">Kuala Lumpur, Malaysia</option>
+        <option value="Sultan Ismail Petra Airport (KBR)">Kota Bharu, Malaysia</option>
+        <option value="Penang International Airport (PEN)">Penang, Malaysia</option>
+        <option value="Singapore Changi Airport (SIN)">Singapore</option>
+        <option value="Suvarnabhumi Airport (BKK)">Bangkok, Thailand</option>
+        <option value="Don Mueang International Airport (DMK)">Bangkok, Thailand</option>
+        <option value="Dubai International Airport (DXB)">Dubai, UAE</option>
+        <option value="Sharjah International Airport (SHJ)">Sharjah, UAE</option>
+        <option value="Abu Dhabi International Airport (AUH)">Abu Dhabi, UAE</option>
+        <option value="Hamad International Airport (DOH)">Doha, Qatar</option>
+        <option value="King Abdulaziz International Airport (JED)">Jeddah, Saudi Arabia</option>
+        <option value="King Khalid International Airport (RUH)">Riyadh, Saudi Arabia</option>
+        <option value="Prince Mohammad bin Abdulaziz Airport (MED)">Madinah, Saudi Arabia</option>
+        <option value="Muscat International Airport (MCT)">Muscat, Oman</option>
+        <option value="Kuwait International Airport (KWI)">Kuwait City, Kuwait</option>
+        <option value="Istanbul Airport (IST)">Istanbul, Turkey</option>
+        <option value="Netaji Subhash Chandra Bose International Airport (CCU)">Kolkata, India</option>
+        <option value="Indira Gandhi International Airport (DEL)">Delhi, India</option>
+        <option value="Heathrow Airport (LHR)">London, UK</option>
+        <option value="John F. Kennedy International Airport (JFK)">New York, USA</option>
+    </datalist>
 
     <div id="authScreen" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-4 overflow-y-auto">
         <div class="auth-glow -top-16 -left-16"></div>
         <div class="auth-glow -bottom-16 -right-16 bg-indigo-900/20"></div>
 
         <div class="glass-card w-full max-w-[460px] rounded-3xl p-6 sm:p-8 text-white shadow-2xl relative z-10 my-auto">
-            
             <div class="flex flex-col items-center text-center mb-5">
                 <div class="h-13 w-13 p-3 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-500/30 mb-2.5">
                     🛡️
@@ -142,10 +741,10 @@
 
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Username</label>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Username or Email</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">👤</span>
-                        <input type="text" id="loginUsername" required placeholder="Enter username" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                        <input type="text" id="loginUsername" required placeholder="Enter username or email" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-3 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
                     </div>
                 </div>
 
@@ -154,9 +753,7 @@
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">🔒</span>
                         <input type="password" id="loginPassword" required placeholder="Enter password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-3 pl-10 pr-10 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
-                        <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">
-                            👁️
-                        </button>
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">👁️</button>
                     </div>
                 </div>
 
@@ -176,13 +773,19 @@
                 </div>
 
                 <div>
+                    <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Email Address</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">✉️</span>
+                        <input type="email" id="regEmail" required placeholder="Enter valid email address" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                    </div>
+                </div>
+
+                <div>
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Hardened Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">🔑</span>
                         <input type="password" id="regPassword" required oninput="evaluatePasswordStrength(this.value)" placeholder="Enter a strong password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-10 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
-                        <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">
-                            👁️
-                        </button>
+                        <button type="button" onclick="togglePasswordVisibility('regPassword', this)" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white text-xs">👁️</button>
                     </div>
 
                     <div class="mt-2 space-y-1">
@@ -208,7 +811,7 @@
                     <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Confirm Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 text-sm">✅</span>
-                        <input type="password" id="regConfirmPassword" required placeholder="Re-enter hardened password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
+                        <input type="password" id="regConfirmPassword" required placeholder="Re-enter password" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition">
                     </div>
                 </div>
 
@@ -217,16 +820,12 @@
                     <span>🛡️</span>
                 </button>
             </form>
-
-            <div class="mt-5 pt-3.5 border-t border-slate-800 text-center text-[10px] text-slate-500">
-                🔒 Protected by End-to-End Client SHA-256 Encryption
-            </div>
         </div>
     </div>
 
     <div id="appContainer" class="hidden flex-col flex-1">
         
-        <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-3 sticky top-0 z-50 flex justify-between items-center no-print backdrop-blur-md">
+        <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-2.5 sticky top-0 z-50 flex flex-wrap justify-between items-center no-print backdrop-blur-md gap-2">
             <div class="flex items-center space-x-3">
                 <div class="h-9 w-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center font-bold text-white shadow-md text-sm">
                     ✈
@@ -240,327 +839,450 @@
                 </div>
             </div>
 
+            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
+                <button id="modReceiptBtn" onclick="switchAppModule('receipt')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow">
+                    <span>📄</span> Receipt Generator
+                </button>
+                <button id="modTicketBtn" onclick="switchAppModule('ticket')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <span>✈️</span> Air Ticket Generator
+                </button>
+            </div>
+
             <div class="flex items-center space-x-2">
-                <button onclick="loadDefaultData()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold px-3 py-1.5 md:px-4 md:py-2 rounded-xl border border-slate-700 transition">
-                    Reset
-                </button>
-                <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 md:px-5 md:py-2 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
+                <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
                     <span>🖨️</span>
-                    <span class="hidden sm:inline">Print / Save PDF</span>
-                    <span class="sm:hidden">Print</span>
+                    <span>Print / Save PDF</span>
                 </button>
-                <button onclick="handleLogout()" title="Sign Out" class="text-xs bg-rose-500/10 hover:bg-rose-600 text-rose-300 hover:text-white font-bold px-3 py-1.5 md:px-3.5 md:py-2 rounded-xl border border-rose-500/20 transition flex items-center gap-1">
+                <button onclick="handleLogout()" title="Sign Out" class="text-xs bg-rose-500/10 hover:bg-rose-600 text-rose-300 hover:text-white font-bold px-3 py-1.5 rounded-xl border border-rose-500/20 transition flex items-center gap-1">
                     <span>🚪</span>
                     <span class="hidden md:inline">Sign Out</span>
                 </button>
             </div>
         </header>
 
-        <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[57px] z-40 no-print">
-            <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
-                <span>✍️</span> Edit Form
-            </button>
-            <button id="tabPreviewBtn" onclick="switchMobileTab('preview')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
-                <span>👁️</span> Receipt Preview
-            </button>
+        <div id="moduleReceipt" class="block w-full">
+            <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[53px] z-40 no-print">
+                <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
+                    <span>✍️</span> Edit Form
+                </button>
+                <button id="tabPreviewBtn" onclick="switchMobileTab('preview')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition">
+                    <span>👁️</span> Preview
+                </button>
+            </div>
+
+            <main class="max-w-[1600px] w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+                <div id="formSection" class="lg:col-span-5 space-y-4 no-print block">
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>🏢</span> Agency Profile & Logo
+                        </h2>
+                        <div class="space-y-2.5 text-xs">
+                            <div>
+                                <label class="text-slate-400 block mb-1">Company Name</label>
+                                <input type="text" id="in_company" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Address</label>
+                                <input type="text" id="in_address" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <div>
+                                    <label class="text-slate-400 block mb-1">Telephone(s)</label>
+                                    <input type="text" id="in_tel" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                </div>
+                                <div>
+                                    <label class="text-slate-400 block mb-1">Email</label>
+                                    <input type="text" id="in_email" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                </div>
+                            </div>
+                            <div class="pt-1">
+                                <label class="text-slate-400 block mb-1">Upload Custom Logo (Optional)</label>
+                                <input type="file" id="in_logo_file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-blue-300 hover:file:bg-slate-700 cursor-pointer" onchange="handleReceiptLogoUpload(event)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>📋</span> Receipt Information
+                        </h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                            <div>
+                                <label class="text-slate-400 block mb-1">Branch Name</label>
+                                <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Submission Date</label>
+                                <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Receipt Number</label>
+                                <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Status</label>
+                                <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Reference Number</label>
+                                <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Currency</label>
+                                <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Issue Date</label>
+                                <input type="text" id="in_issue_date_rec" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                            <div>
+                                <label class="text-slate-400 block mb-1">Flight Date</label>
+                                <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>👥</span> Passenger List
+                            </h2>
+                            <button onclick="addReceiptPassenger()" class="text-xs bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-semibold px-3 py-1.5 rounded-xl border border-blue-500/30 transition">
+                                + Add Row
+                            </button>
+                        </div>
+                        <div id="receipt_passenger_inputs" class="space-y-3"></div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3 shadow-xl">
+                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <span>💰</span> Other Charges
+                        </h2>
+                        <div class="text-xs">
+                            <label class="text-slate-400 block mb-1">Ancillary Cost</label>
+                            <input type="number" id="in_ancillary" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="previewSection" class="lg:col-span-7 hidden lg:block">
+                    <div id="previewWrapper" class="preview-outer-wrap">
+                        <div id="printableInvoice" class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-sm border border-slate-200 text-slate-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start">
+                                    <div id="logoContainer" class="flex flex-col items-center">
+                                        <div id="vectorLogo" class="flex flex-col items-center">
+                                            <svg class="w-20 h-16 text-[#737882]" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g transform="translate(68, 5) rotate(18)">
+                                                    <path d="M12 0 C11.5 0 10.8 1.5 10.8 3 L10.8 13 L0.5 20 C-0.2 20.5 0 21.5 1 21.5 L10.8 19 L10.8 28 L7.5 31 C7 31.5 7.2 32.5 8 32.5 L12 31.5 L16 32.5 C16.8 32.5 17 31.5 16.5 31 L13.2 28 L13.2 19 L23 21.5 C24 21.5 24.2 20.5 23.5 20 L13.2 13 L13.2 3 C13.2 1.5 12.5 0 12 0 Z" fill="#737882"/>
+                                                </g>
+                                                <path d="M80 43 C 81 55, 87 75, 110 80 C 130 84, 138 72, 126 66 C 114 60, 95 68, 92 84" stroke="#737882" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                                                <text x="80" y="86" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#737882" text-anchor="middle" letter-spacing="1">LASKER</text>
+                                                <text x="80" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" fill="#8c919d" text-anchor="middle" letter-spacing="5">TRAVEL</text>
+                                            </svg>
+                                        </div>
+                                        <img id="customLogoImg" class="max-h-20 object-contain hidden" alt="Agency Logo">
+                                    </div>
+
+                                    <div class="text-right text-[11px] leading-[1.4] text-slate-700 max-w-[380px]">
+                                        <h2 class="text-lg font-black text-[#173a8a] tracking-wide uppercase mb-1" id="out_company" style="color: #173a8a !important;">LASKER TRAVELS</h2>
+                                        <p><strong>Address:</strong> <span id="out_address"></span></p>
+                                        <p><strong>Tel:</strong> <span id="out_tel"></span></p>
+                                        <p><strong>Email:</strong> <span id="out_email"></span></p>
+                                    </div>
+                                </div>
+
+                                <div class="relative my-7 text-center">
+                                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+                                    <div class="relative flex justify-center">
+                                        <span class="bg-white px-8 text-2xl font-black tracking-widest text-[#173a8a]" style="color: #173a8a !important; background-color: #ffffff !important;">RECEIPT</span>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-lg p-5 border border-[#e2e8f5] grid grid-cols-2 gap-x-12 gap-y-2.5 text-[11px]" style="background-color: #f0f3fa !important;">
+                                    <div class="space-y-2.5">
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Branch Name</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_branch"></span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Receipt Number</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_receipt">610274</span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Reference Number</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_ref">NZ2398868452213235</span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Issue Date</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_issue_date_rec">19 Jun 26</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2.5">
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Submission Date</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_sub_date">15 Aug 2026</span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Status</span>
+                                            <span class="text-slate-900 font-black flex-1 flex"><span class="mr-2">:</span><span id="out_status">CONFIRMED</span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Currency</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_currency">MYR</span></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-slate-600 min-w-[130px]">Flight Date</span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_flight_date">20 Jun 26</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 border border-[#e2e8f5] rounded-lg p-4 overflow-hidden" style="background-color: #f0f3fa !important;">
+                                    <h3 class="text-xs font-bold text-slate-800 mb-2.5 tracking-wide">Passenger Details</h3>
+                                    <table class="w-full text-[11px] text-left bg-white rounded-md overflow-hidden border border-slate-200 shadow-sm" style="background-color: #ffffff !important;">
+                                        <thead style="background-color: #0e2a80 !important; color: #ffffff !important;">
+                                            <tr>
+                                                <th class="py-2.5 px-3 font-bold w-12 text-center text-white">S/N</th>
+                                                <th class="py-2.5 px-3 font-bold text-white">Passenger Name</th>
+                                                <th class="py-2.5 px-3 font-bold text-white">Class</th>
+                                                <th class="py-2.5 px-3 font-bold text-white">Route</th>
+                                                <th class="py-2.5 px-3 font-bold text-white">PNR</th>
+                                                <th class="py-2.5 px-3 text-right font-bold text-white">Total (Including Tax)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="out_receipt_table" class="divide-y divide-slate-100"></tbody>
+                                        <tfoot>
+                                            <tr class="font-black border-t border-slate-200 text-slate-900" style="background-color: #f8fafc !important;">
+                                                <td colspan="5" class="py-2.5 px-3 text-left">Total:</td>
+                                                <td class="py-2.5 px-3 text-right" id="out_table_total">0.00</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                                <div class="mt-6 flex justify-end">
+                                    <div class="w-72 text-[11px] space-y-1.5">
+                                        <div class="flex justify-between text-slate-600">
+                                            <span>Subtotal:</span>
+                                            <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
+                                        </div>
+                                        <div class="flex justify-between text-slate-600">
+                                            <span>Ancillary Cost:</span>
+                                            <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
+                                        </div>
+                                        <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
+                                            <span>Total Payable Amount:</span>
+                                            <span id="out_total_payable">0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 border-b border-slate-200 pb-3">
+                                    <p class="text-[12px] font-bold text-slate-800 tracking-tight">
+                                        Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
+                                <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
+                                <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
 
-        <main class="max-w-[1600px] w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+        <div id="moduleTicket" class="airticket-module-root hidden w-full p-3 sm:p-4 md:p-6 bg-[#f1f5f9]">
             
-            <div id="formSection" class="lg:col-span-5 space-y-4 no-print block">
-                
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
-                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>🏢</span> Agency Profile & Logo
-                    </h2>
-                    <div class="space-y-2.5 text-xs">
-                        <div>
-                            <label class="text-slate-400 block mb-1">Company Name</label>
-                            <input type="text" id="in_company" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Address</label>
-                            <input type="text" id="in_address" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <div>
-                                <label class="text-slate-400 block mb-1">Telephone(s)</label>
-                                <input type="text" id="in_tel" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                            </div>
-                            <div>
-                                <label class="text-slate-400 block mb-1">Email</label>
-                                <input type="text" id="in_email" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                            </div>
-                        </div>
-                        <div class="pt-1">
-                            <label class="text-slate-400 block mb-1">Upload Custom Logo (Optional)</label>
-                            <input type="file" id="in_logo_file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-blue-300 hover:file:bg-slate-700 cursor-pointer" onchange="handleLogoUpload(event)">
-                        </div>
+            <div class="form-container">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-sliders"></i> Demo Air Ticket Generator</h2>
+                    <div class="trip-selector">
+                        <button type="button" class="trip-btn" onclick="changeLegCount(1, this)">1 Leg</button>
+                        <button type="button" class="trip-btn" onclick="changeLegCount(2, this)">2 Legs (Transit)</button>
+                        <button type="button" class="trip-btn active" onclick="changeLegCount(4, this)">4 Legs (Round-Trip)</button>
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
-                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>📋</span> Receipt Information
-                    </h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                        <div>
-                            <label class="text-slate-400 block mb-1">Branch Name</label>
-                            <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Submission Date</label>
-                            <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Receipt Number</label>
-                            <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Status</label>
-                            <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Reference Number</label>
-                            <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Currency</label>
-                            <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Issue Date</label>
-                            <input type="text" id="in_issue_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
-                        <div>
-                            <label class="text-slate-400 block mb-1">Flight Date</label>
-                            <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                        </div>
+                <div class="form-section-title">
+                    <span><i class="fa-solid fa-building"></i> Agency & Ticket Header Details</span>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Agency Logo</label>
+                        <input type="file" accept="image/*" onchange="handleAirTicketLogo(event)">
+                    </div>
+                    <div class="form-group">
+                        <label>Agent / Agency Name</label>
+                        <input type="text" id="in_agent_name" value="Stalon Paul" oninput="renderTicket()">
+                    </div>
+                    <div class="form-group">
+                        <label>Support Email</label>
+                        <input type="text" id="in_agent_email" value="stalonpaul@gmail.com" oninput="renderTicket()">
+                    </div>
+                    <div class="form-group">
+                        <label>Office Address</label>
+                        <input type="text" id="in_agent_address" value="Cosm Hotel groud floor, Kota Raya NZ office" oninput="renderTicket()">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Issued</label>
+                        <input type="text" id="in_issue_date_ticket" value="02 Aug 2026 2:58 PM" oninput="renderTicket()">
                     </div>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>👥</span> Passenger List
-                        </h2>
-                        <button onclick="addPassenger()" class="text-xs bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white font-semibold px-3 py-1.5 rounded-xl border border-blue-500/30 transition">
-                            + Add Row
-                        </button>
-                    </div>
-                    <div id="passenger_inputs" class="space-y-3"></div>
+                <div class="form-section-title">
+                    <span><i class="fa-solid fa-users"></i> Passenger Information</span>
+                    <button type="button" class="btn-add" onclick="addTicketPassenger()"><i class="fa-solid fa-plus"></i> Add Passenger</button>
                 </div>
+                <div id="passenger_list_inputs"></div>
 
-                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3 shadow-xl">
-                    <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <span>💰</span> Other Charges
-                    </h2>
-                    <div class="text-xs">
-                        <label class="text-slate-400 block mb-1">Ancillary Cost</label>
-                        <input type="number" id="in_ancillary" step="0.01" value="0.00" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="render()">
-                    </div>
-                </div>
+                <div id="flight_legs_inputs"></div>
 
-                <div class="lg:hidden pt-2">
-                    <button onclick="switchMobileTab('preview')" class="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2">
-                        <span>👁️</span> View Form Preview
+                <div class="form-actions">
+                    <button type="button" id="btnUpdateTicket" class="btn-ticket btn-primary-ticket" onclick="triggerUpdateTicket()">
+                        <i class="fa-solid fa-rotate"></i> Update Ticket
+                    </button>
+                    <button class="btn-ticket btn-print-ticket" onclick="window.print()">
+                        <i class="fa-solid fa-print"></i> Print / Save PDF
                     </button>
                 </div>
-
             </div>
 
-            <div id="previewSection" class="lg:col-span-7 hidden lg:block">
-                <div id="previewWrapper" class="preview-outer-wrap">
+            <div class="ticket-wrapper">
+                <div class="ticket-container">
                     
-                    <div id="printableInvoice" class="invoice-sheet p-10 md:p-12 shadow-2xl rounded-sm border border-slate-200 text-slate-800 flex flex-col justify-between">
-                        
-                        <div>
-                            <div class="flex justify-between items-start">
-                                
-                                <div id="logoContainer" class="flex flex-col items-center">
-                                    <div id="vectorLogo" class="flex flex-col items-center">
-                                        <svg class="w-20 h-16 text-[#737882]" viewBox="0 0 160 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g transform="translate(68, 5) rotate(18)">
-                                                <path d="M12 0 C11.5 0 10.8 1.5 10.8 3 L10.8 13 L0.5 20 C-0.2 20.5 0 21.5 1 21.5 L10.8 19 L10.8 28 L7.5 31 C7 31.5 7.2 32.5 8 32.5 L12 31.5 L16 32.5 C16.8 32.5 17 31.5 16.5 31 L13.2 28 L13.2 19 L23 21.5 C24 21.5 24.2 20.5 23.5 20 L13.2 13 L13.2 3 C13.2 1.5 12.5 0 12 0 Z" fill="#737882"/>
-                                            </g>
-                                            <path d="M80 43 C 81 55, 87 75, 110 80 C 130 84, 138 72, 126 66 C 114 60, 95 68, 92 84" stroke="#737882" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-                                            <text x="80" y="86" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" font-size="28" fill="#737882" text-anchor="middle" letter-spacing="1">LASKER</text>
-                                            <text x="80" y="102" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="9" fill="#8c919d" text-anchor="middle" letter-spacing="5">TRAVEL</text>
-                                        </svg>
-                                    </div>
-                                    <img id="customLogoImg" class="max-h-20 object-contain hidden" alt="Agency Logo">
-                                </div>
-
-                                <div class="text-right text-[11px] leading-[1.4] text-slate-700 max-w-[380px]">
-                                    <h2 class="text-lg font-black text-[#173a8a] tracking-wide uppercase mb-1" id="out_company" style="color: #173a8a !important;">LASKER TRAVELS</h2>
-                                    <p><strong>Address:</strong> <span id="out_address"></span></p>
-                                    <p><strong>Tel:</strong> <span id="out_tel"></span></p>
-                                    <p><strong>Email:</strong> <span id="out_email"></span></p>
-                                </div>
-                            </div>
-
-                            <div class="relative my-7 text-center">
-                                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-                                <div class="relative flex justify-center">
-                                    <span class="bg-white px-8 text-2xl font-black tracking-widest text-[#173a8a]" style="color: #173a8a !important; background-color: #ffffff !important;">RECEIPT</span>
-                                </div>
-                            </div>
-
-                            <div class="rounded-lg p-5 border border-[#e2e8f5] grid grid-cols-2 gap-x-12 gap-y-2.5 text-[11px]" style="background-color: #f0f3fa !important;">
-                                <div class="space-y-2.5">
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Branch Name</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_branch"></span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Receipt Number</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_receipt">610274</span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Reference Number</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_ref">NZ2398868452213235</span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Issue Date</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_issue_date">19 Jun 26</span>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-2.5">
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Submission Date</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_sub_date">15 Aug 2026</span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Status</span>
-                                        <span class="text-slate-900 font-black flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_status">CONFIRMED</span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Currency</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_currency">MYR</span>
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <span class="text-slate-600 min-w-[130px]">Flight Date</span>
-                                        <span class="text-slate-800 font-semibold flex-1 flex">
-                                            <span class="mr-2">:</span>
-                                            <span id="out_flight_date">20 Jun 26</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-6 border border-[#e2e8f5] rounded-lg p-4 overflow-hidden" style="background-color: #f0f3fa !important;">
-                                <h3 class="text-xs font-bold text-slate-800 mb-2.5 tracking-wide">Passenger Details</h3>
-                                <table class="w-full text-[11px] text-left bg-white rounded-md overflow-hidden border border-slate-200 shadow-sm" style="background-color: #ffffff !important;">
-                                    <thead style="background-color: #0e2a80 !important; color: #ffffff !important;">
-                                        <tr>
-                                            <th class="py-2.5 px-3 font-bold w-12 text-center text-white">S/N</th>
-                                            <th class="py-2.5 px-3 font-bold text-white">Passenger Name</th>
-                                            <th class="py-2.5 px-3 font-bold text-white">Class</th>
-                                            <th class="py-2.5 px-3 font-bold text-white">Route</th>
-                                            <th class="py-2.5 px-3 font-bold text-white">PNR</th>
-                                            <th class="py-2.5 px-3 text-right font-bold text-white">Total (Including Tax)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="out_passenger_table" class="divide-y divide-slate-100">
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="font-black border-t border-slate-200 text-slate-900" style="background-color: #f8fafc !important;">
-                                            <td colspan="5" class="py-2.5 px-3 text-left">Total:</td>
-                                            <td class="py-2.5 px-3 text-right" id="out_table_total">0.00</td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-
-                            <div class="mt-6 flex justify-end">
-                                <div class="w-72 text-[11px] space-y-1.5">
-                                    <div class="flex justify-between text-slate-600">
-                                        <span>Subtotal:</span>
-                                        <span class="font-semibold text-slate-800" id="out_subtotal">0.00</span>
-                                    </div>
-                                    <div class="flex justify-between text-slate-600">
-                                        <span>Ancillary Cost:</span>
-                                        <span class="font-semibold text-slate-800" id="out_ancillary">0.00</span>
-                                    </div>
-                                    <div class="border-t border-slate-300 pt-2 flex justify-between font-black text-sm text-slate-900">
-                                        <span>Total Payable Amount:</span>
-                                        <span id="out_total_payable">0.00</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-4 border-b border-slate-200 pb-3">
-                                <p class="text-[12px] font-bold text-slate-800 tracking-tight">
-                                    Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
-                                </p>
+                    <header class="ticket-header">
+                        <div class="agent-branding">
+                            <img id="out_ticket_logo" class="agency-logo-preview" alt="Agency Logo">
+                            <div class="agent-info">
+                                <h2 id="out_agent_name">Stalon Paul</h2>
+                                <p><span>Ticket Sup.:</span> <span id="out_agent_email">stalonpaul@gmail.com</span></p>
+                                <p><span>Address:</span> <span id="out_agent_address">Cosm Hotel groud floor, Kota Raya<br>NZ office</span></p>
                             </div>
                         </div>
-
-                        <div class="mt-20 flex justify-between text-[11px] text-slate-500 pt-6">
-                            <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Verified By</div>
-                            <div class="border-t border-slate-400 pt-1.5 w-40 text-center font-medium">Approved by</div>
+                        <div class="ticket-title-area">
+                            <h1>Electronic<br>Ticket</h1>
+                            <div class="issue-date">
+                                Date of Issued:
+                                <strong id="out_issue_date_ticket">02 Aug 2026 2:58 PM</strong>
+                            </div>
                         </div>
+                    </header>
 
+                    <div class="section-bar">
+                        <i class="fa-regular fa-user"></i> PASSENGERS INFORMATION
                     </div>
+                    <div class="passenger-section">
+                        <table class="passenger-table">
+                            <thead>
+                                <tr>
+                                    <th>FULL NAME</th>
+                                    <th>PASSPORT NUMBER</th>
+                                    <th>TICKET NUMBER</th>
+                                </tr>
+                            </thead>
+                            <tbody id="out_ticket_passenger_table"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="section-bar">
+                        <i class="fa-solid fa-plane-departure"></i> ITINERARY INFORMATION
+                    </div>
+                    
+                    <table class="itinerary-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 22%;">FLIGHT</th>
+                                <th style="width: 12%;">AIRLINE PNR</th>
+                                <th style="width: 28%;">DEPARTURE</th>
+                                <th style="width: 10%; text-align: center;">DURATION</th>
+                                <th style="width: 28%;">ARRIVAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="out_itinerary_table"></tbody>
+                    </table>
+
+                    <div class="section-bar">
+                        <i class="fa-solid fa-suitcase-rolling"></i> BAGGAGE & ANCILLARY ALLOWANCE
+                    </div>
+                    <div class="baggage-content">
+                        <div class="baggage-grid" id="out_baggage_grid"></div>
+
+                        <div class="baggage-note">
+                            <strong>Note:</strong> Check-in :Cabin: One hand bag up to 7 kgs and 115 cms (L+W+H), shall be allowed per customer.<br>
+                            For contactless travel we recommend to place it under the seat in front, on board.
+                        </div>
+                    </div>
+
+                    <div class="terms-header">
+                        <i class="fa-solid fa-circle-info"></i> TERMS & CONDITIONS
+                    </div>
+                    <div class="terms-content">
+                        <div class="terms-item">
+                            <strong>E-Booking Notice:</strong>
+                            <p>The terms of carriage, which are thus incorporated by reference, apply to transport and other services rendered by the carrier. You can get these terms from the issuing airline.</p>
+                        </div>
+                        <div class="terms-item">
+                            <strong>Passport/Visa/Health:</strong>
+                            <p>Please make sure to carry a valid passport and visa for your trip, as well as any relevant documents as per your location.</p>
+                        </div>
+                        <div class="terms-item">
+                            <strong>Reconfirmation of flights:</strong>
+                            <p>Please reach out to us for reconfirmation of your flight at least 72 hours in advance. If you do not show up in case of flight changes, your reservation may be canceled or rescheduled and you will be charged.</p>
+                        </div>
+                        <div class="terms-item">
+                            <strong>Insurance:</strong>
+                            <p>We strongly recommend to avail travel insurance. Please check the country's rules before your trip.</p>
+                        </div>
+                        <div class="terms-item">
+                            <strong>Rescheduling:</strong>
+                            <p>Applicable charges will be as per the Airline policy including the convenience fee. i.e. (Rescheduling amount = Date change fee + the difference of fare if any)</p>
+                        </div>
+                        <div class="terms-item">
+                            <strong>Cancellation:</strong>
+                            <p>Applicable charges will be as per the Airline policy including the convenience fee. i.e. (Refund amount = Paid amount - Refundable Amount)</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-        </main>
+        </div>
+
     </div>
 
     <script>
-        // SHA-256 Hash generator using Native Web Crypto API
+        // ================= AUTHENTICATION & SECURITY =================
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // Default root user (admin / Admin@2026#)
-        // Hash for "Admin@2026#" = e0e0d00f72365287f3dddf664fc8c615aa4bc3b26c2e26466f81a70081d6aa04
         const defaultUsers = {
-            "admin": "e0e0d00f72365287f3dddf664fc8c615aa4bc3b26c2e26466f81a70081d6aa04"
+            "admin": {
+                email: "admin@itech.com",
+                hash: "e0e0d00f72365287f3dddf664fc8c615aa4bc3b26c2e26466f81a70081d6aa04"
+            }
         };
 
         function getUsers() {
-            const users = localStorage.getItem('secure_app_users_v2');
+            const users = localStorage.getItem('secure_app_users_v3');
             return users ? JSON.parse(users) : defaultUsers;
         }
 
         function saveUsers(users) {
-            localStorage.setItem('secure_app_users_v2', JSON.stringify(users));
+            localStorage.setItem('secure_app_users_v3', JSON.stringify(users));
         }
 
         function showAlert(msg, isSuccess = false) {
             const box = document.getElementById('authAlert');
             box.innerText = msg;
             box.className = `text-xs p-3.5 rounded-xl mb-4 text-center font-semibold border ${
-                isSuccess 
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' 
-                : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+                isSuccess ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
             }`;
             box.classList.remove('hidden');
         }
@@ -596,7 +1318,6 @@
             }
         }
 
-        // Live Password Hardness Validator
         function evaluatePasswordStrength(p) {
             const hasLen = p.length >= 8;
             const hasUpper = /[A-Z]/.test(p);
@@ -633,7 +1354,7 @@
             } else if (score === 2 || score === 3) {
                 bar.style.width = "50%";
                 bar.className = "h-full transition-all duration-300 bg-amber-500";
-                label.innerText = "Medium (Needs More)";
+                label.innerText = "Medium";
                 label.className = "text-amber-400";
             } else if (score === 4) {
                 bar.style.width = "80%";
@@ -646,63 +1367,64 @@
                 label.innerText = "Hard & Secure ✔";
                 label.className = "text-emerald-400 font-bold";
             }
-
             return score === 5;
         }
 
         async function handleLogin(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
+            const identifier = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value;
             const users = getUsers();
-
             const pHash = await sha256(p);
 
-            if (users[u] && users[u] === pHash) {
+            let matchedUser = null;
+
+            for (const [uname, udata] of Object.entries(users)) {
+                if (uname.toLowerCase() === identifier.toLowerCase() || (udata.email && udata.email.toLowerCase() === identifier.toLowerCase())) {
+                    if (udata.hash === pHash) {
+                        matchedUser = uname;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedUser) {
                 showAlert("Authentication Verified! Entering...", true);
                 setTimeout(() => {
-                    sessionStorage.setItem('current_user', u);
+                    sessionStorage.setItem('current_user', matchedUser);
                     checkAuth();
                 }, 400);
             } else {
-                showAlert("Invalid username or password!");
+                showAlert("Invalid username/email or password!");
             }
         }
 
         async function handleRegister(e) {
             e.preventDefault();
             const u = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
             const p = document.getElementById('regPassword').value;
             const cp = document.getElementById('regConfirmPassword').value;
 
-            if (u.length < 4) {
-                showAlert("Username must be at least 4 characters!");
-                return;
-            }
-
-            // Hard Password Requirement Check
-            const isHard = evaluatePasswordStrength(p);
-            if (!isHard) {
-                showAlert("Password is not strong enough! Please fulfill all 5 requirements.");
-                return;
-            }
-
-            if (p !== cp) {
-                showAlert("Passwords do not match!");
-                return;
-            }
+            if (u.length < 4) return showAlert("Username must be at least 4 characters!");
+            if (!email.includes('@') || !email.includes('.')) return showAlert("Please enter a valid email address!");
+            if (!evaluatePasswordStrength(p)) return showAlert("Password does not meet all 5 security criteria!");
+            if (p !== cp) return showAlert("Passwords do not match!");
 
             const users = getUsers();
-            if (users[u]) {
-                showAlert("Username already taken! Choose another.");
-                return;
+            if (users[u]) return showAlert("Username already taken!");
+
+            for (const [uname, udata] of Object.entries(users)) {
+                if (udata.email && udata.email.toLowerCase() === email.toLowerCase()) {
+                    return showAlert("Email already registered with another account!");
+                }
             }
 
             const pHash = await sha256(p);
-            users[u] = pHash;
+            users[u] = { email: email, hash: pHash };
             saveUsers(users);
 
-            showAlert("Account created with Hard Encryption!", true);
+            showAlert("Account created successfully with Email Encryption!", true);
             setTimeout(() => {
                 sessionStorage.setItem('current_user', u);
                 checkAuth();
@@ -729,14 +1451,44 @@
                 authScreen.classList.remove('hidden');
                 appContainer.classList.add('hidden');
                 appContainer.classList.remove('flex');
-                document.getElementById('loginUsername').value = '';
-                document.getElementById('loginPassword').value = '';
-                document.getElementById('authAlert').classList.add('hidden');
             }
         }
 
-        // ================= INVOICE GENERATOR CORE =================
-        let passengers = [];
+        // ================= MODULE SWITCHER =================
+        function switchAppModule(mod) {
+            const recMod = document.getElementById('moduleReceipt');
+            const tickMod = document.getElementById('moduleTicket');
+            const recBtn = document.getElementById('modReceiptBtn');
+            const tickBtn = document.getElementById('modTicketBtn');
+
+            if (mod === 'receipt') {
+                document.body.classList.remove('print-ticket');
+                document.body.classList.add('print-receipt');
+
+                recMod.classList.remove('hidden');
+                recMod.classList.add('block');
+                tickMod.classList.add('hidden');
+                tickMod.classList.remove('block');
+
+                recBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
+                tickBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+                setTimeout(autoScaleInvoice, 50);
+            } else {
+                document.body.classList.remove('print-receipt');
+                document.body.classList.add('print-ticket');
+
+                recMod.classList.add('hidden');
+                recMod.classList.remove('block');
+                tickMod.classList.remove('hidden');
+                tickMod.classList.add('block');
+
+                tickBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
+                recBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+            }
+        }
+
+        // ================= MODULE 1: INVOICE / RECEIPT GENERATOR LOGIC =================
+        let receiptPassengers = [];
 
         function autoScaleInvoice() {
             const container = document.getElementById('previewWrapper');
@@ -769,7 +1521,6 @@
                 formSec.classList.add('block');
                 prevSec.classList.add('hidden');
                 prevSec.classList.remove('block');
-                
                 formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
                 prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
             } else {
@@ -777,16 +1528,14 @@
                 formSec.classList.remove('block');
                 prevSec.classList.remove('hidden');
                 prevSec.classList.add('block');
-
                 prevBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition";
                 formBtn.className = "flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 transition";
-                
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTimeout(autoScaleInvoice, 50);
             }
         }
 
-        function handleLogoUpload(event) {
+        function handleReceiptLogoUpload(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -801,76 +1550,63 @@
             }
         }
 
-        function loadDefaultData() {
+        function loadDefaultReceiptData() {
             document.getElementById('in_company').value = "LASKER TRAVELS";
             document.getElementById('in_address').value = "22-A, Leboh Pasar Besar, City Centre, Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur";
             document.getElementById('in_tel').value = "1670097592, 107044401";
             document.getElementById('in_email').value = "laskertravel1@gmail.com";
-            
             document.getElementById('in_receipt').value = "610274";
             document.getElementById('in_ref').value = "NZ2398868452213235";
             document.getElementById('in_branch').value = "";
             document.getElementById('in_status').value = "CONFIRMED";
             document.getElementById('in_sub_date').value = "15 Aug 2026";
-            document.getElementById('in_issue_date').value = "19 Jun 26";
+            document.getElementById('in_issue_date_rec').value = "19 Jun 26";
             document.getElementById('in_flight_date').value = "20 Jun 26";
             document.getElementById('in_currency').value = "MYR";
             document.getElementById('in_ancillary').value = "0.00";
 
-            document.getElementById('customLogoImg').classList.add('hidden');
-            document.getElementById('vectorLogo').classList.remove('hidden');
-            document.getElementById('in_logo_file').value = '';
-
-            passengers = [
+            receiptPassengers = [
                 { name: 'MR MD RIYAD LASKER', classType: 'Economy', route: 'DAC - KUL', pnr: 'CZBOMP', fare: 500.00 }
             ];
 
-            renderPassengerInputs();
-            render();
-            setTimeout(autoScaleInvoice, 100);
+            renderReceiptPassengerInputs();
+            renderReceipt();
         }
 
-        function renderPassengerInputs() {
-            const container = document.getElementById('passenger_inputs');
+        function renderReceiptPassengerInputs() {
+            const container = document.getElementById('receipt_passenger_inputs');
             container.innerHTML = '';
-            passengers.forEach((p, index) => {
+            receiptPassengers.forEach((p, index) => {
                 container.innerHTML += `
-                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative">
+                    <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2 relative text-xs">
                         <div class="flex justify-between items-center text-[11px] font-bold text-slate-400">
                             <span>Passenger #${index + 1}</span>
-                            ${passengers.length > 1 ? `
-                                <button onclick="removePassenger(${index})" class="text-rose-400 hover:text-rose-300 font-semibold text-xs">
-                                    ✕ Remove
-                                </button>
+                            ${receiptPassengers.length > 1 ? `
+                                <button onclick="removeReceiptPassenger(${index})" class="text-rose-400 hover:text-rose-300 font-semibold">✕ Remove</button>
                             ` : ''}
                         </div>
-                        <input type="text" placeholder="Full Name" value="${p.name}" oninput="updatePassenger(${index}, 'name', this.value)" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            <input type="text" placeholder="Class" value="${p.classType}" oninput="updatePassenger(${index}, 'classType', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
-                            <input type="text" placeholder="Route" value="${p.route}" oninput="updatePassenger(${index}, 'route', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
-                            <input type="text" placeholder="PNR" value="${p.pnr}" oninput="updatePassenger(${index}, 'pnr', this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
-                            <input type="number" placeholder="Fare" value="${p.fare || ''}" step="0.01" oninput="updatePassenger(${index}, 'fare', parseFloat(this.value) || 0)" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 text-xs outline-none focus:border-blue-500">
+                        <input type="text" placeholder="Full Name" value="${p.name}" oninput="receiptPassengers[${index}].name = this.value; renderReceipt();" class="w-full bg-slate-900 border border-slate-700 text-white rounded-lg p-2 outline-none focus:border-blue-500">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" placeholder="Class" value="${p.classType}" oninput="receiptPassengers[${index}].classType = this.value; renderReceipt();" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 outline-none">
+                            <input type="text" placeholder="Route" value="${p.route}" oninput="receiptPassengers[${index}].route = this.value; renderReceipt();" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 outline-none">
+                            <input type="text" placeholder="PNR" value="${p.pnr}" oninput="receiptPassengers[${index}].pnr = this.value; renderReceipt();" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 outline-none">
+                            <input type="number" placeholder="Fare" value="${p.fare || ''}" step="0.01" oninput="receiptPassengers[${index}].fare = parseFloat(this.value) || 0; renderReceipt();" class="bg-slate-900 border border-slate-700 text-white rounded-lg p-2 outline-none">
                         </div>
                     </div>
                 `;
             });
         }
 
-        function addPassenger() {
-            passengers.push({ name: '', classType: '', route: '', pnr: '', fare: 0 });
-            renderPassengerInputs();
-            render();
+        function addReceiptPassenger() {
+            receiptPassengers.push({ name: '', classType: '', route: '', pnr: '', fare: 0 });
+            renderReceiptPassengerInputs();
+            renderReceipt();
         }
 
-        function removePassenger(index) {
-            passengers.splice(index, 1);
-            renderPassengerInputs();
-            render();
-        }
-
-        function updatePassenger(index, field, value) {
-            passengers[index][field] = value;
-            render();
+        function removeReceiptPassenger(index) {
+            receiptPassengers.splice(index, 1);
+            renderReceiptPassengerInputs();
+            renderReceipt();
         }
 
         function numberToWords(amount) {
@@ -889,37 +1625,32 @@
 
             const intVal = Math.floor(amount);
             const decVal = Math.round((amount - intVal) * 100);
-
             if (intVal === 0 && decVal === 0) return "Zero";
-
             let result = "";
             if (intVal > 0) result += convert(intVal);
             if (decVal > 0) result += (result ? " and " : "") + convert(decVal) + " Cents";
-
             return result.trim();
         }
 
-        function render() {
-            const comp = document.getElementById('in_company').value || 'LASKER TRAVELS';
-            document.getElementById('out_company').innerText = comp;
+        function renderReceipt() {
+            document.getElementById('out_company').innerText = document.getElementById('in_company').value || 'LASKER TRAVELS';
             document.getElementById('out_address').innerText = document.getElementById('in_address').value;
             document.getElementById('out_tel').innerText = document.getElementById('in_tel').value;
             document.getElementById('out_email').innerText = document.getElementById('in_email').value;
-
             document.getElementById('out_receipt').innerText = document.getElementById('in_receipt').value;
             document.getElementById('out_ref').innerText = document.getElementById('in_ref').value;
             document.getElementById('out_branch').innerText = document.getElementById('in_branch').value;
             document.getElementById('out_status').innerText = document.getElementById('in_status').value;
             document.getElementById('out_sub_date').innerText = document.getElementById('in_sub_date').value;
-            document.getElementById('out_issue_date').innerText = document.getElementById('in_issue_date').value;
+            document.getElementById('out_issue_date_rec').innerText = document.getElementById('in_issue_date_rec').value;
             document.getElementById('out_flight_date').innerText = document.getElementById('in_flight_date').value;
             document.getElementById('out_currency').innerText = document.getElementById('in_currency').value;
 
-            const tbody = document.getElementById('out_passenger_table');
+            const tbody = document.getElementById('out_receipt_table');
             tbody.innerHTML = '';
             let subtotal = 0;
 
-            passengers.forEach((p, idx) => {
+            receiptPassengers.forEach((p, idx) => {
                 const fareVal = parseFloat(p.fare) || 0;
                 subtotal += fareVal;
                 tbody.innerHTML += `
@@ -936,19 +1667,533 @@
 
             const ancillary = parseFloat(document.getElementById('in_ancillary').value) || 0;
             const total = subtotal + ancillary;
-
             document.getElementById('out_table_total').innerText = subtotal.toFixed(2);
             document.getElementById('out_subtotal').innerText = subtotal.toFixed(2);
             document.getElementById('out_ancillary').innerText = ancillary.toFixed(2);
             document.getElementById('out_total_payable').innerText = total.toFixed(2);
             document.getElementById('out_amount_words').innerText = numberToWords(total);
-
             autoScaleInvoice();
         }
 
-        // Initialize App
-        checkAuth();
-        loadDefaultData();
+        // ================= MODULE 2: AIR TICKET GENERATOR =================
+        const airlineMasterList = [
+            "Malaysia Airlines",
+            "Biman Bangladesh Airlines",
+            "US-Bangla Airlines",
+            "Air Astra",
+            "Novoair",
+            "Emirates",
+            "Qatar Airways",
+            "Saudia Airlines",
+            "Singapore Airlines",
+            "Thai Airways",
+            "flydubai",
+            "Air Arabia",
+            "IndiGo",
+            "Turkish Airlines",
+            "Kuwait Airways",
+            "Oman Air",
+            "Gulf Air",
+            "SriLankan Airlines",
+            "Jazeera Airways"
+        ];
+
+        let totalLegs = 4;
+        let passengers = [
+            { name: "MR SALAUDDIN MATUBBAR", passport: "EN0343623", ticket: "2323945234052" }
+        ];
+
+        let flightLegs = [
+            {
+                airline: "Malaysia Airlines",
+                flightNo: "MH-1385",
+                flightClass: "Economy",
+                pnr: "F6XKZ4",
+                depApt: "Sultan Ismail Petra Airport (KBR)",
+                depTime: "10:00 AM",
+                depDate: "Mon 10 Aug, 2026",
+                dur: "1h 10m",
+                arrApt: "Kuala Lumpur International Airport (KUL)",
+                arrTime: "11:10 AM",
+                arrDate: "Mon 10 Aug, 2026",
+                checkin: "35 KG",
+                cabin: "Up to 7 KG"
+            },
+            {
+                airline: "Malaysia Airlines",
+                flightNo: "MH-196",
+                flightClass: "Economy",
+                pnr: "F6XKZ4",
+                depApt: "Kuala Lumpur International Airport (KUL)",
+                depTime: "11:00 PM",
+                depDate: "Mon 10 Aug, 2026",
+                dur: "3h 55m",
+                arrApt: "Hazrat Shahjalal International Airport (DAC)",
+                arrTime: "12:55 AM",
+                arrDate: "Tue 11 Aug, 2026",
+                checkin: "35 KG",
+                cabin: "Up to 7 KG"
+            },
+            {
+                airline: "Malaysia Airlines",
+                flightNo: "MH-103",
+                flightClass: "Economy",
+                pnr: "F6XKZ4",
+                depApt: "Hazrat Shahjalal International Airport (DAC)",
+                depTime: "12:15 PM",
+                depDate: "Thu 10 Sep, 2026",
+                dur: "4h 0m",
+                arrApt: "Kuala Lumpur International Airport (KUL)",
+                arrTime: "6:15 PM",
+                arrDate: "Thu 10 Sep, 2026",
+                checkin: "35 KG",
+                cabin: "Up to 7 KG"
+            },
+            {
+                airline: "Malaysia Airlines",
+                flightNo: "MH-1384",
+                flightClass: "Economy",
+                pnr: "F6XKZ4",
+                depApt: "Kuala Lumpur International Airport (KUL)",
+                depTime: "8:15 AM",
+                depDate: "Fri 11 Sep, 2026",
+                dur: "1h 5m",
+                arrApt: "Sultan Ismail Petra Airport (KBR)",
+                arrTime: "9:20 AM",
+                arrDate: "Fri 11 Sep, 2026",
+                checkin: "35 KG",
+                cabin: "Up to 7 KG"
+            }
+        ];
+
+        function extractIATA(str) {
+            if (!str) return "APT";
+            const match = str.match(/\(([A-Za-z]{3})\)/);
+            if (match) return match[1].toUpperCase();
+
+            const words = str.trim().split(/[\s,]+/);
+            for (let w of words) {
+                if (w.length === 3 && /^[A-Za-z]+$/.test(w)) return w.toUpperCase();
+            }
+            return str.replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase() || "APT";
+        }
+
+        function clearAirportField(legIndex, fieldKey, inputId) {
+            flightLegs[legIndex][fieldKey] = '';
+            const inp = document.getElementById(inputId);
+            if (inp) {
+                inp.value = '';
+                inp.focus();
+            }
+            renderTicket();
+        }
+
+        function parseDateTime(timeStr, dateStr) {
+            try {
+                if (!timeStr) return null;
+                let hours = 0, minutes = 0;
+                const timeMatch = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+                if (timeMatch) {
+                    hours = parseInt(timeMatch[1], 10);
+                    minutes = parseInt(timeMatch[2], 10);
+                    const meridiem = timeMatch[3] ? timeMatch[3].toUpperCase() : null;
+                    if (meridiem === 'PM' && hours < 12) hours += 12;
+                    if (meridiem === 'AM' && hours === 12) hours = 0;
+                }
+
+                let cleanDate = dateStr ? dateStr.replace(/^[A-Za-z]{3,}\s*,?\s*/, '').trim() : '';
+                const dateObj = cleanDate ? new Date(cleanDate) : new Date();
+                
+                if (!isNaN(dateObj.getTime())) {
+                    dateObj.setHours(hours, minutes, 0, 0);
+                    return dateObj;
+                }
+            } catch (e) {}
+            return null;
+        }
+
+        // ACCURATE DURATION CALCULATION LOGIC
+        function calculateDuration(depTime, depDate, arrTime, arrDate) {
+            const dep = parseDateTime(depTime, depDate);
+            const arr = parseDateTime(arrTime, arrDate);
+
+            if (dep && arr) {
+                let diffMs = arr.getTime() - dep.getTime();
+                if (diffMs < 0) {
+                    diffMs += 24 * 60 * 60 * 1000;
+                }
+                const totalMins = Math.floor(diffMs / (1000 * 60));
+                const hrs = Math.floor(totalMins / 60);
+                const mins = totalMins % 60;
+                return mins > 0 ? `${hrs}h ${mins}m` : `${hrs}h`;
+            }
+            return "";
+        }
+
+        function updateLegTimes(i) {
+            const calcDur = calculateDuration(flightLegs[i].depTime, flightLegs[i].depDate, flightLegs[i].arrTime, flightLegs[i].arrDate);
+            if (calcDur) {
+                flightLegs[i].dur = calcDur;
+                const durInput = document.getElementById(`fl_dur_${i}`);
+                if (durInput) durInput.value = calcDur;
+            }
+            renderTicket();
+        }
+
+        function calculateTransit(landingTime, landingDate, nextDepTime, nextDepDate) {
+            const arr = parseDateTime(landingTime, landingDate);
+            const dep = parseDateTime(nextDepTime, nextDepDate);
+
+            if (arr && dep) {
+                let diffMs = dep.getTime() - arr.getTime();
+                if (diffMs < 0) {
+                    diffMs += 24 * 60 * 60 * 1000;
+                }
+                const totalMins = Math.floor(diffMs / (1000 * 60));
+                const hrs = Math.floor(totalMins / 60);
+                const mins = totalMins % 60;
+                return mins > 0 ? `${hrs}h ${mins}m` : `${hrs}h`;
+            }
+            return "Connection";
+        }
+
+        function renderInputs() {
+            // Passengers - Box Format
+            const pContainer = document.getElementById('passenger_list_inputs');
+            pContainer.innerHTML = '';
+            passengers.forEach((p, idx) => {
+                pContainer.innerHTML += `
+                    <div class="passenger-card-box">
+                        <div class="passenger-card-header">
+                            <span class="passenger-card-title"><i class="fa-solid fa-user"></i> Passenger #${idx + 1}</span>
+                            ${passengers.length > 1 ? `
+                                <button type="button" class="btn-del-box" onclick="deletePassenger(${idx})">
+                                    <i class="fa-solid fa-trash"></i> Remove
+                                </button>
+                            ` : ''}
+                        </div>
+                        <div class="passenger-input-grid">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="p_name_${idx}" placeholder="e.g. MR JOHN DOE" value="${p.name}" oninput="passengers[${idx}].name = this.value; renderTicket();">
+                            </div>
+                            <div class="form-group">
+                                <label>Passport Number</label>
+                                <input type="text" id="p_passport_${idx}" placeholder="e.g. EN0343623" value="${p.passport}" oninput="passengers[${idx}].passport = this.value; renderTicket();">
+                            </div>
+                            <div class="form-group">
+                                <label>Ticket Number</label>
+                                <input type="text" id="p_ticket_${idx}" placeholder="e.g. 2323945234052" value="${p.ticket}" oninput="passengers[${idx}].ticket = this.value; renderTicket();">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Flight Legs
+            const fContainer = document.getElementById('flight_legs_inputs');
+            fContainer.innerHTML = '';
+            for (let i = 0; i < totalLegs; i++) {
+                const leg = flightLegs[i];
+                let alOpts = `<option value="${leg.airline}">${leg.airline}</option>`;
+                airlineMasterList.forEach(al => {
+                    if (al !== leg.airline) alOpts += `<option value="${al}">${al}</option>`;
+                });
+
+                fContainer.innerHTML += `
+                    <div class="form-section-title">
+                        <span><i class="fa-solid fa-plane"></i> Flight Leg ${i + 1} ${i >= 2 ? '(Return)' : '(Outbound)'}</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Airline</label>
+                            <select id="fl_sel_${i}" onchange="flightLegs[${i}].airline = this.value; document.getElementById('fl_al_${i}').value = this.value; renderTicket();">
+                                ${alOpts}
+                            </select>
+                            <input type="text" id="fl_al_${i}" value="${leg.airline}" style="margin-top:4px;" oninput="flightLegs[${i}].airline = this.value; renderTicket();">
+                        </div>
+                        <div class="form-group">
+                            <label>Flight No & Class</label>
+                            <input type="text" id="fl_no_${i}" value="${leg.flightNo}" placeholder="Flight No" oninput="flightLegs[${i}].flightNo = this.value; renderTicket();">
+                            <input type="text" id="fl_cls_${i}" value="${leg.flightClass}" placeholder="Class" style="margin-top:4px;" oninput="flightLegs[${i}].flightClass = this.value; renderTicket();">
+                        </div>
+                        <div class="form-group">
+                            <label>Airline PNR</label>
+                            <input type="text" id="fl_pnr_${i}" value="${leg.pnr}" oninput="flightLegs[${i}].pnr = this.value; renderTicket();">
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="fl_dur_${i}" value="${leg.dur}" oninput="flightLegs[${i}].dur = this.value; renderTicket();">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Departure Airport (Search / 1-Click Clear)</label>
+                            <div class="input-clear-wrap">
+                                <input type="text" id="in_dep_apt_${i}" list="global_airports" value="${leg.depApt}" placeholder="Search Airport..." 
+                                    onclick="this.select()" 
+                                    oninput="flightLegs[${i}].depApt = this.value; renderTicket();">
+                                <button type="button" class="clear-btn" title="Clear Field" onclick="clearAirportField(${i}, 'depApt', 'in_dep_apt_${i}')">✕</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Departure Time & Date</label>
+                            <input type="text" id="fl_dept_${i}" value="${leg.depTime}" placeholder="Time (e.g. 10:00 AM)" oninput="flightLegs[${i}].depTime = this.value; updateLegTimes(${i});">
+                            <input type="text" id="fl_depd_${i}" value="${leg.depDate}" placeholder="Date (e.g. Mon 10 Aug, 2026)" style="margin-top:4px;" oninput="flightLegs[${i}].depDate = this.value; updateLegTimes(${i});">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Arrival Airport (Search / 1-Click Clear)</label>
+                            <div class="input-clear-wrap">
+                                <input type="text" id="in_arr_apt_${i}" list="global_airports" value="${leg.arrApt}" placeholder="Search Airport..." 
+                                    onclick="this.select()" 
+                                    oninput="flightLegs[${i}].arrApt = this.value; renderTicket();">
+                                <button type="button" class="clear-btn" title="Clear Field" onclick="clearAirportField(${i}, 'arrApt', 'in_arr_apt_${i}')">✕</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Arrival / Landing Time & Date</label>
+                            <input type="text" id="fl_arrt_${i}" value="${leg.arrTime}" placeholder="Time (e.g. 11:10 AM)" oninput="flightLegs[${i}].arrTime = this.value; updateLegTimes(${i});">
+                            <input type="text" id="fl_arrd_${i}" value="${leg.arrDate}" placeholder="Date (e.g. Mon 10 Aug, 2026)" style="margin-top:4px;" oninput="flightLegs[${i}].arrDate = this.value; updateLegTimes(${i});">
+                        </div>
+                        <div class="form-group">
+                            <label>Check-in Baggage</label>
+                            <input type="text" id="fl_chk_${i}" value="${leg.checkin}" oninput="flightLegs[${i}].checkin = this.value; renderTicket();">
+                        </div>
+                        <div class="form-group">
+                            <label>Cabin Baggage</label>
+                            <input type="text" id="fl_cab_${i}" value="${leg.cabin}" oninput="flightLegs[${i}].cabin = this.value; renderTicket();">
+                        </div>
+                    </div>
+                `;
+
+                if (i === 0 && totalLegs >= 2) {
+                    const tVal = calculateTransit(flightLegs[0].arrTime, flightLegs[0].arrDate, flightLegs[1].depTime, flightLegs[1].depDate);
+                    fContainer.innerHTML += `
+                        <div class="transit-badge-box">
+                            <span><i class="fa-solid fa-clock"></i> Calculated Outbound Transit Time:</span>
+                            <strong id="badge_transit_1">${tVal}</strong>
+                        </div>
+                    `;
+                } else if (i === 2 && totalLegs >= 4) {
+                    const tVal2 = calculateTransit(flightLegs[2].arrTime, flightLegs[2].arrDate, flightLegs[3].depTime, flightLegs[3].depDate);
+                    fContainer.innerHTML += `
+                        <div class="transit-badge-box">
+                            <span><i class="fa-solid fa-clock"></i> Calculated Return Transit Time:</span>
+                            <strong id="badge_transit_2">${tVal2}</strong>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // FULLY ACTIVE UPDATE TICKET HANDLER
+        function triggerUpdateTicket() {
+            // Read passenger form inputs
+            passengers.forEach((p, idx) => {
+                const n = document.getElementById(`p_name_${idx}`);
+                const pass = document.getElementById(`p_passport_${idx}`);
+                const t = document.getElementById(`p_ticket_${idx}`);
+                if (n) p.name = n.value;
+                if (pass) p.passport = pass.value;
+                if (t) p.ticket = t.value;
+            });
+
+            // Read flight leg inputs
+            for (let i = 0; i < totalLegs; i++) {
+                const leg = flightLegs[i];
+                const al = document.getElementById(`fl_al_${i}`);
+                const no = document.getElementById(`fl_no_${i}`);
+                const cls = document.getElementById(`fl_cls_${i}`);
+                const pnr = document.getElementById(`fl_pnr_${i}`);
+                const dur = document.getElementById(`fl_dur_${i}`);
+                const depApt = document.getElementById(`in_dep_apt_${i}`);
+                const depT = document.getElementById(`fl_dept_${i}`);
+                const depD = document.getElementById(`fl_depd_${i}`);
+                const arrApt = document.getElementById(`in_arr_apt_${i}`);
+                const arrT = document.getElementById(`fl_arrt_${i}`);
+                const arrD = document.getElementById(`fl_arrd_${i}`);
+                const chk = document.getElementById(`fl_chk_${i}`);
+                const cab = document.getElementById(`fl_cab_${i}`);
+
+                if (al) leg.airline = al.value;
+                if (no) leg.flightNo = no.value;
+                if (cls) leg.flightClass = cls.value;
+                if (pnr) leg.pnr = pnr.value;
+                if (depApt) leg.depApt = depApt.value;
+                if (depT) leg.depTime = depT.value;
+                if (depD) leg.depDate = depD.value;
+                if (arrApt) leg.arrApt = arrApt.value;
+                if (arrT) leg.arrTime = arrT.value;
+                if (arrD) leg.arrDate = arrD.value;
+                if (chk) leg.checkin = chk.value;
+                if (cab) leg.cabin = cab.value;
+
+                // Auto calculate or retain duration
+                const calcDur = calculateDuration(leg.depTime, leg.depDate, leg.arrTime, leg.arrDate);
+                if (dur && dur.value.trim() !== '') {
+                    leg.dur = dur.value;
+                } else if (calcDur) {
+                    leg.dur = calcDur;
+                    if (dur) dur.value = calcDur;
+                }
+            }
+
+            // Render ticket card preview
+            renderTicket();
+
+            // Button feedback animation
+            const btn = document.getElementById('btnUpdateTicket');
+            if (btn) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Ticket Updated!';
+                btn.style.backgroundColor = '#16a34a';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.backgroundColor = '#0b25b7';
+                }, 1500);
+            }
+        }
+
+        function renderTicket() {
+            // Header
+            document.getElementById('out_agent_name').innerText = document.getElementById('in_agent_name').value;
+            document.getElementById('out_agent_email').innerText = document.getElementById('in_agent_email').value;
+            document.getElementById('out_agent_address').innerHTML = document.getElementById('in_agent_address').value.replace(/\n/g, '<br>');
+            document.getElementById('out_issue_date_ticket').innerText = document.getElementById('in_issue_date_ticket').value;
+
+            // Passengers
+            const pTable = document.getElementById('out_ticket_passenger_table');
+            pTable.innerHTML = '';
+            passengers.forEach(p => {
+                pTable.innerHTML += `
+                    <tr>
+                        <td>${p.name.toUpperCase() || 'PASSENGER NAME'}</td>
+                        <td>${p.passport || '-'}</td>
+                        <td>${p.ticket || '-'}</td>
+                    </tr>
+                `;
+            });
+
+            // Itinerary & Baggage Sync
+            const iTable = document.getElementById('out_itinerary_table');
+            const bGrid = document.getElementById('out_baggage_grid');
+            iTable.innerHTML = '';
+            bGrid.innerHTML = '';
+
+            for (let i = 0; i < totalLegs; i++) {
+                const leg = flightLegs[i];
+
+                iTable.innerHTML += `
+                    <tr>
+                        <td class="flight-carrier">
+                            <strong>${leg.airline}</strong>
+                            <span>${leg.flightNo}</span><br>
+                            <span>${leg.flightClass}</span>
+                        </td>
+                        <td><strong>${leg.pnr}</strong></td>
+                        <td class="airport-block">
+                            <div class="airport-name">${leg.depApt}</div>
+                            <div class="time-date">${leg.depTime}<br>${leg.depDate}</div>
+                        </td>
+                        <td class="duration-col">
+                            <i class="fa-solid fa-plane"></i>
+                            <span>${leg.dur}</span>
+                        </td>
+                        <td class="airport-block">
+                            <div class="airport-name">${leg.arrApt}</div>
+                            <div class="time-date">${leg.arrTime}<br>${leg.arrDate}</div>
+                        </td>
+                    </tr>
+                `;
+
+                if (i === 0 && totalLegs >= 2) {
+                    const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
+                    const calculatedTime1 = calculateTransit(flightLegs[0].arrTime, flightLegs[0].arrDate, flightLegs[1].depTime, flightLegs[1].depDate);
+                    
+                    const badge1 = document.getElementById('badge_transit_1');
+                    if (badge1) badge1.innerText = calculatedTime1;
+
+                    iTable.innerHTML += `
+                        <tr class="transit-row">
+                            <td colspan="5">
+                                ${transitAirportName} | <span>Transit Time: ${calculatedTime1}</span>
+                            </td>
+                        </tr>
+                    `;
+                } else if (i === 2 && totalLegs >= 4) {
+                    const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
+                    const calculatedTime2 = calculateTransit(flightLegs[2].arrTime, flightLegs[2].arrDate, flightLegs[3].depTime, flightLegs[3].depDate);
+                    
+                    const badge2 = document.getElementById('badge_transit_2');
+                    if (badge2) badge2.innerText = calculatedTime2;
+
+                    iTable.innerHTML += `
+                        <tr class="transit-row">
+                            <td colspan="5">
+                                ${transitAirportName} | <span>Transit Time: ${calculatedTime2}</span>
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                const depCode = extractIATA(leg.depApt);
+                const arrCode = extractIATA(leg.arrApt);
+                bGrid.innerHTML += `
+                    <div class="baggage-card">
+                        <div class="route">${depCode} &rarr; ${arrCode}</div>
+                        <div class="info-line"><strong>Adult Check-in:</strong> ${leg.checkin}</div>
+                        <div class="info-line"><strong>In Hand:</strong> ${leg.cabin}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function changeLegCount(count, btn) {
+            totalLegs = count;
+            document.querySelectorAll('.trip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderInputs();
+            renderTicket();
+        }
+
+        function addTicketPassenger() {
+            passengers.push({ name: "", passport: "", ticket: "" });
+            renderInputs();
+            renderTicket();
+        }
+
+        function deletePassenger(idx) {
+            if (passengers.length > 1) {
+                passengers.splice(idx, 1);
+                renderInputs();
+                renderTicket();
+            } else {
+                alert('At least one passenger is required!');
+            }
+        }
+
+        function handleAirTicketLogo(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    const logoImg = document.getElementById('out_ticket_logo');
+                    logoImg.src = evt.target.result;
+                    logoImg.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            checkAuth();
+            loadDefaultReceiptData();
+            renderInputs();
+            renderTicket();
+        };
     </script>
 </body>
 </html>
