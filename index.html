@@ -59,7 +59,7 @@
             overflow: hidden;
         }
 
-        /* ================= ORIGINAL AIR TICKET STYLES ================= */
+        /* ================= AIR TICKET STYLES ================= */
         .airticket-module-root {
             font-family: 'Roboto', sans-serif;
             color: #1e293b;
@@ -296,6 +296,7 @@
 
         .airticket-module-root .form-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             justify-content: flex-end;
             margin-top: 15px;
@@ -304,8 +305,8 @@
         }
 
         .airticket-module-root .btn-ticket {
-            padding: 9px 20px;
-            font-size: 13px;
+            padding: 9px 18px;
+            font-size: 12px;
             font-weight: 600;
             border: none;
             border-radius: 6px;
@@ -316,6 +317,7 @@
         }
 
         .airticket-module-root .btn-primary-ticket { background: #0b25b7; color: white; }
+        .airticket-module-root .btn-save-ticket { background: #0d9488; color: white; }
         .airticket-module-root .btn-print-ticket { background: #15803d; color: white; }
 
         /* TICKET PREVIEW CARD */
@@ -461,10 +463,39 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
+        /* AIRLINE LOGO & TEXT LAYOUT */
+        .airticket-module-root .flight-carrier-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .airticket-module-root .airline-logo-thumb {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .airticket-module-root .airline-logo-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
         .airticket-module-root .flight-carrier strong {
             font-size: 13px;
             color: #0f172a;
             display: block;
+            line-height: 1.3;
         }
 
         .airticket-module-root .flight-carrier span {
@@ -596,7 +627,7 @@
             line-height: 1.4;
         }
 
-        /* 100% PRECISE PRINT RULES */
+        /* PRINT RULES */
         @media print {
             .no-print {
                 display: none !important;
@@ -608,7 +639,6 @@
                 width: 100% !important;
             }
 
-            /* Module Receipt print */
             body.print-receipt #moduleTicket {
                 display: none !important;
             }
@@ -648,7 +678,6 @@
                 justify-content: space-between !important;
             }
 
-            /* Module Ticket print */
             body.print-ticket #moduleReceipt {
                 display: none !important;
             }
@@ -688,31 +717,69 @@
 <body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col selection:bg-blue-600 selection:text-white print-receipt">
 
     <datalist id="global_airports">
-        <option value="Hazrat Shahjalal International Airport (DAC)">Dhaka, Bangladesh</option>
-        <option value="Shah Amanat International Airport (CGP)">Chittagong, Bangladesh</option>
-        <option value="Osmani International Airport (ZYL)">Sylhet, Bangladesh</option>
-        <option value="Cox's Bazar Airport (CXB)">Cox's Bazar, Bangladesh</option>
-        <option value="Saidpur Airport (SPD)">Saidpur, Bangladesh</option>
-        <option value="Kuala Lumpur International Airport (KUL)">Kuala Lumpur, Malaysia</option>
-        <option value="Sultan Ismail Petra Airport (KBR)">Kota Bharu, Malaysia</option>
-        <option value="Penang International Airport (PEN)">Penang, Malaysia</option>
-        <option value="Singapore Changi Airport (SIN)">Singapore</option>
-        <option value="Suvarnabhumi Airport (BKK)">Bangkok, Thailand</option>
-        <option value="Don Mueang International Airport (DMK)">Bangkok, Thailand</option>
-        <option value="Dubai International Airport (DXB)">Dubai, UAE</option>
-        <option value="Sharjah International Airport (SHJ)">Sharjah, UAE</option>
-        <option value="Abu Dhabi International Airport (AUH)">Abu Dhabi, UAE</option>
-        <option value="Hamad International Airport (DOH)">Doha, Qatar</option>
-        <option value="King Abdulaziz International Airport (JED)">Jeddah, Saudi Arabia</option>
-        <option value="King Khalid International Airport (RUH)">Riyadh, Saudi Arabia</option>
-        <option value="Prince Mohammad bin Abdulaziz Airport (MED)">Madinah, Saudi Arabia</option>
-        <option value="Muscat International Airport (MCT)">Muscat, Oman</option>
-        <option value="Kuwait International Airport (KWI)">Kuwait City, Kuwait</option>
-        <option value="Istanbul Airport (IST)">Istanbul, Turkey</option>
-        <option value="Netaji Subhash Chandra Bose International Airport (CCU)">Kolkata, India</option>
-        <option value="Indira Gandhi International Airport (DEL)">Delhi, India</option>
-        <option value="Heathrow Airport (LHR)">London, UK</option>
-        <option value="John F. Kennedy International Airport (JFK)">New York, USA</option>
+        <option value="Hazrat Shahjalal International Airport (DAC)">Dhaka, Bangladesh (DAC)</option>
+        <option value="Shah Amanat International Airport (CGP)">Chittagong, Bangladesh (CGP)</option>
+        <option value="Osmani International Airport (ZYL)">Sylhet, Bangladesh (ZYL)</option>
+        <option value="Cox's Bazar Airport (CXB)">Cox's Bazar, Bangladesh (CXB)</option>
+        <option value="Saidpur Airport (SPD)">Saidpur, Bangladesh (SPD)</option>
+        <option value="Kuala Lumpur International Airport (KUL)">Kuala Lumpur, Malaysia (KUL)</option>
+        <option value="Sultan Ismail Petra Airport (KBR)">Kota Bharu, Malaysia (KBR)</option>
+        <option value="Penang International Airport (PEN)">Penang, Malaysia (PEN)</option>
+        <option value="Singapore Changi Airport (SIN)">Singapore (SIN)</option>
+        <option value="Suvarnabhumi Airport (BKK)">Bangkok, Thailand (BKK)</option>
+        <option value="Don Mueang International Airport (DMK)">Bangkok, Thailand (DMK)</option>
+        <option value="Dubai International Airport (DXB)">Dubai, UAE (DXB)</option>
+        <option value="Sharjah International Airport (SHJ)">Sharjah, UAE (SHJ)</option>
+        <option value="Abu Dhabi International Airport (AUH)">Abu Dhabi, UAE (AUH)</option>
+        <option value="Hamad International Airport (DOH)">Doha, Qatar (DOH)</option>
+        <option value="King Abdulaziz International Airport (JED)">Jeddah, Saudi Arabia (JED)</option>
+        <option value="King Khalid International Airport (RUH)">Riyadh, Saudi Arabia (RUH)</option>
+        <option value="Prince Mohammad bin Abdulaziz Airport (MED)">Madinah, Saudi Arabia (MED)</option>
+        <option value="Muscat International Airport (MCT)">Muscat, Oman (MCT)</option>
+        <option value="Kuwait International Airport (KWI)">Kuwait City, Kuwait (KWI)</option>
+        <option value="Bahrain International Airport (BAH)">Bahrain (BAH)</option>
+        <option value="Istanbul Airport (IST)">Istanbul, Turkey (IST)</option>
+        <option value="Netaji Subhash Chandra Bose International Airport (CCU)">Kolkata, India (CCU)</option>
+        <option value="Indira Gandhi International Airport (DEL)">Delhi, India (DEL)</option>
+        <option value="Chhatrapati Shivaji Maharaj International Airport (BOM)">Mumbai, India (BOM)</option>
+        <option value="Heathrow Airport (LHR)">London, UK (LHR)</option>
+        <option value="John F. Kennedy International Airport (JFK)">New York, USA (JFK)</option>
+        <option value="Toronto Pearson International Airport (YYZ)">Toronto, Canada (YYZ)</option>
+        <option value="Sydney Kingsford Smith Airport (SYD)">Sydney, Australia (SYD)</option>
+    </datalist>
+
+    <datalist id="global_airlines_models">
+        <option value="Batik Air (Boeing 737-800)">Batik Air (Boeing 737-800)</option>
+        <option value="Batik Air (Boeing 737 MAX 8)">Batik Air (Boeing 737 MAX 8)</option>
+        <option value="Batik Air (Airbus A320-200)">Batik Air (Airbus A320-200)</option>
+        <option value="Batik Air (Airbus A330-300)">Batik Air (Airbus A330-300)</option>
+        <option value="Malaysia Airlines (Boeing 737-800)">Malaysia Airlines (Boeing 737-800)</option>
+        <option value="Malaysia Airlines (Airbus A330-300)">Malaysia Airlines (Airbus A330-300)</option>
+        <option value="Malaysia Airlines (Airbus A350-900)">Malaysia Airlines (Airbus A350-900)</option>
+        <option value="Biman Bangladesh Airlines (Boeing 787-9 Dreamliner)">Biman Bangladesh (B787-9)</option>
+        <option value="Biman Bangladesh Airlines (Boeing 777-300ER)">Biman Bangladesh (B777-300ER)</option>
+        <option value="US-Bangla Airlines (Airbus A330-300)">US-Bangla Airlines (A330-300)</option>
+        <option value="US-Bangla Airlines (Boeing 737-800)">US-Bangla Airlines (B737-800)</option>
+        <option value="Air Astra (ATR 72-600)">Air Astra (ATR 72-600)</option>
+        <option value="Novoair (ATR 72-500)">Novoair (ATR 72-500)</option>
+        <option value="Emirates (Airbus A380-800)">Emirates (A380-800)</option>
+        <option value="Emirates (Boeing 777-300ER)">Emirates (B777-300ER)</option>
+        <option value="Qatar Airways (Airbus A350-1000)">Qatar Airways (A350-1000)</option>
+        <option value="Qatar Airways (Boeing 787-9)">Qatar Airways (B787-9)</option>
+        <option value="Saudia Airlines (Boeing 777-300ER)">Saudia (B777-300ER)</option>
+        <option value="Saudia Airlines (Airbus A330-300)">Saudia (A330-300)</option>
+        <option value="Singapore Airlines (Airbus A350-900)">Singapore Airlines (A350-900)</option>
+        <option value="Singapore Airlines (Boeing 787-10)">Singapore Airlines (B787-10)</option>
+        <option value="Thai Airways (Airbus A350-900)">Thai Airways (A350-900)</option>
+        <option value="flydubai (Boeing 737 MAX 8)">flydubai (B737 MAX 8)</option>
+        <option value="Air Arabia (Airbus A320-200)">Air Arabia (A320-200)</option>
+        <option value="IndiGo (Airbus A321neo)">IndiGo (A321neo)</option>
+        <option value="Turkish Airlines (Boeing 787-9)">Turkish Airlines (B787-9)</option>
+        <option value="Kuwait Airways (Boeing 777-300ER)">Kuwait Airways (B777-300ER)</option>
+        <option value="Oman Air (Boeing 787-9 Dreamliner)">Oman Air (B787-9)</option>
+        <option value="Gulf Air (Boeing 787-9 Dreamliner)">Gulf Air (B787-9)</option>
+        <option value="AirAsia (Airbus A320neo)">AirAsia (A320neo)</option>
+        <option value="British Airways (Boeing 777-200)">British Airways (B777-200)</option>
     </datalist>
 
     <div id="authScreen" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-4 overflow-y-auto">
@@ -849,8 +916,12 @@
             </div>
 
             <div class="flex items-center space-x-2">
+                <button onclick="saveAndDownloadFullData()" class="text-xs bg-teal-600 hover:bg-teal-700 text-white font-semibold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Save / Download Data</span>
+                </button>
                 <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
-                    <span>🖨️</span>
+                    <i class="fa-solid fa-print"></i>
                     <span>Print / Save PDF</span>
                 </button>
                 <button onclick="handleLogout()" title="Sign Out" class="text-xs bg-rose-500/10 hover:bg-rose-600 text-rose-300 hover:text-white font-bold px-3 py-1.5 rounded-xl border border-rose-500/20 transition flex items-center gap-1">
@@ -903,41 +974,93 @@
                     </div>
 
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 md:p-5 text-white space-y-3.5 shadow-xl">
-                        <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
-                            <span>📋</span> Receipt Information
-                        </h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                        <div class="flex justify-between items-center flex-wrap gap-2">
+                            <h2 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <span>📋</span> Receipt Information (Automated)
+                            </h2>
+                            <button type="button" onclick="autoFillLiveReceiptDates(true)" class="text-[11px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-3 py-1.5 rounded-xl shadow transition flex items-center gap-1.5 active:scale-95">
+                                <i class="fa-solid fa-bolt"></i> 1-Click Auto All Dates & No.
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                             <div>
                                 <label class="text-slate-400 block mb-1">Branch Name</label>
                                 <input type="text" id="in_branch" placeholder="Optional" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
                             </div>
+
                             <div>
-                                <label class="text-slate-400 block mb-1">Submission Date</label>
-                                <input type="text" id="in_sub_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400">Receipt Number</label>
+                                    <button type="button" onclick="generateNewReceiptNumber()" class="text-[10px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1">
+                                        <i class="fa-solid fa-dice"></i> Auto Generate
+                                    </button>
+                                </div>
+                                <div class="relative flex items-center">
+                                    <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 pr-8 text-white outline-none focus:border-blue-500 transition font-mono" oninput="renderReceipt()">
+                                    <button type="button" onclick="generateNewReceiptNumber()" title="Click to Auto Generate New Receipt Number" class="absolute right-2 text-slate-400 hover:text-blue-400 text-xs">
+                                        <i class="fa-solid fa-rotate"></i>
+                                    </button>
+                                </div>
                             </div>
+
                             <div>
-                                <label class="text-slate-400 block mb-1">Receipt Number</label>
-                                <input type="text" id="in_receipt" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400">Submission Date (Auto)</label>
+                                    <button type="button" onclick="setReceiptDateSpecific('sub', 0)" class="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold">
+                                        📅 Today Auto
+                                    </button>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <input type="text" id="in_sub_date" placeholder="e.g. 17 Aug 2026" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                    <input type="date" id="picker_sub_date" class="w-full bg-slate-900 border border-slate-800 text-slate-300 text-[11px] rounded-lg px-2 py-1 outline-none cursor-pointer" onchange="onReceiptPickerChange('sub', this.value)" title="Choose date from calendar">
+                                </div>
                             </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400">Issue Date (Auto)</label>
+                                    <button type="button" onclick="setReceiptDateSpecific('issue', 0)" class="text-[10px] text-emerald-400 hover:text-emerald-300 font-semibold">
+                                        📅 Today Auto
+                                    </button>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <input type="text" id="in_issue_date_rec" placeholder="e.g. 17 Aug 26" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                    <input type="date" id="picker_issue_date" class="w-full bg-slate-900 border border-slate-800 text-slate-300 text-[11px] rounded-lg px-2 py-1 outline-none cursor-pointer" onchange="onReceiptPickerChange('issue', this.value)" title="Choose date from calendar">
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-slate-400">Flight Date (Auto)</label>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="setReceiptDateSpecific('flight', 3)" class="text-[10px] text-blue-400 hover:text-blue-300 font-semibold">
+                                            ✈️ +3 Days Auto
+                                        </button>
+                                        <button type="button" onclick="setReceiptDateSpecific('flight', 7)" class="text-[10px] text-indigo-400 hover:text-indigo-300 font-semibold">
+                                            ✈️ +7 Days Auto
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <input type="text" id="in_flight_date" placeholder="e.g. 20 Aug 26" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                    <input type="date" id="picker_flight_date" class="w-full bg-slate-900 border border-slate-800 text-slate-300 text-[11px] rounded-xl px-2.5 py-2 outline-none cursor-pointer" onchange="onReceiptPickerChange('flight', this.value)" title="Choose flight date from calendar">
+                                </div>
+                            </div>
+
                             <div>
                                 <label class="text-slate-400 block mb-1">Status</label>
                                 <input type="text" id="in_status" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
                             </div>
+
                             <div>
                                 <label class="text-slate-400 block mb-1">Reference Number</label>
-                                <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                <input type="text" id="in_ref" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition font-mono" oninput="renderReceipt()">
                             </div>
-                            <div>
+
+                            <div class="sm:col-span-2">
                                 <label class="text-slate-400 block mb-1">Currency</label>
-                                <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
-                            </div>
-                            <div>
-                                <label class="text-slate-400 block mb-1">Issue Date</label>
-                                <input type="text" id="in_issue_date_rec" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
-                            </div>
-                            <div>
-                                <label class="text-slate-400 block mb-1">Flight Date</label>
-                                <input type="text" id="in_flight_date" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition" oninput="renderReceipt()">
+                                <input type="text" id="in_currency" class="w-full bg-slate-950 border border-slate-700/80 rounded-xl p-2.5 text-white outline-none focus:border-blue-500 transition font-bold" oninput="renderReceipt()">
                             </div>
                         </div>
                     </div>
@@ -1015,13 +1138,13 @@
                                         </div>
                                         <div class="flex items-center">
                                             <span class="text-slate-600 min-w-[130px]">Issue Date</span>
-                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_issue_date_rec">19 Jun 26</span></span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_issue_date_rec"></span></span>
                                         </div>
                                     </div>
                                     <div class="space-y-2.5">
                                         <div class="flex items-center">
                                             <span class="text-slate-600 min-w-[130px]">Submission Date</span>
-                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_sub_date">15 Aug 2026</span></span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_sub_date"></span></span>
                                         </div>
                                         <div class="flex items-center">
                                             <span class="text-slate-600 min-w-[130px]">Status</span>
@@ -1033,7 +1156,7 @@
                                         </div>
                                         <div class="flex items-center">
                                             <span class="text-slate-600 min-w-[130px]">Flight Date</span>
-                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_flight_date">20 Jun 26</span></span>
+                                            <span class="text-slate-800 font-semibold flex-1 flex"><span class="mr-2">:</span><span id="out_flight_date"></span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1080,7 +1203,7 @@
 
                                 <div class="mt-4 border-b border-slate-200 pb-3">
                                     <p class="text-[12px] font-bold text-slate-800 tracking-tight">
-                                        Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred Forty Nine</span>
+                                        Amount in word: <span class="font-bold text-slate-800 capitalize" id="out_amount_words">Five Hundred</span>
                                     </p>
                                 </div>
                             </div>
@@ -1099,7 +1222,7 @@
             
             <div class="form-container">
                 <div class="panel-header">
-                    <h2><i class="fa-solid fa-sliders"></i> Demo Air Ticket Generator</h2>
+                    <h2><i class="fa-solid fa-sliders"></i> Air Ticket Generator</h2>
                     <div class="trip-selector">
                         <button type="button" class="trip-btn" onclick="changeLegCount(1, this)">1 Leg</button>
                         <button type="button" class="trip-btn" onclick="changeLegCount(2, this)">2 Legs (Transit)</button>
@@ -1117,19 +1240,19 @@
                     </div>
                     <div class="form-group">
                         <label>Agent / Agency Name</label>
-                        <input type="text" id="in_agent_name" value="Stalon Paul" oninput="renderTicket()">
+                        <input type="text" id="in_agent_name" value="LASKER TRAVELS" oninput="renderTicket()">
                     </div>
                     <div class="form-group">
                         <label>Support Email</label>
-                        <input type="text" id="in_agent_email" value="stalonpaul@gmail.com" oninput="renderTicket()">
+                        <input type="text" id="in_agent_email" value="laskertravel1@gmail.com" oninput="renderTicket()">
                     </div>
                     <div class="form-group">
                         <label>Office Address</label>
-                        <input type="text" id="in_agent_address" value="Cosm Hotel groud floor, Kota Raya NZ office" oninput="renderTicket()">
+                        <input type="text" id="in_agent_address" value="22-A, Leboh Pasar Besar, City Centre, Kuala Lumpur" oninput="renderTicket()">
                     </div>
                     <div class="form-group">
-                        <label>Date of Issued</label>
-                        <input type="text" id="in_issue_date_ticket" value="02 Aug 2026 2:58 PM" oninput="renderTicket()">
+                        <label>Date of Issued (Live Auto)</label>
+                        <input type="text" id="in_issue_date_ticket" value="" oninput="renderTicket()">
                     </div>
                 </div>
 
@@ -1145,6 +1268,9 @@
                     <button type="button" id="btnUpdateTicket" class="btn-ticket btn-primary-ticket" onclick="triggerUpdateTicket()">
                         <i class="fa-solid fa-rotate"></i> Update Ticket
                     </button>
+                    <button type="button" class="btn-ticket btn-save-ticket" onclick="saveAndDownloadFullData()">
+                        <i class="fa-solid fa-download"></i> Save / Download Data
+                    </button>
                     <button class="btn-ticket btn-print-ticket" onclick="window.print()">
                         <i class="fa-solid fa-print"></i> Print / Save PDF
                     </button>
@@ -1158,16 +1284,16 @@
                         <div class="agent-branding">
                             <img id="out_ticket_logo" class="agency-logo-preview" alt="Agency Logo">
                             <div class="agent-info">
-                                <h2 id="out_agent_name">LASKER TRAEL</h2>
-                                <p><span>Ticket Sup.:</span> <span id="out_agent_email">laskertravel@gmail.com</span></p>
-                                <p><span>Address:</span> <span id="out_agent_address">Cosm Hotel groud floor, Kota Raya<br>NZ office</span></p>
+                                <h2 id="out_agent_name">LASKER TRAVELS</h2>
+                                <p><span>Ticket Sup.:</span> <span id="out_agent_email">laskertravel1@gmail.com</span></p>
+                                <p><span>Address:</span> <span id="out_agent_address">22-A, Leboh Pasar Besar, City Centre, Kuala Lumpur</span></p>
                             </div>
                         </div>
                         <div class="ticket-title-area">
                             <h1>Electronic<br>Ticket</h1>
                             <div class="issue-date">
                                 Date of Issued:
-                                <strong id="out_issue_date_ticket">02 Aug 2026 2:58 PM</strong>
+                                <strong id="out_issue_date_ticket"></strong>
                             </div>
                         </div>
                     </header>
@@ -1195,11 +1321,11 @@
                     <table class="itinerary-table">
                         <thead>
                             <tr>
-                                <th style="width: 22%;">FLIGHT</th>
+                                <th style="width: 27%;">FLIGHT & AIRCRAFT</th>
                                 <th style="width: 12%;">AIRLINE PNR</th>
-                                <th style="width: 28%;">DEPARTURE</th>
-                                <th style="width: 10%; text-align: center;">DURATION</th>
-                                <th style="width: 28%;">ARRIVAL</th>
+                                <th style="width: 25%;">DEPARTURE</th>
+                                <th style="width: 11%; text-align: center;">DURATION</th>
+                                <th style="width: 25%;">ARRIVAL</th>
                             </tr>
                         </thead>
                         <tbody id="out_itinerary_table"></tbody>
@@ -1255,6 +1381,63 @@
     </div>
 
     <script>
+        // ================= DYNAMIC DATE & TIME UTILITIES =================
+        const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        function getFormattedDate(d, formatType = 'full') {
+            const dayName = daysShort[d.getDay()];
+            const dayNum = String(d.getDate()).padStart(2, '0');
+            const month = monthsShort[d.getMonth()];
+            const year = d.getFullYear();
+            const shortYear = String(year).slice(-2);
+
+            if (formatType === 'full') return `${dayNum} ${month} ${year}`;
+            if (formatType === 'short') return `${dayNum} ${month} ${shortYear}`;
+            if (formatType === 'flight') return `${dayName} ${dayNum} ${month}, ${year}`;
+            if (formatType === 'issued_full') {
+                let hours = d.getHours();
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                return `${dayNum} ${month} ${year} ${hours}:${minutes} ${ampm}`;
+            }
+            return `${dayNum} ${month} ${year}`;
+        }
+
+        function toPickerDatetimeValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
+        function toPickerDateValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+        }
+
+        function formatPickerDateTime(isoString) {
+            if (!isoString) return { dateStr: "", timeStr: "" };
+            const d = new Date(isoString);
+            if (isNaN(d.getTime())) return { dateStr: "", timeStr: "" };
+            
+            const dayName = daysShort[d.getDay()];
+            const dayNum = String(d.getDate()).padStart(2, '0');
+            const month = monthsShort[d.getMonth()];
+            const year = d.getFullYear();
+            
+            let hours = d.getHours();
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            return {
+                dateStr: `${dayName} ${dayNum} ${month}, ${year}`,
+                timeStr: `${hours}:${minutes} ${ampm}`
+            };
+        }
+
         // ================= AUTHENTICATION & SECURITY =================
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
@@ -1376,7 +1559,6 @@
             const p = document.getElementById('loginPassword').value;
             const users = getUsers();
             const pHash = await sha256(p);
-
             let matchedUser = null;
 
             for (const [uname, udata] of Object.entries(users)) {
@@ -1413,7 +1595,6 @@
 
             const users = getUsers();
             if (users[u]) return showAlert("Username already taken!");
-
             for (const [uname, udata] of Object.entries(users)) {
                 if (udata.email && udata.email.toLowerCase() === email.toLowerCase()) {
                     return showAlert("Email already registered with another account!");
@@ -1487,7 +1668,7 @@
             }
         }
 
-        // ================= MODULE 1: INVOICE / RECEIPT GENERATOR LOGIC =================
+        // ================= MODULE 1: INVOICE / RECEIPT GENERATOR =================
         let receiptPassengers = [];
 
         function autoScaleInvoice() {
@@ -1550,25 +1731,85 @@
             }
         }
 
+        function generateNewReceiptNumber() {
+            const randomNum = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('in_receipt').value = randomNum;
+            renderReceipt();
+        }
+
+        function setReceiptDateSpecific(type, daysOffset = 0) {
+            const targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + daysOffset);
+
+            if (type === 'sub') {
+                document.getElementById('in_sub_date').value = getFormattedDate(targetDate, 'full');
+                const picker = document.getElementById('picker_sub_date');
+                if (picker) picker.value = toPickerDateValue(targetDate);
+            } else if (type === 'issue') {
+                document.getElementById('in_issue_date_rec').value = getFormattedDate(targetDate, 'short');
+                const picker = document.getElementById('picker_issue_date');
+                if (picker) picker.value = toPickerDateValue(targetDate);
+            } else if (type === 'flight') {
+                document.getElementById('in_flight_date').value = getFormattedDate(targetDate, 'short');
+                const picker = document.getElementById('picker_flight_date');
+                if (picker) picker.value = toPickerDateValue(targetDate);
+            }
+            renderReceipt();
+        }
+
+        function onReceiptPickerChange(type, isoDate) {
+            if (!isoDate) return;
+            const d = new Date(isoDate);
+            if (isNaN(d.getTime())) return;
+
+            if (type === 'sub') {
+                document.getElementById('in_sub_date').value = getFormattedDate(d, 'full');
+            } else if (type === 'issue') {
+                document.getElementById('in_issue_date_rec').value = getFormattedDate(d, 'short');
+            } else if (type === 'flight') {
+                document.getElementById('in_flight_date').value = getFormattedDate(d, 'short');
+            }
+            renderReceipt();
+        }
+
+        function autoFillLiveReceiptDates(regenNumber = false) {
+            const now = new Date();
+            const flightDay = new Date();
+            flightDay.setDate(now.getDate() + 3);
+
+            document.getElementById('in_sub_date').value = getFormattedDate(now, 'full');
+            document.getElementById('in_issue_date_rec').value = getFormattedDate(now, 'short');
+            document.getElementById('in_flight_date').value = getFormattedDate(flightDay, 'short');
+
+            const pSub = document.getElementById('picker_sub_date');
+            const pIss = document.getElementById('picker_issue_date');
+            const pFli = document.getElementById('picker_flight_date');
+            if (pSub) pSub.value = toPickerDateValue(now);
+            if (pIss) pIss.value = toPickerDateValue(now);
+            if (pFli) pFli.value = toPickerDateValue(flightDay);
+
+            if (regenNumber) {
+                generateNewReceiptNumber();
+                document.getElementById('in_ref').value = "NZ" + Date.now().toString();
+            }
+            renderReceipt();
+        }
+
         function loadDefaultReceiptData() {
             document.getElementById('in_company').value = "LASKER TRAVELS";
             document.getElementById('in_address').value = "22-A, Leboh Pasar Besar, City Centre, Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur";
-            document.getElementById('in_tel').value = "1670097592, 107044401";
+            document.getElementById('in_tel').value = "+60 16-700 9759";
             document.getElementById('in_email').value = "laskertravel1@gmail.com";
-            document.getElementById('in_receipt').value = "610274";
-            document.getElementById('in_ref').value = "NZ2398868452213235";
-            document.getElementById('in_branch').value = "";
+            document.getElementById('in_branch').value = "Kuala Lumpur Main";
             document.getElementById('in_status').value = "CONFIRMED";
-            document.getElementById('in_sub_date').value = "15 Aug 2026";
-            document.getElementById('in_issue_date_rec').value = "19 Jun 26";
-            document.getElementById('in_flight_date').value = "20 Jun 26";
             document.getElementById('in_currency').value = "MYR";
             document.getElementById('in_ancillary').value = "0.00";
+            
+            autoFillLiveReceiptDates(true);
 
             receiptPassengers = [
                 { name: 'MR MD RIYAD LASKER', classType: 'Economy', route: 'DAC - KUL', pnr: 'CZBOMP', fare: 500.00 }
             ];
-
             renderReceiptPassengerInputs();
             renderReceipt();
         }
@@ -1676,95 +1917,158 @@
         }
 
         // ================= MODULE 2: AIR TICKET GENERATOR =================
-        const airlineMasterList = [
-            "Malaysia Airlines",
-            "Biman Bangladesh Airlines",
-            "US-Bangla Airlines",
-            "Air Astra",
-            "Novoair",
-            "Emirates",
-            "Qatar Airways",
-            "Saudia Airlines",
-            "Singapore Airlines",
-            "Thai Airways",
-            "flydubai",
-            "Air Arabia",
-            "IndiGo",
-            "Turkish Airlines",
-            "Kuwait Airways",
-            "Oman Air",
-            "Gulf Air",
-            "SriLankan Airlines",
-            "Jazeera Airways"
-        ];
-
         let totalLegs = 4;
         let passengers = [
             { name: "MR MD RIYAD", passport: "EN0343623", ticket: "2323945234052" }
         ];
+        let flightLegs = [];
 
-        let flightLegs = [
-            {
-                airline: "Malaysia Airlines",
-                flightNo: "MH-1385",
-                flightClass: "Economy",
-                pnr: "F6XKZ4",
-                depApt: "Sultan Ismail Petra Airport (KBR)",
-                depTime: "10:00 AM",
-                depDate: "Mon 10 Aug, 2026",
-                dur: "1h 10m",
-                arrApt: "Kuala Lumpur International Airport (KUL)",
-                arrTime: "11:10 AM",
-                arrDate: "Mon 10 Aug, 2026",
-                checkin: "35 KG",
-                cabin: "Up to 7 KG"
-            },
-            {
-                airline: "Malaysia Airlines",
-                flightNo: "MH-196",
-                flightClass: "Economy",
-                pnr: "F6XKZ4",
-                depApt: "Kuala Lumpur International Airport (KUL)",
-                depTime: "11:00 PM",
-                depDate: "Mon 10 Aug, 2026",
-                dur: "3h 55m",
-                arrApt: "Hazrat Shahjalal International Airport (DAC)",
-                arrTime: "12:55 AM",
-                arrDate: "Tue 11 Aug, 2026",
-                checkin: "35 KG",
-                cabin: "Up to 7 KG"
-            },
-            {
-                airline: "Malaysia Airlines",
-                flightNo: "MH-103",
-                flightClass: "Economy",
-                pnr: "F6XKZ4",
-                depApt: "Hazrat Shahjalal International Airport (DAC)",
-                depTime: "12:15 PM",
-                depDate: "Thu 10 Sep, 2026",
-                dur: "4h 0m",
-                arrApt: "Kuala Lumpur International Airport (KUL)",
-                arrTime: "6:15 PM",
-                arrDate: "Thu 10 Sep, 2026",
-                checkin: "35 KG",
-                cabin: "Up to 7 KG"
-            },
-            {
-                airline: "Malaysia Airlines",
-                flightNo: "MH-1384",
-                flightClass: "Economy",
-                pnr: "F6XKZ4",
-                depApt: "Kuala Lumpur International Airport (KUL)",
-                depTime: "8:15 AM",
-                depDate: "Fri 11 Sep, 2026",
-                dur: "1h 5m",
-                arrApt: "Sultan Ismail Petra Airport (KBR)",
-                arrTime: "9:20 AM",
-                arrDate: "Fri 11 Sep, 2026",
-                checkin: "35 KG",
-                cabin: "Up to 7 KG"
+        // AIRLINE LOGO RESOLVER (ACCURATE MAPPING & EXTRACTION)
+        function getAirlineOfficialLogo(airlineText, flightNoText) {
+            const rawAirline = (airlineText || "").toLowerCase().trim();
+            const rawFlightNo = (flightNoText || "").toUpperCase().trim();
+            let code = "";
+
+            const airlineMap = [
+                { keys: ["batik", "malindo"], code: "OD" },
+                { keys: ["malaysia", "mas"], code: "MH" },
+                { keys: ["biman", "bangladesh airlines"], code: "BG" },
+                { keys: ["us-bangla", "us bangla"], code: "BS" },
+                { keys: ["air astra", "astra"], code: "2A" },
+                { keys: ["novoair", "novo"], code: "VQ" },
+                { keys: ["emirates"], code: "EK" },
+                { keys: ["qatar"], code: "QR" },
+                { keys: ["saudia", "saudi"], code: "SV" },
+                { keys: ["singapore"], code: "SQ" },
+                { keys: ["flydubai"], code: "FZ" },
+                { keys: ["air arabia"], code: "G9" },
+                { keys: ["indigo"], code: "6E" },
+                { keys: ["airasia", "air asia"], code: "AK" },
+                { keys: ["thai airways", "thai"], code: "TG" },
+                { keys: ["turkish"], code: "TK" },
+                { keys: ["kuwait"], code: "KU" },
+                { keys: ["oman air", "oman"], code: "WY" },
+                { keys: ["gulf air", "gulf"], code: "GF" },
+                { keys: ["british airways", "british"], code: "BA" },
+                { keys: ["cathay"], code: "CX" },
+                { keys: ["srilankan", "sri lankan"], code: "UL" },
+                { keys: ["etihad"], code: "EY" },
+                { keys: ["air india"], code: "AI" },
+                { keys: ["vistara"], code: "UK" },
+                { keys: ["scoot"], code: "TR" },
+                { keys: ["flynas"], code: "XY" },
+                { keys: ["jazeera"], code: "J9" },
+                { keys: ["salam air", "salamair"], code: "OV" }
+            ];
+
+            for (const item of airlineMap) {
+                if (item.keys.some(k => rawAirline.includes(k))) {
+                    code = item.code;
+                    break;
+                }
             }
-        ];
+
+            if (!code && rawFlightNo) {
+                const match = rawFlightNo.match(/^([A-Z0-9]{2})[- ]?\d+/);
+                if (match) {
+                    code = match[1];
+                }
+            }
+
+            if (code) {
+                return `https://images.kiwi.com/airlines/64x64/${code}.png`;
+            }
+            return "";
+        }
+
+        function initAutomatedFlightLegs() {
+            const now = new Date();
+            const issuedStr = getFormattedDate(now, 'issued_full');
+            document.getElementById('in_issue_date_ticket').value = issuedStr;
+
+            // Leg 1 Outbound
+            const d1Dep = new Date();
+            d1Dep.setDate(now.getDate() + 5);
+            d1Dep.setHours(10, 0, 0, 0);
+            const d1Arr = new Date(d1Dep);
+            d1Arr.setHours(11, 10, 0, 0);
+
+            // Leg 2 Outbound Connection
+            const d2Dep = new Date(d1Dep);
+            d2Dep.setHours(23, 0, 0, 0);
+            const d2Arr = new Date(d1Dep);
+            d2Arr.setDate(d2Arr.getDate() + 1);
+            d2Arr.setHours(0, 55, 0, 0);
+
+            // Leg 3 Return
+            const d3Dep = new Date(d1Dep);
+            d3Dep.setDate(d3Dep.getDate() + 25);
+            d3Dep.setHours(12, 15, 0, 0);
+            const d3Arr = new Date(d3Dep);
+            d3Arr.setHours(18, 15, 0, 0);
+
+            // Leg 4 Return Connection
+            const d4Dep = new Date(d3Dep);
+            d4Dep.setDate(d4Dep.getDate() + 1);
+            d4Dep.setHours(8, 15, 0, 0);
+            const d4Arr = new Date(d4Dep);
+            d4Arr.setHours(9, 20, 0, 0);
+
+            flightLegs = [
+                {
+                    airline: "Batik Air (Boeing 737-800)",
+                    flightNo: "OD-162",
+                    flightClass: "Economy",
+                    pnr: "F6XKZ4",
+                    depApt: "Sultan Ismail Petra Airport (KBR)",
+                    depDateTime: toPickerDatetimeValue(d1Dep),
+                    dur: "1h 10m",
+                    arrApt: "Kuala Lumpur International Airport (KUL)",
+                    arrDateTime: toPickerDatetimeValue(d1Arr),
+                    checkin: "35 KG",
+                    cabin: "Up to 7 KG"
+                },
+                {
+                    airline: "Batik Air (Boeing 737 MAX 8)",
+                    flightNo: "OD-165",
+                    flightClass: "Economy",
+                    pnr: "F6XKZ4",
+                    depApt: "Kuala Lumpur International Airport (KUL)",
+                    depDateTime: toPickerDatetimeValue(d2Dep),
+                    dur: "3h 55m",
+                    arrApt: "Hazrat Shahjalal International Airport (DAC)",
+                    arrDateTime: toPickerDatetimeValue(d2Arr),
+                    checkin: "35 KG",
+                    cabin: "Up to 7 KG"
+                },
+                {
+                    airline: "Malaysia Airlines (Airbus A330-300)",
+                    flightNo: "MH-103",
+                    flightClass: "Economy",
+                    pnr: "F6XKZ4",
+                    depApt: "Hazrat Shahjalal International Airport (DAC)",
+                    depDateTime: toPickerDatetimeValue(d3Dep),
+                    dur: "4h 0m",
+                    arrApt: "Kuala Lumpur International Airport (KUL)",
+                    arrDateTime: toPickerDatetimeValue(d3Arr),
+                    checkin: "35 KG",
+                    cabin: "Up to 7 KG"
+                },
+                {
+                    airline: "Malaysia Airlines (Boeing 737-800)",
+                    flightNo: "MH-1384",
+                    flightClass: "Economy",
+                    pnr: "F6XKZ4",
+                    depApt: "Kuala Lumpur International Airport (KUL)",
+                    depDateTime: toPickerDatetimeValue(d4Dep),
+                    dur: "1h 5m",
+                    arrApt: "Sultan Ismail Petra Airport (KBR)",
+                    arrDateTime: toPickerDatetimeValue(d4Arr),
+                    checkin: "35 KG",
+                    cabin: "Up to 7 KG"
+                }
+            ];
+        }
 
         function extractIATA(str) {
             if (!str) return "APT";
@@ -1788,36 +2092,11 @@
             renderTicket();
         }
 
-        function parseDateTime(timeStr, dateStr) {
-            try {
-                if (!timeStr) return null;
-                let hours = 0, minutes = 0;
-                const timeMatch = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
-                if (timeMatch) {
-                    hours = parseInt(timeMatch[1], 10);
-                    minutes = parseInt(timeMatch[2], 10);
-                    const meridiem = timeMatch[3] ? timeMatch[3].toUpperCase() : null;
-                    if (meridiem === 'PM' && hours < 12) hours += 12;
-                    if (meridiem === 'AM' && hours === 12) hours = 0;
-                }
-
-                let cleanDate = dateStr ? dateStr.replace(/^[A-Za-z]{3,}\s*,?\s*/, '').trim() : '';
-                const dateObj = cleanDate ? new Date(cleanDate) : new Date();
-                
-                if (!isNaN(dateObj.getTime())) {
-                    dateObj.setHours(hours, minutes, 0, 0);
-                    return dateObj;
-                }
-            } catch (e) {}
-            return null;
-        }
-
-        // ACCURATE DURATION CALCULATION LOGIC
-        function calculateDuration(depTime, depDate, arrTime, arrDate) {
-            const dep = parseDateTime(depTime, depDate);
-            const arr = parseDateTime(arrTime, arrDate);
-
-            if (dep && arr) {
+        function calculateDurationFromISO(depISO, arrISO) {
+            if (!depISO || !arrISO) return "";
+            const dep = new Date(depISO);
+            const arr = new Date(arrISO);
+            if (!isNaN(dep.getTime()) && !isNaN(arr.getTime())) {
                 let diffMs = arr.getTime() - dep.getTime();
                 if (diffMs < 0) {
                     diffMs += 24 * 60 * 60 * 1000;
@@ -1831,7 +2110,13 @@
         }
 
         function updateLegTimes(i) {
-            const calcDur = calculateDuration(flightLegs[i].depTime, flightLegs[i].depDate, flightLegs[i].arrTime, flightLegs[i].arrDate);
+            const depISO = document.getElementById(`fl_dept_picker_${i}`)?.value || flightLegs[i].depDateTime;
+            const arrISO = document.getElementById(`fl_arrt_picker_${i}`)?.value || flightLegs[i].arrDateTime;
+            
+            flightLegs[i].depDateTime = depISO;
+            flightLegs[i].arrDateTime = arrISO;
+
+            const calcDur = calculateDurationFromISO(depISO, arrISO);
             if (calcDur) {
                 flightLegs[i].dur = calcDur;
                 const durInput = document.getElementById(`fl_dur_${i}`);
@@ -1840,11 +2125,11 @@
             renderTicket();
         }
 
-        function calculateTransit(landingTime, landingDate, nextDepTime, nextDepDate) {
-            const arr = parseDateTime(landingTime, landingDate);
-            const dep = parseDateTime(nextDepTime, nextDepDate);
-
-            if (arr && dep) {
+        function calculateTransitFromISO(arrISO, nextDepISO) {
+            if (!arrISO || !nextDepISO) return "Connection";
+            const arr = new Date(arrISO);
+            const dep = new Date(nextDepISO);
+            if (!isNaN(arr.getTime()) && !isNaN(dep.getTime())) {
                 let diffMs = dep.getTime() - arr.getTime();
                 if (diffMs < 0) {
                     diffMs += 24 * 60 * 60 * 1000;
@@ -1858,7 +2143,7 @@
         }
 
         function renderInputs() {
-            // Passengers - Box Format
+            // Passenger inputs
             const pContainer = document.getElementById('passenger_list_inputs');
             pContainer.innerHTML = '';
             passengers.forEach((p, idx) => {
@@ -1890,15 +2175,11 @@
                 `;
             });
 
-            // Flight Legs
+            // Flight Legs inputs
             const fContainer = document.getElementById('flight_legs_inputs');
             fContainer.innerHTML = '';
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
-                let alOpts = `<option value="${leg.airline}">${leg.airline}</option>`;
-                airlineMasterList.forEach(al => {
-                    if (al !== leg.airline) alOpts += `<option value="${al}">${al}</option>`;
-                });
 
                 fContainer.innerHTML += `
                     <div class="form-section-title">
@@ -1906,11 +2187,13 @@
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Airline</label>
-                            <select id="fl_sel_${i}" onchange="flightLegs[${i}].airline = this.value; document.getElementById('fl_al_${i}').value = this.value; renderTicket();">
-                                ${alOpts}
-                            </select>
-                            <input type="text" id="fl_al_${i}" value="${leg.airline}" style="margin-top:4px;" oninput="flightLegs[${i}].airline = this.value; renderTicket();">
+                            <label>Airline & Aircraft Model</label>
+                            <div class="input-clear-wrap">
+                                <input type="text" id="fl_al_${i}" list="global_airlines_models" value="${leg.airline}" placeholder="Search Airline / Model..." 
+                                    onclick="this.select()" 
+                                    oninput="flightLegs[${i}].airline = this.value; renderTicket();">
+                                <button type="button" class="clear-btn" title="Clear Field" onclick="clearAirportField(${i}, 'airline', 'fl_al_${i}')">✕</button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Flight No & Class</label>
@@ -1922,7 +2205,7 @@
                             <input type="text" id="fl_pnr_${i}" value="${leg.pnr}" oninput="flightLegs[${i}].pnr = this.value; renderTicket();">
                         </div>
                         <div class="form-group">
-                            <label>Duration</label>
+                            <label>Duration (Auto Calc)</label>
                             <input type="text" id="fl_dur_${i}" value="${leg.dur}" oninput="flightLegs[${i}].dur = this.value; renderTicket();">
                         </div>
 
@@ -1937,9 +2220,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Departure Time & Date</label>
-                            <input type="text" id="fl_dept_${i}" value="${leg.depTime}" placeholder="Time (e.g. 10:00 AM)" oninput="flightLegs[${i}].depTime = this.value; updateLegTimes(${i});">
-                            <input type="text" id="fl_depd_${i}" value="${leg.depDate}" placeholder="Date (e.g. Mon 10 Aug, 2026)" style="margin-top:4px;" oninput="flightLegs[${i}].depDate = this.value; updateLegTimes(${i});">
+                            <label>Departure Date & Time Picker</label>
+                            <input type="datetime-local" id="fl_dept_picker_${i}" value="${leg.depDateTime}" class="font-semibold text-slate-800" onchange="updateLegTimes(${i})">
                         </div>
 
                         <div class="form-group">
@@ -1953,10 +2235,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Arrival / Landing Time & Date</label>
-                            <input type="text" id="fl_arrt_${i}" value="${leg.arrTime}" placeholder="Time (e.g. 11:10 AM)" oninput="flightLegs[${i}].arrTime = this.value; updateLegTimes(${i});">
-                            <input type="text" id="fl_arrd_${i}" value="${leg.arrDate}" placeholder="Date (e.g. Mon 10 Aug, 2026)" style="margin-top:4px;" oninput="flightLegs[${i}].arrDate = this.value; updateLegTimes(${i});">
+                            <label>Arrival / Landing Date & Time Picker</label>
+                            <input type="datetime-local" id="fl_arrt_picker_${i}" value="${leg.arrDateTime}" class="font-semibold text-slate-800" onchange="updateLegTimes(${i})">
                         </div>
+
                         <div class="form-group">
                             <label>Check-in Baggage</label>
                             <input type="text" id="fl_chk_${i}" value="${leg.checkin}" oninput="flightLegs[${i}].checkin = this.value; renderTicket();">
@@ -1969,7 +2251,7 @@
                 `;
 
                 if (i === 0 && totalLegs >= 2) {
-                    const tVal = calculateTransit(flightLegs[0].arrTime, flightLegs[0].arrDate, flightLegs[1].depTime, flightLegs[1].depDate);
+                    const tVal = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
                     fContainer.innerHTML += `
                         <div class="transit-badge-box">
                             <span><i class="fa-solid fa-clock"></i> Calculated Outbound Transit Time:</span>
@@ -1977,7 +2259,7 @@
                         </div>
                     `;
                 } else if (i === 2 && totalLegs >= 4) {
-                    const tVal2 = calculateTransit(flightLegs[2].arrTime, flightLegs[2].arrDate, flightLegs[3].depTime, flightLegs[3].depDate);
+                    const tVal2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
                     fContainer.innerHTML += `
                         <div class="transit-badge-box">
                             <span><i class="fa-solid fa-clock"></i> Calculated Return Transit Time:</span>
@@ -1988,9 +2270,7 @@
             }
         }
 
-        // FULLY ACTIVE UPDATE TICKET HANDLER
         function triggerUpdateTicket() {
-            // Read passenger form inputs
             passengers.forEach((p, idx) => {
                 const n = document.getElementById(`p_name_${idx}`);
                 const pass = document.getElementById(`p_passport_${idx}`);
@@ -2000,7 +2280,6 @@
                 if (t) p.ticket = t.value;
             });
 
-            // Read flight leg inputs
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
                 const al = document.getElementById(`fl_al_${i}`);
@@ -2009,11 +2288,9 @@
                 const pnr = document.getElementById(`fl_pnr_${i}`);
                 const dur = document.getElementById(`fl_dur_${i}`);
                 const depApt = document.getElementById(`in_dep_apt_${i}`);
-                const depT = document.getElementById(`fl_dept_${i}`);
-                const depD = document.getElementById(`fl_depd_${i}`);
+                const depPick = document.getElementById(`fl_dept_picker_${i}`);
                 const arrApt = document.getElementById(`in_arr_apt_${i}`);
-                const arrT = document.getElementById(`fl_arrt_${i}`);
-                const arrD = document.getElementById(`fl_arrd_${i}`);
+                const arrPick = document.getElementById(`fl_arrt_picker_${i}`);
                 const chk = document.getElementById(`fl_chk_${i}`);
                 const cab = document.getElementById(`fl_cab_${i}`);
 
@@ -2022,16 +2299,13 @@
                 if (cls) leg.flightClass = cls.value;
                 if (pnr) leg.pnr = pnr.value;
                 if (depApt) leg.depApt = depApt.value;
-                if (depT) leg.depTime = depT.value;
-                if (depD) leg.depDate = depD.value;
+                if (depPick) leg.depDateTime = depPick.value;
                 if (arrApt) leg.arrApt = arrApt.value;
-                if (arrT) leg.arrTime = arrT.value;
-                if (arrD) leg.arrDate = arrD.value;
+                if (arrPick) leg.arrDateTime = arrPick.value;
                 if (chk) leg.checkin = chk.value;
                 if (cab) leg.cabin = cab.value;
 
-                // Auto calculate or retain duration
-                const calcDur = calculateDuration(leg.depTime, leg.depDate, leg.arrTime, leg.arrDate);
+                const calcDur = calculateDurationFromISO(leg.depDateTime, leg.arrDateTime);
                 if (dur && dur.value.trim() !== '') {
                     leg.dur = dur.value;
                 } else if (calcDur) {
@@ -2040,10 +2314,7 @@
                 }
             }
 
-            // Render ticket card preview
             renderTicket();
-
-            // Button feedback animation
             const btn = document.getElementById('btnUpdateTicket');
             if (btn) {
                 const originalHtml = btn.innerHTML;
@@ -2057,13 +2328,12 @@
         }
 
         function renderTicket() {
-            // Header
             document.getElementById('out_agent_name').innerText = document.getElementById('in_agent_name').value;
             document.getElementById('out_agent_email').innerText = document.getElementById('in_agent_email').value;
             document.getElementById('out_agent_address').innerHTML = document.getElementById('in_agent_address').value.replace(/\n/g, '<br>');
             document.getElementById('out_issue_date_ticket').innerText = document.getElementById('in_issue_date_ticket').value;
 
-            // Passengers
+            // Passengers Table
             const pTable = document.getElementById('out_ticket_passenger_table');
             pTable.innerHTML = '';
             passengers.forEach(p => {
@@ -2076,7 +2346,7 @@
                 `;
             });
 
-            // Itinerary & Baggage Sync
+            // Itinerary Table
             const iTable = document.getElementById('out_itinerary_table');
             const bGrid = document.getElementById('out_baggage_grid');
             iTable.innerHTML = '';
@@ -2084,18 +2354,30 @@
 
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
+                const depFormatted = formatPickerDateTime(leg.depDateTime);
+                const arrFormatted = formatPickerDateTime(leg.arrDateTime);
+
+                // Auto Real Airline Logo Resolver
+                const logoUrl = getAirlineOfficialLogo(leg.airline, leg.flightNo);
+                const logoHtml = logoUrl ? 
+                    `<div class="airline-logo-thumb"><img src="${logoUrl}" alt="logo" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fa-solid fa-plane text-[#0b25b7] text-xs\\'></i>';"></div>` : 
+                    `<div class="airline-logo-thumb"><i class="fa-solid fa-plane text-[#0b25b7] text-xs"></i></div>`;
 
                 iTable.innerHTML += `
                     <tr>
-                        <td class="flight-carrier">
-                            <strong>${leg.airline}</strong>
-                            <span>${leg.flightNo}</span><br>
-                            <span>${leg.flightClass}</span>
+                        <td>
+                            <div class="flight-carrier-box">
+                                ${logoHtml}
+                                <div class="flight-carrier">
+                                    <strong>${leg.airline}</strong>
+                                    <span>${leg.flightNo} • ${leg.flightClass}</span>
+                                </div>
+                            </div>
                         </td>
                         <td><strong>${leg.pnr}</strong></td>
                         <td class="airport-block">
                             <div class="airport-name">${leg.depApt}</div>
-                            <div class="time-date">${leg.depTime}<br>${leg.depDate}</div>
+                            <div class="time-date">${depFormatted.timeStr}<br>${depFormatted.dateStr}</div>
                         </td>
                         <td class="duration-col">
                             <i class="fa-solid fa-plane"></i>
@@ -2103,14 +2385,14 @@
                         </td>
                         <td class="airport-block">
                             <div class="airport-name">${leg.arrApt}</div>
-                            <div class="time-date">${leg.arrTime}<br>${leg.arrDate}</div>
+                            <div class="time-date">${arrFormatted.timeStr}<br>${arrFormatted.dateStr}</div>
                         </td>
                     </tr>
                 `;
 
                 if (i === 0 && totalLegs >= 2) {
                     const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
-                    const calculatedTime1 = calculateTransit(flightLegs[0].arrTime, flightLegs[0].arrDate, flightLegs[1].depTime, flightLegs[1].depDate);
+                    const calculatedTime1 = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
                     
                     const badge1 = document.getElementById('badge_transit_1');
                     if (badge1) badge1.innerText = calculatedTime1;
@@ -2124,8 +2406,7 @@
                     `;
                 } else if (i === 2 && totalLegs >= 4) {
                     const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
-                    const calculatedTime2 = calculateTransit(flightLegs[2].arrTime, flightLegs[2].arrDate, flightLegs[3].depTime, flightLegs[3].depDate);
-                    
+                    const calculatedTime2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
                     const badge2 = document.getElementById('badge_transit_2');
                     if (badge2) badge2.innerText = calculatedTime2;
 
@@ -2187,10 +2468,50 @@
             }
         }
 
+        // ================= SAVE / DOWNLOAD DATA SYSTEM =================
+        function saveAndDownloadFullData() {
+            const allData = {
+                receiptData: {
+                    company: document.getElementById('in_company').value,
+                    address: document.getElementById('in_address').value,
+                    tel: document.getElementById('in_tel').value,
+                    email: document.getElementById('in_email').value,
+                    branch: document.getElementById('in_branch').value,
+                    submissionDate: document.getElementById('in_sub_date').value,
+                    receiptNumber: document.getElementById('in_receipt').value,
+                    status: document.getElementById('in_status').value,
+                    reference: document.getElementById('in_ref').value,
+                    currency: document.getElementById('in_currency').value,
+                    issueDate: document.getElementById('in_issue_date_rec').value,
+                    flightDate: document.getElementById('in_flight_date').value,
+                    ancillary: document.getElementById('in_ancillary').value,
+                    passengers: receiptPassengers
+                },
+                ticketData: {
+                    agencyName: document.getElementById('in_agent_name').value,
+                    agencyEmail: document.getElementById('in_agent_email').value,
+                    agencyAddress: document.getElementById('in_agent_address').value,
+                    issueDate: document.getElementById('in_issue_date_ticket').value,
+                    totalLegs: totalLegs,
+                    passengers: passengers,
+                    flightLegs: flightLegs
+                },
+                exportedAt: new Date().toISOString()
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Lasker_Portal_Backup_${Date.now()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
         // Initialize on load
         window.onload = function() {
             checkAuth();
             loadDefaultReceiptData();
+            initAutomatedFlightLegs();
             renderInputs();
             renderTicket();
         };
