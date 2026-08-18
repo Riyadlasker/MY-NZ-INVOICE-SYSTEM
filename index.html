@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LASKER iTECH - Portal & Ticket Hub</title>
+    <title>LASKER iTECH - Secure Aviation & Document Portal</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -59,7 +59,7 @@
             overflow: hidden;
         }
 
-        /* ================= AIR TICKET STYLES ================= */
+        /* AIR TICKET STYLES */
         .airticket-module-root {
             font-family: 'Roboto', sans-serif;
             color: #1e293b;
@@ -319,7 +319,6 @@
         .airticket-module-root .btn-primary-ticket { background: #0b25b7; color: white; }
         .airticket-module-root .btn-print-ticket { background: #15803d; color: white; }
 
-        /* TICKET PREVIEW CARD */
         .airticket-module-root .ticket-wrapper {
             max-width: 950px;
             margin: 0 auto;
@@ -462,7 +461,6 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        /* AIRLINE LOGO & TEXT LAYOUT */
         .airticket-module-root .flight-carrier-box {
             display: flex;
             align-items: center;
@@ -626,6 +624,14 @@
             line-height: 1.4;
         }
 
+        /* IFRAME WRAPPERS */
+        .external-module-frame {
+            width: 100%;
+            height: calc(100vh - 60px);
+            border: none;
+            display: block;
+        }
+
         /* PRINT RULES */
         @media print {
             .no-print {
@@ -638,7 +644,9 @@
                 width: 100% !important;
             }
 
-            body.print-receipt #moduleTicket {
+            body.print-receipt #moduleTicket,
+            body.print-receipt #moduleBatik,
+            body.print-receipt #moduleUSBangla {
                 display: none !important;
             }
             body.print-receipt #moduleReceipt {
@@ -677,7 +685,9 @@
                 justify-content: space-between !important;
             }
 
-            body.print-ticket #moduleReceipt {
+            body.print-ticket #moduleReceipt,
+            body.print-ticket #moduleBatik,
+            body.print-ticket #moduleUSBangla {
                 display: none !important;
             }
             body.print-ticket #moduleTicket {
@@ -715,6 +725,7 @@
 </head>
 <body class="bg-slate-950 min-h-screen text-slate-800 antialiased flex flex-col selection:bg-blue-600 selection:text-white print-receipt">
 
+    <!-- DATALISTS FOR LASKER MODULES -->
     <datalist id="global_airports">
         <option value="Hazrat Shahjalal International Airport (DAC)">Dhaka, Bangladesh (DAC)</option>
         <option value="Shah Amanat International Airport (CGP)">Chittagong, Bangladesh (CGP)</option>
@@ -779,6 +790,7 @@
         <option value="SalamAir">SalamAir</option>
     </datalist>
 
+    <!-- SECURE AUTH SCREEN -->
     <div id="authScreen" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-4 overflow-y-auto">
         <div class="auth-glow -top-16 -left-16"></div>
         <div class="auth-glow -bottom-16 -right-16 bg-indigo-900/20"></div>
@@ -887,8 +899,10 @@
         </div>
     </div>
 
+    <!-- AUTHENTICATED APP CONTAINER -->
     <div id="appContainer" class="hidden flex-col flex-1">
         
+        <!-- HEADER WITH ALL 4 HUBS -->
         <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-2.5 sticky top-0 z-50 flex flex-wrap justify-between items-center no-print backdrop-blur-md gap-2">
             <div class="flex items-center space-x-3">
                 <div class="h-9 w-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center font-bold text-white shadow-md text-sm">
@@ -903,17 +917,24 @@
                 </div>
             </div>
 
-            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800">
-                <button id="modReceiptBtn" onclick="switchAppModule('receipt')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow">
-                    <span>📄</span> Receipt Generator
+            <!-- MODULE SELECTOR (4 TABS) -->
+            <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap gap-1">
+                <button id="modReceiptBtn" onclick="switchAppModule('receipt')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow">
+                    <span>📄</span> Receipt
                 </button>
-                <button id="modTicketBtn" onclick="switchAppModule('ticket')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                    <span>✈️</span> Air Ticket Generator
+                <button id="modTicketBtn" onclick="switchAppModule('ticket')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <span>✈️</span> Lasker Ticket
+                </button>
+                <button id="modBatikBtn" onclick="switchAppModule('batik')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <span>🔴</span> Batik Air
+                </button>
+                <button id="modUSBtn" onclick="switchAppModule('usbangla')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <span>🔵</span> US-Bangla
                 </button>
             </div>
 
             <div class="flex items-center space-x-2">
-                <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
+                <button onclick="handleActivePrint()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
                     <i class="fa-solid fa-print"></i>
                     <span>Print / Save PDF</span>
                 </button>
@@ -924,6 +945,7 @@
             </div>
         </header>
 
+        <!-- MODULE 1: RECEIPT -->
         <div id="moduleReceipt" class="block w-full">
             <div class="lg:hidden bg-slate-900 border-b border-slate-800 p-2 flex justify-center space-x-2 sticky top-[53px] z-40 no-print">
                 <button id="tabFormBtn" onclick="switchMobileTab('form')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#173a8a] text-white flex items-center justify-center gap-1.5 shadow transition">
@@ -1211,8 +1233,8 @@
             </main>
         </div>
 
+        <!-- MODULE 2: LASKER AIR TICKET -->
         <div id="moduleTicket" class="airticket-module-root hidden w-full p-3 sm:p-4 md:p-6 bg-[#f1f5f9]">
-            
             <div class="form-container">
                 <div class="panel-header">
                     <h2><i class="fa-solid fa-sliders"></i> Air Ticket Generator</h2>
@@ -1269,7 +1291,6 @@
 
             <div class="ticket-wrapper">
                 <div class="ticket-container">
-                    
                     <header class="ticket-header">
                         <div class="agent-branding">
                             <img id="out_ticket_logo" class="agency-logo-preview" alt="Agency Logo">
@@ -1326,7 +1347,6 @@
                     </div>
                     <div class="baggage-content">
                         <div class="baggage-grid" id="out_baggage_grid"></div>
-
                         <div class="baggage-note">
                             <strong>Note:</strong> Check-in :Cabin: One hand bag up to 7 kgs and 115 cms (L+W+H), shall be allowed per customer.<br>
                             For contactless travel we recommend to place it under the seat in front, on board.
@@ -1362,73 +1382,1104 @@
                             <p>Applicable charges will be as per the Airline policy including the convenience fee. i.e. (Refund amount = Paid amount - Refundable Amount)</p>
                         </div>
                     </div>
-
                 </div>
             </div>
+        </div>
 
+        <!-- MODULE 3: BATIK AIR GENERATOR (EMBEDDED IN SECURE CONTAINER) -->
+        <div id="moduleBatik" class="hidden w-full flex-1 bg-[#eef2f7]">
+            <iframe id="frameBatik" class="external-module-frame"></iframe>
+        </div>
+
+        <!-- MODULE 4: US-BANGLA AIRLINES (EMBEDDED IN SECURE CONTAINER) -->
+        <div id="moduleUSBangla" class="hidden w-full flex-1 bg-[#1e293b]">
+            <iframe id="frameUSBangla" class="external-module-frame"></iframe>
         </div>
 
     </div>
 
+    <!-- RAW SOURCE CODE STORAGE FOR ISOLATED MODULES -->
+    <textarea id="src-batik" style="display:none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batik Air - Automated E-Ticket Generator</title>
+    <style>
+        * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #eef2f7; padding: 20px 10px; color: #222; }
+        .main-wrapper { max-width: 1400px; margin: 0 auto; display: flex; gap: 25px; justify-content: center; align-items: flex-start; }
+        .control-panel { flex: 0 0 380px; background: #ffffff; padding: 22px; border-radius: 10px; box-shadow: 0 5px 18px rgba(0,0,0,0.08); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #8b0000; padding-bottom: 10px; margin-bottom: 16px; }
+        .panel-header h2 { font-size: 18px; color: #8b0000; font-weight: bold; }
+        .btn-random { background-color: #0b5ed7; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; }
+        .btn-random:hover { background-color: #084298; }
+        .form-group { margin-bottom: 11px; }
+        .form-group label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #444; text-transform: uppercase; }
+        .form-group input, .form-group select { width: 100%; padding: 8px 10px; border: 1px solid #c5c5c5; border-radius: 5px; font-size: 13px; background: #fdfdfd; }
+        .form-row { display: flex; gap: 10px; }
+        .form-row .form-group { flex: 1; }
+        .btn-action-group { display: flex; gap: 10px; margin-top: 18px; }
+        .btn-print { flex: 1; padding: 12px; background: #8b0000; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 3px 8px rgba(139,0,0,0.3); }
+        .btn-print:hover { background: #6a0000; }
+        .preview-container { flex: 1; max-width: 860px; background: transparent; }
+        .a4-page { width: 100%; min-height: 1050px; background: #ffffff; padding: 40px 45px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.12); border: 1px solid #dcdcdc; box-sizing: border-box; }
+        .ticket-header { display: flex; align-items: center; justify-content: flex-start; padding-bottom: 8px; }
+        .ticket-logo-img { max-height: 75px; width: auto; max-width: 320px; object-fit: contain; display: block; }
+        .header-rule { border-top: 1.8px solid #222; margin: 10px 0 16px 0; }
+        .meta-grid { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 22px; }
+        .tax-invoice-box { flex: 1.4; }
+        .section-label { font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #111; }
+        .invoice-bordered-table { border: 1px solid #777; padding: 8px 14px; background: #fff; }
+        .invoice-row { display: flex; font-size: 12.5px; line-height: 1.55; }
+        .invoice-key { width: 160px; font-weight: bold; color: #111; }
+        .invoice-value { color: #222; font-weight: 500; text-transform: uppercase; }
+        .pnr-box { flex: 0.85; }
+        .pnr-display { border: 1px solid #777; padding: 9px 12px; text-align: center; font-weight: bold; font-size: 16px; letter-spacing: 2px; color: #111; background: #fff; }
+        .itinerary-heading { font-weight: bold; font-size: 14px; margin-bottom: 6px; color: #111; }
+        .itinerary-table { width: 100%; border-collapse: collapse; border-top: 1.2px solid #444; border-bottom: 1.2px solid #444; font-size: 12px; }
+        .itinerary-table th { border: 1px solid #666; padding: 8px 4px; background: #fff; text-align: center; font-weight: bold; font-size: 11.5px; text-transform: uppercase; color: #111; }
+        .itinerary-table td { border-left: 1px solid #e0e0e0; border-right: 1px solid #e0e0e0; padding: 16px 8px; vertical-align: top; text-align: center; }
+        .itinerary-table tr td:first-child { border-left: 1px solid #444; }
+        .itinerary-table tr td:last-child { border-right: 1px solid #444; }
+        .flight-number { font-weight: bold; font-size: 13px; }
+        .flight-status { font-size: 11px; color: #333; margin-top: 6px; line-height: 1.3; }
+        .station-name { font-weight: bold; font-size: 12.5px; text-transform: uppercase; line-height: 1.3; }
+        .station-terminal { font-size: 11px; margin-top: 4px; line-height: 1.3; }
+        .station-date { font-weight: bold; font-size: 12.5px; margin-top: 14px; }
+        .station-time { font-size: 12.5px; margin-top: 2px; font-weight: 500; }
+        .cabin-class-txt { font-size: 12px; font-weight: bold; line-height: 1.5; }
+        .baggage-txt { font-weight: bold; font-size: 13px; }
+        .fare-info-box { font-size: 11px; text-align: left; padding-left: 6px; }
+        .fare-info-box div { margin-bottom: 6px; font-weight: bold; }
+        .ticket-notice-box { margin-top: 35px; border-top: 1px dashed #aaa; padding-top: 15px; font-size: 10.5px; color: #555; line-height: 1.5; }
+        .ticket-notice-box h4 { font-size: 11px; color: #222; margin-bottom: 4px; text-transform: uppercase; }
+
+        @media print {
+            @page { size: A4 portrait; margin: 15mm auto; }
+            body { background: #ffffff; padding: 0; margin: 0; }
+            .main-wrapper { display: block; width: 100%; margin: 0; padding: 0; }
+            .control-panel { display: none !important; }
+            .preview-container { max-width: 100%; width: 100%; display: flex; justify-content: center; margin: 0 auto; }
+            .a4-page { border: none; box-shadow: none; padding: 0; width: 100%; max-width: 180mm; margin: 0 auto; min-height: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>Ticket Automation</h2>
+                <button type="button" class="btn-random" onclick="autoGeneratePNR()">⚡ New PNR</button>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Passenger Name</label>
+                    <input type="text" id="passengerName" value="KUMAR RAHUL MR" oninput="updateTicketLive()">
+                </div>
+                <div class="form-group">
+                    <label>PNR / Booking Ref</label>
+                    <input type="text" id="bookingRef" value="K9Y3P2" oninput="updateTicketLive()">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>1. Issue Date (Auto)</label>
+                    <input type="date" id="issueDateInput" onchange="syncIssueDate()">
+                </div>
+                <div class="form-group">
+                    <label>Flight Number</label>
+                    <input type="text" id="flightNo" value="OD 168" oninput="updateTicketLive()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>2. Departure City / Country</label>
+                <select id="deptPresetSelect" onchange="handleDeptPresetChange()">
+                    <option value="DAC">Bangladesh - Dhaka (DAC)</option>
+                    <option value="KUL" selected>Malaysia - Kuala Lumpur (KLIA1 / KUL)</option>
+                    <option value="SIN">Singapore - Changi (SIN)</option>
+                    <option value="BKK">Thailand - Bangkok (DMK / BKK)</option>
+                    <option value="JED">Saudi Arabia - Jeddah (JED)</option>
+                    <option value="DXB">UAE - Dubai (DXB)</option>
+                    <option value="DEL">India - Delhi (DEL)</option>
+                    <option value="LHR">United Kingdom - London (LHR)</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>3. Dept Date (Auto)</label>
+                    <input type="date" id="deptDateInput" onchange="syncDeptDate()">
+                </div>
+                <div class="form-group">
+                    <label>4. Dept Time (Auto)</label>
+                    <input type="time" id="deptTimeInput" value="01:15" onchange="syncDeptTime()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>5. Arrival City / Country</label>
+                <select id="arrPresetSelect" onchange="handleArrPresetChange()">
+                    <option value="DAC" selected>Bangladesh - Dhaka (DAC)</option>
+                    <option value="KUL">Malaysia - Kuala Lumpur (KLIA1 / KUL)</option>
+                    <option value="SIN">Singapore - Changi (SIN)</option>
+                    <option value="BKK">Thailand - Bangkok (DMK / BKK)</option>
+                    <option value="JED">Saudi Arabia - Jeddah (JED)</option>
+                    <option value="DXB">UAE - Dubai (DXB)</option>
+                    <option value="DEL">India - Delhi (DEL)</option>
+                    <option value="LHR">United Kingdom - London (LHR)</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>6. Arr Date (Auto)</label>
+                    <input type="date" id="arrDateInput" onchange="syncArrDate()">
+                </div>
+                <div class="form-group">
+                    <label>7. Arr Time (Auto)</label>
+                    <input type="time" id="arrTimeInput" value="07:05" onchange="syncArrTime()">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cabin Class</label>
+                    <select id="cabinClassSelect" onchange="updateTicketLive()">
+                        <option value="Business<br>Check-in<br>Required" selected>Business Class</option>
+                        <option value="Economy<br>Check-in<br>Required">Economy Class</option>
+                        <option value="Premium Economy<br>Check-in<br>Required">Premium Economy</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Baggage</label>
+                    <select id="baggageSelect" onchange="updateTicketLive()">
+                        <option value="20K">20 KG</option>
+                        <option value="25K">25 KG</option>
+                        <option value="30K">30 KG</option>
+                        <option value="35K">35 KG</option>
+                        <option value="40K" selected>40 KG</option>
+                    </select>
+                </div>
+            </div>
+            <div class="btn-action-group">
+                <button type="button" class="btn-print" onclick="window.print()">🖨️ Print / Save A4 PDF</button>
+            </div>
+        </div>
+
+        <div class="preview-container">
+            <div class="a4-page" id="ticketPageArea">
+                <div class="ticket-header">
+                    <img class="ticket-logo-img" src="Batikair-malaysia.jpg" alt="Batik Air Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Batik_Air_Malaysia_Logo.svg/512px-Batik_Air_Malaysia_Logo.svg.png'">
+                </div>
+                <div class="header-rule"></div>
+                <div class="meta-grid">
+                    <div class="tax-invoice-box">
+                        <div class="section-label">Tax Invoice</div>
+                        <div class="invoice-bordered-table">
+                            <div class="invoice-row">
+                                <div class="invoice-key">PASSENGER NAME</div>
+                                <div class="invoice-value">: <span id="valPassenger">KUMAR RAHUL MR</span></div>
+                            </div>
+                            <div class="invoice-row">
+                                <div class="invoice-key">NAME REF</div>
+                                <div class="invoice-value">: <span>ADT</span></div>
+                            </div>
+                            <div class="invoice-row">
+                                <div class="invoice-key">ISSUE DATE</div>
+                                <div class="invoice-value">: <span id="valIssueDate">17 AUG 2026</span></div>
+                            </div>
+                            <div class="invoice-row">
+                                <div class="invoice-key">ISSUING AIRLINE</div>
+                                <div class="invoice-value">: <span>BATIK AIR MALAYSIA</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pnr-box">
+                        <div class="section-label">Booking Reference (PNR)</div>
+                        <div class="pnr-display" id="valPnr">K9Y3P2</div>
+                    </div>
+                </div>
+
+                <div class="itinerary-heading">Itinerary Details</div>
+                <table class="itinerary-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 14%;">FLIGHT<br>AIRLINE</th>
+                            <th style="width: 25%;">DEPART<br>Departure</th>
+                            <th style="width: 25%;">ARRIVE<br>Arrival</th>
+                            <th style="width: 14%;">CABIN/SEAT</th>
+                            <th style="width: 10%;">BAGGAGE</th>
+                            <th style="width: 12%;">FLIGHT INFO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="flight-number" id="valFlightNo">OD 168</div>
+                                <div class="flight-status">Confirmed<br><span style="font-size:10px; color:#555;">Ok to fly</span></div>
+                            </td>
+                            <td>
+                                <div class="station-name" id="valDeptCity">DHAKA, BANGLADESH</div>
+                                <div class="station-terminal" id="valDeptAirport">DAC TERMINAL 1</div>
+                                <div class="station-date" id="valDeptDate">22/Aug/2026</div>
+                                <div class="station-time" id="valDeptTime">01:15</div>
+                            </td>
+                            <td>
+                                <div class="station-name" id="valArrCity">KUALA LUMPUR, MALAYSIA</div>
+                                <div class="station-terminal" id="valArrAirport">KUL KLIA1 TERMINAL 1</div>
+                                <div class="station-date" id="valArrDate">22/Aug/2026</div>
+                                <div class="station-time" id="valArrTime">07:05</div>
+                            </td>
+                            <td>
+                                <div class="cabin-class-txt" id="valCabinSeat">Business<br>Check-in<br>Required</div>
+                            </td>
+                            <td>
+                                <div class="baggage-txt" id="valBaggage">40K</div>
+                            </td>
+                            <td>
+                                <div class="fare-info-box">
+                                    <div>Fare Basis:</div>
+                                    <div>FLEXIBLE</div>
+                                    <div>REFUNDABLE</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="ticket-notice-box">
+                    <h4>Important Travel Notice & Guidelines:</h4>
+                    <p>• Please check in at least 3 hours prior to departure for international flights. Boarding gates close 20 minutes before departure.</p>
+                    <p>• Ensure your passport is valid for at least 6 months from the date of travel with all necessary transit and destination visas.</p>
+                    <p>• Baggage allowance strictly follows ticket regulations. Hand baggage maximum 7kg permitted in the cabin.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ================= DYNAMIC DATE & TIME UTILITIES =================
-        const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const countryPresets = {
+            'DAC': { city: 'DHAKA, BANGLADESH', airport: 'DAC TERMINAL 1', flight: 'OD 168' },
+            'KUL': { city: 'KUALA LUMPUR, MALAYSIA', airport: 'KUL KLIA1 TERMINAL 1', flight: 'OD 165' },
+            'SIN': { city: 'SINGAPORE, SINGAPORE', airport: 'CHANGI INTL (SIN) TERMINAL 3', flight: 'OD 801' },
+            'BKK': { city: 'BANGKOK, THAILAND', airport: 'DON MUEANG (DMK) TERMINAL 1', flight: 'OD 522' },
+            'JED': { city: 'JEDDAH, SAUDI ARABIA', airport: 'KING ABDULAZIZ (JED) NORTH', flight: 'OD 705' },
+            'DXB': { city: 'DUBAI, UAE', airport: 'DUBAI INTL (DXB) TERMINAL 2', flight: 'OD 711' },
+            'DEL': { city: 'DELHI, INDIA', airport: 'IGI AIRPORT (DEL) TERMINAL 3', flight: 'OD 205' },
+            'LHR': { city: 'LONDON, UNITED KINGDOM', airport: 'HEATHROW (LHR) TERMINAL 4', flight: 'OD 001' }
+        };
 
-        function getFormattedDate(d, formatType = 'full') {
-            const dayName = daysShort[d.getDay()];
-            const dayNum = String(d.getDate()).padStart(2, '0');
-            const month = monthsShort[d.getMonth()];
-            const year = d.getFullYear();
-            const shortYear = String(year).slice(-2);
+        const monthNames = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-            if (formatType === 'full') return `${dayNum} ${month} ${year}`;
-            if (formatType === 'short') return `${dayNum} ${month} ${shortYear}`;
-            if (formatType === 'flight') return `${dayName} ${dayNum} ${month}, ${year}`;
-            if (formatType === 'issued_full') {
-                let hours = d.getHours();
-                const minutes = String(d.getMinutes()).padStart(2, '0');
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-                return `${dayNum} ${month} ${year} ${hours}:${minutes} ${ampm}`;
+        function formatIssueDate(d) {
+            let day = String(d.getDate()).padStart(2, '0');
+            let mon = monthNames[d.getMonth()];
+            let year = d.getFullYear();
+            return `${day} ${mon} ${year}`;
+        }
+
+        function formatItineraryDate(d) {
+            let day = String(d.getDate()).padStart(2, '0');
+            let mon = monthNames[d.getMonth()].charAt(0) + monthNames[d.getMonth()].slice(1).toLowerCase();
+            let year = d.getFullYear();
+            return `${day}/${mon}/${year}`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date();
+            document.getElementById('issueDateInput').value = today.toISOString().split('T')[0];
+            syncIssueDate();
+
+            const futureDept = new Date();
+            futureDept.setDate(today.getDate() + 5);
+            document.getElementById('deptDateInput').value = futureDept.toISOString().split('T')[0];
+            syncDeptDate();
+
+            document.getElementById('arrDateInput').value = futureDept.toISOString().split('T')[0];
+            syncArrDate();
+
+            handleDeptPresetChange();
+            handleArrPresetChange();
+        });
+
+        function syncIssueDate() {
+            const val = document.getElementById('issueDateInput').value;
+            if (val) {
+                const dateObj = new Date(val);
+                document.getElementById('valIssueDate').innerText = formatIssueDate(dateObj);
             }
-            return `${dayNum} ${month} ${year}`;
         }
 
-        function toPickerDatetimeValue(dateObj) {
-            const pad = (n) => String(n).padStart(2, '0');
-            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        function handleDeptPresetChange() {
+            const selected = document.getElementById('deptPresetSelect').value;
+            const data = countryPresets[selected];
+            if (data) {
+                document.getElementById('valDeptCity').innerHTML = data.city.replace(',', ',<br>');
+                document.getElementById('valDeptAirport').innerHTML = data.airport;
+                document.getElementById('flightNo').value = data.flight;
+                document.getElementById('valFlightNo').innerText = data.flight;
+            }
         }
 
-        function toPickerDateValue(dateObj) {
-            const pad = (n) => String(n).padStart(2, '0');
-            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+        function syncDeptDate() {
+            const val = document.getElementById('deptDateInput').value;
+            if (val) {
+                const dateObj = new Date(val);
+                document.getElementById('valDeptDate').innerText = formatItineraryDate(dateObj);
+            }
         }
 
-        function formatPickerDateTime(isoString) {
-            if (!isoString) return { dateStr: "", timeStr: "" };
-            const d = new Date(isoString);
-            if (isNaN(d.getTime())) return { dateStr: "", timeStr: "" };
-            
-            const dayName = daysShort[d.getDay()];
-            const dayNum = String(d.getDate()).padStart(2, '0');
-            const month = monthsShort[d.getMonth()];
-            const year = d.getFullYear();
-            
-            let hours = d.getHours();
-            const minutes = String(d.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-
-            return {
-                dateStr: `${dayName} ${dayNum} ${month}, ${year}`,
-                timeStr: `${hours}:${minutes} ${ampm}`
-            };
+        function syncDeptTime() {
+            document.getElementById('valDeptTime').innerText = document.getElementById('deptTimeInput').value;
         }
 
-        // ================= AUTHENTICATION & SECURITY =================
+        function handleArrPresetChange() {
+            const selected = document.getElementById('arrPresetSelect').value;
+            const data = countryPresets[selected];
+            if (data) {
+                document.getElementById('valArrCity').innerHTML = data.city.replace(',', ',<br>');
+                document.getElementById('valArrAirport').innerHTML = data.airport;
+            }
+        }
+
+        function syncArrDate() {
+            const val = document.getElementById('arrDateInput').value;
+            if (val) {
+                const dateObj = new Date(val);
+                document.getElementById('valArrDate').innerText = formatItineraryDate(dateObj);
+            }
+        }
+
+        function syncArrTime() {
+            document.getElementById('valArrTime').innerText = document.getElementById('arrTimeInput').value;
+        }
+
+        function autoGeneratePNR() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let pnr = '';
+            for (let i = 0; i < 6; i++) {
+                pnr += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('bookingRef').value = pnr;
+            document.getElementById('valPnr').innerText = pnr;
+        }
+
+        function updateTicketLive() {
+            document.getElementById('valPassenger').innerText = document.getElementById('passengerName').value.toUpperCase();
+            document.getElementById('valPnr').innerText = document.getElementById('bookingRef').value.toUpperCase();
+            document.getElementById('valFlightNo').innerText = document.getElementById('flightNo').value.toUpperCase();
+            document.getElementById('valCabinSeat').innerHTML = document.getElementById('cabinClassSelect').value;
+            document.getElementById('valBaggage').innerText = document.getElementById('baggageSelect').value;
+        }
+    </script>
+</body>
+</html>
+    </textarea>
+
+    <textarea id="src-usbangla" style="display:none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US-BANGLA AIRLINES - Dynamic Multi-Flight & Multi-Pax Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&family=Open+Sans:wght@300;400;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Open Sans', Arial, Helvetica, sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        body { background-color: #1e293b; color: #334155; min-height: 100vh; }
+        .app-layout { display: flex; height: 100vh; overflow: hidden; }
+        .sidebar-panel { width: 450px; min-width: 450px; background: #ffffff; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.15); z-index: 50; }
+        .panel-header { padding: 16px 20px; background: #005A9C; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
+        .panel-header h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .sidebar-scroll { padding: 16px 18px; overflow-y: auto; flex: 1; }
+        .form-section { margin-bottom: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; }
+        .form-section-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 700; color: #005A9C; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .form-group { margin-bottom: 8px; }
+        .form-group label { display: block; font-size: 10.5px; font-weight: 700; color: #475569; margin-bottom: 3px; }
+        .form-control { width: 100%; padding: 7px 9px; font-size: 11.5px; border: 1px solid #cbd5e1; border-radius: 5px; background: #ffffff; color: #0f172a; outline: none; transition: all 0.2s ease; }
+        .form-control:focus { border-color: #005A9C; box-shadow: 0 0 0 2px rgba(0, 90, 156, 0.15); }
+        .input-clear-wrapper { position: relative; display: flex; align-items: center; }
+        .input-clear-wrapper .form-control { padding-right: 26px; }
+        .btn-field-clear { position: absolute; right: 6px; background: none; border: none; color: #94a3b8; font-size: 13px; font-weight: bold; cursor: pointer; padding: 2px 4px; border-radius: 3px; line-height: 1; transition: 0.2s; }
+        .btn-field-clear:hover { color: #ef4444; background: #fee2e2; }
+        .dynamic-item-card { background: #ffffff; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; margin-bottom: 10px; position: relative; }
+        .btn-cross-delete { position: absolute; top: 6px; right: 6px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-cross-delete:hover { background: #dc2626; color: #ffffff; }
+        .btn-add-item { background: #e0f2fe; color: #0369a1; border: 1px dashed #0284c7; padding: 7px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; transition: 0.2s; }
+        .btn-add-item:hover { background: #bae6fd; }
+        .btn-action-bar { padding: 14px 18px; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 10px; font-size: 12.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s ease; }
+        .btn-primary { background: #005A9C; color: #ffffff; }
+        .btn-primary:hover { background: #003F6E; }
+        .preview-workspace { flex: 1; overflow-y: auto; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; background-color: #475569; }
+        .page { width: 210mm; height: 297mm; min-height: 297mm; max-height: 297mm; background: #ffffff; padding: 8mm 12mm 8mm 12mm; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; page-break-after: always !important; break-after: page !important; page-break-inside: avoid !important; break-inside: avoid !important; }
+        .page:last-child { margin-bottom: 0; page-break-after: auto !important; break-after: auto !important; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid #000000; padding-bottom: 5px; margin-bottom: 6px; }
+        .airline-logo-box { display: flex; align-items: center; }
+        .airline-logo-img { height: 48px; width: auto; object-fit: contain; display: block; }
+        .header-right { text-align: right; }
+        .eticket-title { font-family: Arial, 'Open Sans', sans-serif; font-size: 23px; font-weight: 900; color: #005A9C; line-height: 1; margin-bottom: 2px; }
+        .pnr-box { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+        .barcode-rendered { font-family: 'Libre Barcode 128', cursive; font-size: 40px; line-height: 0.75; color: #000; user-select: none; }
+        .pnr-title { font-size: 9px; font-weight: 700; color: #000; }
+        .pnr-number { font-family: Arial, 'Open Sans', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: 0.5px; color: #000; }
+        table { width: 100%; border-collapse: collapse; font-size: 7.8px; margin-bottom: 5px; }
+        table.bordered, table.bordered th, table.bordered td { border: 0.75px solid #666666; }
+        th { background-color: #EDEDED; color: #000000; font-weight: 700; padding: 3px 4px; text-align: center; }
+        td { padding: 3px 4px; color: #000000; }
+        .section-heading { font-size: 9.5px; font-weight: 700; text-decoration: underline; color: #003366; margin: 5px 0 3px 0; }
+        .travel-notes-block { font-size: 6.8px; line-height: 1.28; color: #111111; margin-bottom: 4px; text-align: justify; }
+        .travel-notes-block p { margin-bottom: 1.5px; }
+        .footer-agency { border-top: 0.8px solid #999999; padding-top: 4px; font-size: 6.8px; color: #444444; text-align: center; }
+        .receipt-heading { font-size: 13px; font-weight: 700; text-decoration: underline; color: #003366; margin-bottom: 14px; }
+        .receipt-box { border: 0.8px solid #666666; display: flex; min-height: 140px; font-size: 9.5px; }
+        .receipt-left { width: 38%; border-right: 0.8px solid #666666; padding: 10px 14px; line-height: 1.9; }
+        .receipt-right { width: 62%; padding: 10px 16px; display: flex; flex-direction: column; justify-content: space-between; }
+        .tax-breakdown-text { font-size: 7.2px; color: #333333; margin-top: 4px; line-height: 1.4; }
+        .total-fare-highlight { font-size: 15px; font-weight: 900; display: flex; justify-content: space-between; border-top: 0.8px dashed #888888; padding-top: 6px; margin-top: 6px; }
+        .terms-title { text-align: center; font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #111111; }
+        .terms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 6.2px; line-height: 1.25; text-align: justify; color: #111111; }
+        .terms-grid p { margin-bottom: 4px; }
+        .dangerous-goods-container { border: 0.8px solid #555555; padding: 5px; margin-top: 6px; font-size: 6.2px; }
+        .dangerous-goods-inner { display: flex; gap: 8px; margin-top: 3px; }
+        .dg-list { flex: 1.15; line-height: 1.25; }
+        .dg-list ul { padding-left: 10px; }
+        .dg-icons-grid { flex: 1.85; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; text-align: center; }
+        .dg-card { border: 0.75px solid #666666; padding: 3px 2px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 48px; background: #FAFAFA; }
+        .dg-diamond { width: 22px; height: 22px; border: 1px solid #000000; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 3px 0; background: #FFFFFF; }
+        .dg-diamond span { transform: rotate(-45deg); font-size: 9px; font-weight: 700; }
+        .dg-label { font-size: 5px; line-height: 1.1; font-weight: 600; }
+        .page3-footer-banner { text-align: center; border-top: 1.5px solid #000000; padding-top: 5px; margin-top: 4px; }
+        .footer-logo-img { height: 28px; width: auto; margin: 0 auto 3px auto; display: block; }
+        .p3-tagline { font-size: 9px; font-weight: 900; color: #003F7A; margin-bottom: 3px; letter-spacing: 0.5px; }
+        .p3-offices { font-size: 5.6px; line-height: 1.35; color: #222222; margin-bottom: 3px; }
+        .p3-contact-row { font-size: 6.5px; display: flex; justify-content: center; gap: 16px; color: #111111; font-weight: 600; }
+
+        @page { size: A4 portrait; margin: 0mm; }
+        @media print {
+            html, body { width: 210mm !important; height: auto !important; min-height: auto !important; max-height: none !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; overflow: visible !important; position: static !important; }
+            .app-layout { display: block !important; width: 210mm !important; height: auto !important; min-height: auto !important; max-height: none !important; overflow: visible !important; position: static !important; }
+            .sidebar-panel { display: none !important; }
+            .preview-workspace { display: block !important; width: 210mm !important; height: auto !important; min-height: auto !important; max-height: none !important; padding: 0 !important; margin: 0 !important; background: none !important; overflow: visible !important; position: static !important; }
+            .page { box-shadow: none !important; margin: 0 !important; width: 210mm !important; height: 297mm !important; min-height: 297mm !important; max-height: 297mm !important; padding: 8mm 12mm 8mm 12mm !important; display: flex !important; flex-direction: column !important; justify-content: space-between !important; overflow: hidden !important; page-break-before: always !important; break-before: page !important; page-break-after: always !important; break-after: page !important; page-break-inside: avoid !important; break-inside: avoid !important; }
+            .page:first-of-type { page-break-before: auto !important; break-before: auto !important; }
+            .page:last-of-type { page-break-after: auto !important; break-after: auto !important; }
+        }
+    </style>
+</head>
+<body>
+<datalist id="worldwide-airports">
+    <option value="Dhaka, Bangladesh (DAC)">Hazrat Shahjalal Intl</option>
+    <option value="Chattogram, Bangladesh (CGP)">Shah Amanat Intl</option>
+    <option value="Sylhet, Bangladesh (ZYL)">Osmani Intl</option>
+    <option value="Cox's Bazar, Bangladesh (CXB)">Cox's Bazar Airport</option>
+    <option value="Saidpur, Bangladesh (SPD)">Saidpur Airport</option>
+    <option value="Jashore, Bangladesh (JSR)">Jashore Airport</option>
+    <option value="Rajshahi, Bangladesh (RJH)">Shah Makhdum Airport</option>
+    <option value="Barishal, Bangladesh (BZL)">Barishal Airport</option>
+    <option value="Kuala Lumpur, Malaysia (KUL)">Kuala Lumpur Intl</option>
+    <option value="Singapore, Singapore (SIN)">Changi Airport</option>
+    <option value="Bangkok, Thailand (BKK)">Suvarnabhumi Airport</option>
+    <option value="Dubai, UAE (DXB)">Dubai Intl</option>
+    <option value="Sharjah, UAE (SHJ)">Sharjah Intl</option>
+    <option value="Abu Dhabi, UAE (AUH)">Zayed Intl</option>
+    <option value="Doha, Qatar (DOH)">Hamad Intl</option>
+    <option value="Muscat, Oman (MCT)">Muscat Intl</option>
+    <option value="Riyadh, Saudi Arabia (RUH)">King Khalid Intl</option>
+    <option value="Jeddah, Saudi Arabia (JED)">King Abdulaziz Intl</option>
+    <option value="Medina, Saudi Arabia (MED)">Prince Mohammad Intl</option>
+    <option value="Dammam, Saudi Arabia (DMM)">King Fahd Intl</option>
+    <option value="Kuwait City, Kuwait (KWI)">Kuwait Intl</option>
+    <option value="London, United Kingdom (LHR)">Heathrow Airport</option>
+    <option value="London, United Kingdom (LGW)">Gatwick Airport</option>
+    <option value="New York, USA (JFK)">John F. Kennedy Intl</option>
+    <option value="Toronto, Canada (YYZ)">Toronto Pearson Intl</option>
+    <option value="Kolkata, India (CCU)">Netaji Subhash Chandra Bose</option>
+    <option value="Delhi, India (DEL)">Indira Gandhi Intl</option>
+    <option value="Chennai, India (MAA)">Chennai Intl</option>
+    <option value="Mumbai, India (BOM)">Chhatrapati Shivaji Intl</option>
+    <option value="Male, Maldives (MLE)">Velana Intl</option>
+    <option value="Guangzhou, China (CAN)">Baiyun Intl</option>
+    <option value="Sydney, Australia (SYD)">Kingsford Smith</option>
+</datalist>
+
+<div class="app-layout">
+    <div class="sidebar-panel">
+        <div class="panel-header">
+            <h2>✈️ US-Bangla Ticket Control</h2>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px;">Dynamic Sectors</span>
+        </div>
+        <div class="sidebar-scroll">
+            <div class="form-section">
+                <div class="form-section-title">🔖 Booking Reference</div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>PNR / Booking Ref</label>
+                        <input type="text" id="inp-pnr" class="form-control" value="09N66G" oninput="updateLive()">
+                    </div>
+                    <div class="form-group">
+                        <label>Primary E-Ticket No</label>
+                        <input type="text" id="inp-tkt-no" class="form-control" value="7792411798499" oninput="updateLive()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title"><span>👥 Passenger List</span></div>
+                <div id="pax-input-container"></div>
+                <button type="button" class="btn-add-item" onclick="addPassenger()">➕ Add Passenger</button>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title"><span>🛫 Flights / Sectors</span></div>
+                <div id="flight-input-container"></div>
+                <button type="button" class="btn-add-item" onclick="addFlight()">➕ Add Flight / Sector</button>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title">🏢 Agency & Receipt Details</div>
+                <div class="form-group">
+                    <label>Place of Issue (Agency)</label>
+                    <input type="text" id="inp-agency" class="form-control" value="NZ World Tours & Travels" oninput="updateLive()">
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Date of Issue</label>
+                        <input type="text" id="inp-issue-date" class="form-control" value="17-Apr-26 13:46 LT" oninput="updateLive()">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Mode</label>
+                        <input type="text" id="inp-pay-mode" class="form-control" value="In account" oninput="updateLive()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-action-bar">
+            <button class="btn btn-primary" onclick="printAllPages()">🖨️ Print 3-Page Ticket</button>
+        </div>
+    </div>
+
+    <div class="preview-workspace">
+        <div class="page" id="page1">
+            <div>
+                <div class="top-header">
+                    <div class="airline-logo-box">
+                        <img src="OIP.webp" alt="US-Bangla Airlines Logo" class="airline-logo-img">
+                    </div>
+                    <div class="header-right">
+                        <div class="eticket-title">e-ticket</div>
+                        <div class="pnr-box">
+                            <div class="barcode-rendered" id="view-barcode">09N66G7792411798499</div>
+                            <div>
+                                <div class="pnr-title">Booking reference #</div>
+                                <div class="pnr-number" id="view-pnr-top">09N66G</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 32%; text-align: left;">Passenger Name</th>
+                            <th style="width: 18%;">Ticket Number</th>
+                            <th style="width: 18%;">SSR Code / Passenger Info</th>
+                            <th style="width: 10%;">Pax. type</th>
+                            <th style="width: 10%;">Contact</th>
+                            <th style="width: 12%;">Passport Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view-pax-tbody"></tbody>
+                </table>
+
+                <div style="font-weight: 700; font-size: 7.5px; margin-bottom: 2px;">Travel Note:</div>
+                <div class="travel-notes-block">
+                    <p>- Check-in counter opens 1:30 hour (Domestic) and 3:00 hour (International) prior to flight departure and closes 30 minutes before of Domestic and 60 minutes before of international flight departure time.</p>
+                    <p>- Passenger fails to report at check-in before closure time shall be considered as No-Show and refused to board on the same flight.</p>
+                    <p>- Please report check-in counter with valid photo ID for Domestic and valid travel pass / passport with at least six months validity for international journey.</p>
+                    <p>- Once the boarding pass is issued / printed, respected passengers' coupon is considered as used, no further voluntary refund / re-issuance claim is acceptable.</p>
+                    <p>- Boarding gate closes 20 minutes before of Domestic and 30 minutes before of international flight departure time. Passenger fails to report at boarding gate before closure time without any valid reason, their ticket / coupon shall be treated as consumed / forfeited. Any claim of ticket exchange / refund will be invalid.</p>
+                    <p>- Check-in baggage applicable as per fare rule and maximum within two pieces. Hand carry bag shall not exceed 15 lbs. or 7 Kg.</p>
+                    <p>- After ticket issuance Passenger name or identity change / Transfer / Re-route / Endorsement etc., are not allowed.</p>
+                    <p>- Sequence break in international journey is not admissible for further use unless prior coupons are suspended / forfeited to ensure ticket used sequentially and consumed completely.</p>
+                    <p>- Any request for re-issuance or refund after commencement of journey / consumption of first coupon in case of multi-sector (through or connecting flight) journey with same ticket number shall be consumed total value of the respective pricing unit, either One Way or entire Round Trip journey.</p>
+                    <p>- During re-issuance / flight change, Fare value cannot be downgraded or refunded than original ticket price and any discounted amount shall be re-incurred as difference of fare. Any discounted or other facilitated tickets (EMI, Prize/Promo, Voucher etc.) are Non-Refundable and Non-Cashable.</p>
+                    <p>- Ancillary's charges / fees / taxes are Non-changeable, Non-refundable and Non-transferable.</p>
+                    <p>- US-Bangla Airlines will not guarantee / be liable / responsible for any onward or backward connection with other carrier due to any change of its schedule for any reason.</p>
+                    <p>- For further details, please visit: <span style="color:#005A9C;">www.usbair.com</span></p>
+                </div>
+
+                <div class="section-heading">Travel Itinerary</div>
+                <table class="bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 8%;">Flight</th>
+                            <th style="width: 8%;">Check-in</th>
+                            <th style="width: 14%;">From</th>
+                            <th style="width: 14%;">To</th>
+                            <th style="width: 11%;">Departure</th>
+                            <th style="width: 11%;">Arrival</th>
+                            <th style="width: 9%;">Departure terminal</th>
+                            <th style="width: 9%;">Arrival terminal</th>
+                            <th style="width: 8%;">Cabin</th>
+                            <th style="width: 6%;">Status</th>
+                            <th style="width: 11%;">Fleet Info</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view-flights-tbody"></tbody>
+                </table>
+
+                <div style="font-size: 7.5px; margin-bottom: 5px;">• <strong>Important Note:</strong> Require to submit necessary immigration arrival declaration before departure.</div>
+
+                <div class="section-heading">Baggage and Fare Details</div>
+                <table class="bordered">
+                    <thead>
+                        <tr>
+                            <th>Trip segment</th>
+                            <th>Pax. type</th>
+                            <th>Pax. name</th>
+                            <th>Bag.allowance</th>
+                            <th>Fare code</th>
+                            <th>Curr.</th>
+                            <th>Base fare</th>
+                            <th>Tax & s/c</th>
+                            <th>Tkt. fare</th>
+                            <th>Total fare</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view-baggage-tbody"></tbody>
+                </table>
+
+                <div class="section-heading">Fare Rules</div>
+                <table class="bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 14%;">Trip segment</th>
+                            <th style="width: 22%;">Fare validity</th>
+                            <th style="width: 32%;">Change fees **</th>
+                            <th style="width: 32%;">Refund fees **</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view-farerules-tbody"></tbody>
+                </table>
+
+                <div class="travel-notes-block" style="font-size: 6.8px;">
+                    <p><strong>Endorsement :</strong> Non-Endorsable / Non-Transferable / Non-Reroute able. Fare downgrade not allowed during re-issuance. In case of partial refund, same/higher RBD's One Way Fare with applicable charges applied. Valid on BS only.</p>
+                    <p>(*) Please note this is a total amount per passenger.</p>
+                    <p>(**) In the case of modification of several trips, the highest penalty on all trips will be applied.</p>
+                    <p><strong>Please note that if you do not show up for your outbound flight, your return flight will be canceled.</strong></p>
+                </div>
+            </div>
+
+            <div class="footer-agency">
+                Us-bangla Airlines : 77, Sohrawardi Avenue, Baridhara Diplomatic Zone, Dhaka - 1212, Bangladesh | E-mail: info@usbair.com | Hotline : 13605 | www.usbair.com
+            </div>
+        </div>
+
+        <div class="page" id="page2">
+            <div>
+                <div class="receipt-heading">Payment Receipt</div>
+                <div class="receipt-box">
+                    <div class="receipt-left">
+                        <div><strong>Payment mode</strong> &nbsp;&nbsp;&nbsp;: &nbsp;<span id="view-pay-mode">In account</span></div>
+                        <div><strong>Date of issue</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;<span id="view-issue-date">17-Apr-26 13:46 LT</span></div>
+                        <div><strong>Place of issue</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: &nbsp;<span id="view-agency">NZ World Tours &amp; Travels</span></div>
+                        <div><strong>Ticket issued by</strong> &nbsp;&nbsp;: &nbsp;<span></span></div>
+                    </div>
+                    <div class="receipt-right">
+                        <div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Base fare total amount</strong></span>
+                                <span><strong id="view-p2-base">71,920 BDT</strong></span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                                <span><strong>Tax &amp; surcharges total fees</strong></span>
+                                <span><strong id="view-p2-tax">13,563 BDT</strong></span>
+                            </div>
+                            <div class="tax-breakdown-text">
+                                BD : 500; UT : 4,000; OW : 2,500; P7 : 1,229; P8 : 1,229;<br>
+                                E5 : 443; YQ : 738; MY : 2,271; H8 : 31; G1 : 622;
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="total-fare-highlight">
+                                <span>Total ticket fare amount</span>
+                                <span id="view-p2-grand">85,483 BDT</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 9px; margin-top: 3px;">
+                                <span>Other fees*</span>
+                                <span>0 BDT</span>
+                            </div>
+                            <div style="font-size: 7.2px; color: #555; margin-top: 4px;">* not include in the total ticket fare amount</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-agency">
+                Us-bangla Airlines : 77, Sohrawardi Avenue, Baridhara Diplomatic Zone, Dhaka - 1212, Bangladesh | E-mail: info@usbair.com | Hotline : 13605 | www.usbair.com
+            </div>
+        </div>
+
+        <div class="page" id="page3">
+            <div>
+                <div class="terms-title">Terms and Conditions</div>
+                <table class="bordered" style="margin-bottom: 2px;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width: 25%;">Flight Type</th>
+                            <th colspan="2">Check-In Counter</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 37.5%;">Open</th>
+                            <th style="width: 37.5%;">Close</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: center;">International</td>
+                            <td style="text-align: center;">3 Hours Before Departure (STD)</td>
+                            <td style="text-align: center;">60 Minutes Before Departure (STD)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">Domestic</td>
+                            <td style="text-align: center;">1 Hour Before Departure (STD)</td>
+                            <td style="text-align: center;">30 Minutes Before Departure (STD)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="text-align: right; font-size: 6.2px; margin-bottom: 5px;">STD: Standard time of Departure</div>
+
+                <table class="bordered" style="margin-bottom: 6px;">
+                    <tbody>
+                        <tr>
+                            <td rowspan="3" style="width: 25%; font-weight: 700; background: #EDEDED; text-align: center;">
+                                Dimensions and Weights<br>of Baggage on<br>all ticket classes
+                            </td>
+                            <td rowspan="3" style="width: 15%; text-align: center; font-weight: 700;">Cabin Bag</td>
+                            <td style="width: 18%; text-align: center;">Boeing 737-800</td>
+                            <td>The sum of all dimensions (L+B+H) must not exceed 115 cm or 46 inches/ Max weight 7 kgs</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">Dash8-Q400</td>
+                            <td>The sum of all dimensions (L+B+H) must not exceed 72 cm or 28 inches/ Max weight 7 kgs</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">ATR 72-600</td>
+                            <td>The sum of all dimensions (L+B+H) must not exceed 72 cm or 28 inches/ Max weight 7 kgs</td>
+                        </tr>
+                        <tr>
+                            <td style="background: #EDEDED;"></td>
+                            <td style="text-align: center; font-weight: 700;">Check-in Bag</td>
+                            <td style="text-align: center;">All Fleets</td>
+                            <td>The sum of all dimensions (L+B+H) must not exceed 158 cm or 62 inches/ Max weight 30 kgs</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="terms-grid">
+                    <div>
+                        <p><strong>1.</strong> As used in this contract 'ticket' means this passenger ticket and baggage checks, or the itinerary/receipt if applicable, in the case of an electronic ticket, of which these conditions and the notices form part, 'carriage' is equivalent to 'transportation', 'carrier' means all air carriers that carry or undertake to carry you or your baggage under this ticket or perform any other service incidental to such air carriage, 'electronic ticket' means the Itinerary/Receipt issued by or on behalf of Carrier, the Electronic Coupons and, if applicable, a boarding document. 'We' or 'us' means US-BANGLA AIRLINES.</p>
+                        <p>'Warsaw Convention' means the Convention for the Unification of certain Rules Relating to International carriage by Air signed at Warsaw, 12th October 1929, or that convention as amended at The Hague, 28th September 1955, whichever may be applicable.</p>
+                        <p><strong>2.</strong> Baggage that has been checked during boarding will be delivered to the bearer of the baggage check. If your baggage is damaged or lost, you must report in writing to us immediately on arrival.</p>
+                        <p><strong>3.</strong> This ticket is good for carriage for 90 days for domestic travels and 180 days for international travels from the date of issue.</p>
+                        <p><strong>4.</strong> Times shown in timetables or elsewhere are not guaranteed and form no part of this contract. Schedules are subject to change without prior notice.</p>
+                        <p><strong>5.</strong> You are solely responsible for complying with all government travel requirements.</p>
+                        <p><strong>6.</strong> None of our agents, employees or representatives has the authority to alter, modify or waive any provision.</p>
+                        <p><strong>7.</strong> Liability for loss, delay or damage to baggage is strictly limited.</p>
+                        <p><strong>8. CABIN BAGGAGE ALLOWANCE</strong><br>Cabin baggage allowance strictly follows 7 Kg standard limitations.</p>
+                    </div>
+                    <div>
+                        <p><strong>9. GENERAL INFORMATION</strong><br>Please remember to lock your baggage to prevent pilferage.</p>
+                        <p><strong>10. IDENTIFICATION OF PASSENGERS</strong><br>Valid photo identification required at the time of check-in.</p>
+                        <p><strong>11. IMPORTANT CHANGE OF ITINERARY</strong><br>Please contact your ticketing agent or our reservations office.</p>
+                        <p><strong>12. IMPORTANT NOTICE REGARDING UNAUTHORIZED TICKETS</strong><br>US-BANGLA AIRLINES will not recognize tickets purchased from unauthorized sources.</p>
+                        <p><strong>13. REFUNDS</strong><br>Refunds will be processed as per airline policy.</p>
+                        <p><strong>14. CREDIT/DEBIT CARD PAYMENT</strong><br>Bank transaction policies apply.</p>
+                        <p><strong>15. IMPORTANT LABEL YOUR BAG</strong><br>Label all baggage inside and outside.</p>
+                        <p><strong>16. RIGHT TO REFUSE CARRIAGE</strong><br>Carrier reserves the right to refuse boarding for safety or behavioral reasons.</p>
+                    </div>
+                </div>
+
+                <div class="dangerous-goods-container">
+                    <strong>19. RESTRICTED AND DANGEROUS ARTICLES IN BAGGAGE</strong><br>
+                    <span style="font-size: 5.8px;">For safety reasons, dangerous goods as defined by IATA shall not be carried in baggage:</span>
+                    <div class="dangerous-goods-inner">
+                        <div class="dg-list">
+                            <ul>
+                                <li>Briefcases and attach cases with alarms</li>
+                                <li>Explosives, munitions, fireworks, flares & weapons</li>
+                                <li>Flammable, toxic and compressed gases</li>
+                                <li>Flammable liquids & fuels</li>
+                                <li>Oxidizing & radioactive substances</li>
+                                <li>Corrosives, acids & wet cell batteries</li>
+                            </ul>
+                        </div>
+                        <div class="dg-icons-grid">
+                            <div class="dg-card"><div class="dg-diamond"><span>💥</span></div><div class="dg-label">Explosives</div></div>
+                            <div class="dg-card"><div class="dg-diamond"><span>🔥</span></div><div class="dg-label">Flammable</div></div>
+                            <div class="dg-card"><div class="dg-diamond"><span>☢️</span></div><div class="dg-label">Radioactive</div></div>
+                            <div class="dg-card"><div class="dg-diamond"><span>🧯</span></div><div class="dg-label">Gases</div></div>
+                            <div class="dg-card"><div class="dg-diamond"><span>☠️</span></div><div class="dg-label">Toxic</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page3-footer-banner">
+                <img src="OIP.webp" alt="US-Bangla Airlines" class="footer-logo-img">
+                <div class="p3-tagline">HAVE A PLEASANT JOURNEY | BE WITH US</div>
+                <div class="p3-offices">
+                    <strong>SALES OFFICES:</strong> <strong>DHAKA:</strong> 01777777810-821, <strong>CHATTOGRAM:</strong> 01777777822-828, <strong>COX'S BAZAR:</strong> 01777777841-842, <strong>SYLHET:</strong> 01777777829-830, <strong>JASHORE:</strong> 01777777833-834
+                </div>
+                <div class="p3-contact-row">
+                    <span>✉️ reservation@usbair.com</span>
+                    <span>📞 Hotline: 13605 or 01777777800-806</span>
+                    <span>🌐 usbair.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var passengers = [{ title: "Mr.", name: "STALON PAUL CHOWDHURY SANDHY", ticket: "7792411798499", passport: "A11402911", contact: "327793000", type: "Adult(s)" }];
+    var flights = [
+        { flightNo: "BS315", fleet: "Airbus A330-300", from: "Dhaka, Bangladesh (DAC)", to: "Kuala Lumpur, Malaysia (KUL)", depDt: "2026-04-20T08:25", arrDt: "2026-04-20T14:20", terminals: "1 / M", baggage: "30 Kg", rbd: "VBDMY6M", baseFare: "29,506", taxFare: "10,270" },
+        { flightNo: "BS316", fleet: "Airbus A330-300", from: "Kuala Lumpur, Malaysia (KUL)", to: "Dhaka, Bangladesh (DAC)", depDt: "2026-05-15T15:50", arrDt: "2026-05-15T17:45", terminals: "M / 1", baggage: "35 Kg", rbd: "UBDMYR", baseFare: "42,414", taxFare: "3,293" }
+    ];
+
+    function toNum(val) { if(!val) return 0; return parseFloat(String(val).replace(/[^0-9.]/g, '')) || 0; }
+    function toFormat(num) { return Math.round(num).toLocaleString('en-US'); }
+
+    function formatISODateTime(isoStr) {
+        if(!isoStr) return { display: "<strong>-</strong><br>-", checkin: "-", validity: "-" };
+        var d = new Date(isoStr);
+        if(isNaN(d.getTime())) return { display: "<strong>-</strong><br>-", checkin: "-", validity: "-" };
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var day = ("0" + d.getDate()).slice(-2);
+        var month = months[d.getMonth()];
+        var year = String(d.getFullYear()).slice(-2);
+        var hours = ("0" + d.getHours()).slice(-2);
+        var mins = ("0" + d.getMinutes()).slice(-2);
+        var dateFormatted = day + "-" + month + "-" + year;
+        var timeFormatted = hours + ":" + mins;
+
+        var checkinDate = new Date(d.getTime() - (3 * 60 * 60 * 1000));
+        var checkinTime = ("0" + checkinDate.getHours()).slice(-2) + ":" + ("0" + checkinDate.getMinutes()).slice(-2);
+
+        return { display: "<strong>" + dateFormatted + "</strong><br>" + timeFormatted, checkin: checkinTime, validity: dateFormatted };
+    }
+
+    function extractCityAndCode(str) {
+        if(!str) return { city: "-", code: "---", full: "-" };
+        var match = str.match(/\((.*?)\)/);
+        var code = match ? match[1].toUpperCase() : str.substring(0, 3).toUpperCase();
+        var cityName = str.split(',')[0].trim();
+        return { city: cityName, code: code, full: cityName + " (" + code + ")" };
+    }
+
+    function clearFlightField(idx, fieldName, inputId) {
+        flights[idx][fieldName] = "";
+        var el = document.getElementById(inputId);
+        if(el) { el.value = ""; el.focus(); }
+        updateLive();
+    }
+
+    function renderPaxInputs() {
+        var container = document.getElementById('pax-input-container');
+        container.innerHTML = '';
+        passengers.forEach(function(pax, idx) {
+            var card = document.createElement('div');
+            card.className = 'dynamic-item-card';
+            card.innerHTML = `
+                ${passengers.length > 1 ? '<button type="button" class="btn-cross-delete" title="Delete Passenger" onclick="removePassenger(' + idx + ')">✖</button>' : ''}
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <select class="form-control" onchange="passengers[${idx}].title = this.value; updateLive();">
+                            <option value="Mr." ${pax.title === 'Mr.' ? 'selected' : ''}>Mr.</option>
+                            <option value="Ms." ${pax.title === 'Ms.' ? 'selected' : ''}>Ms.</option>
+                            <option value="Mrs." ${pax.title === 'Mrs.' ? 'selected' : ''}>Mrs.</option>
+                            <option value="Mstr." ${pax.title === 'Mstr.' ? 'selected' : ''}>Mstr.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Pax Type</label>
+                        <input type="text" class="form-control" value="${pax.type}" oninput="passengers[${idx}].type = this.value; updateLive();">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Passenger Name</label>
+                    <input type="text" class="form-control" value="${pax.name}" oninput="passengers[${idx}].name = this.value; updateLive();">
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Ticket No</label>
+                        <input type="text" class="form-control" value="${pax.ticket}" oninput="passengers[${idx}].ticket = this.value; updateLive();">
+                    </div>
+                    <div class="form-group">
+                        <label>Passport No</label>
+                        <input type="text" class="form-control" value="${pax.passport}" oninput="passengers[${idx}].passport = this.value; updateLive();">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function addPassenger() {
+        var baseTkt = toNum(passengers[passengers.length-1].ticket) + 1;
+        passengers.push({ title: "Mr.", name: "NEW PASSENGER", ticket: String(baseTkt || "7792411798500"), passport: "A" + Math.floor(10000000 + Math.random() * 90000000), contact: passengers[0].contact, type: "Adult(s)" });
+        renderPaxInputs();
+        updateLive();
+    }
+
+    function removePassenger(idx) {
+        if(passengers.length > 1) {
+            passengers.splice(idx, 1);
+            renderPaxInputs();
+            updateLive();
+        }
+    }
+
+    function renderFlightInputs() {
+        var container = document.getElementById('flight-input-container');
+        container.innerHTML = '';
+        flights.forEach(function(flt, idx) {
+            var card = document.createElement('div');
+            card.className = 'dynamic-item-card';
+            card.innerHTML = `
+                ${flights.length > 1 ? '<button type="button" class="btn-cross-delete" title="Delete Sector" onclick="removeFlight(' + idx + ')">✖</button>' : ''}
+                <div style="font-size: 11px; font-weight: 700; color: #005A9C; margin-bottom: 6px;">Sector ${idx+1}</div>
+                <div class="form-grid-2">
+                    <div class="form-group"><label>Flight No</label><input type="text" class="form-control" value="${flt.flightNo}" oninput="flights[${idx}].flightNo = this.value; updateLive();"></div>
+                    <div class="form-group"><label>Fleet / Aircraft</label><input type="text" class="form-control" value="${flt.fleet}" oninput="flights[${idx}].fleet = this.value; updateLive();"></div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group"><label>From (Origin)</label><div class="input-clear-wrapper"><input type="text" list="worldwide-airports" id="inp-flt-from-${idx}" class="form-control" value="${flt.from}" oninput="flights[${idx}].from = this.value; updateLive();"><button type="button" class="btn-field-clear" title="Clear Origin" onclick="clearFlightField(${idx}, 'from', 'inp-flt-from-${idx}')">✖</button></div></div>
+                    <div class="form-group"><label>To (Destination)</label><div class="input-clear-wrapper"><input type="text" list="worldwide-airports" id="inp-flt-to-${idx}" class="form-control" value="${flt.to}" oninput="flights[${idx}].to = this.value; updateLive();"><button type="button" class="btn-field-clear" title="Clear Destination" onclick="clearFlightField(${idx}, 'to', 'inp-flt-to-${idx}')">✖</button></div></div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group"><label>Departure DT</label><input type="datetime-local" class="form-control" value="${flt.depDt}" oninput="flights[${idx}].depDt = this.value; updateLive();"></div>
+                    <div class="form-group"><label>Arrival DT</label><input type="datetime-local" class="form-control" value="${flt.arrDt}" oninput="flights[${idx}].arrDt = this.value; updateLive();"></div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group"><label>Terminals (Dep/Arr)</label><input type="text" class="form-control" value="${flt.terminals}" oninput="flights[${idx}].terminals = this.value; updateLive();"></div>
+                    <div class="form-group"><label>Baggage</label><input type="text" class="form-control" value="${flt.baggage}" oninput="flights[${idx}].baggage = this.value; updateLive();"></div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group"><label>Base Fare (BDT)</label><input type="text" class="form-control" value="${flt.baseFare}" oninput="flights[${idx}].baseFare = this.value; updateLive();"></div>
+                    <div class="form-group"><label>Tax & S/C (BDT)</label><input type="text" class="form-control" value="${flt.taxFare}" oninput="flights[${idx}].taxFare = this.value; updateLive();"></div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function addFlight() {
+        var lastFlight = flights[flights.length-1];
+        flights.push({ flightNo: "BS" + (toNum(lastFlight ? lastFlight.flightNo : "315") + 1 || "317"), fleet: "Boeing 737-800", from: lastFlight ? lastFlight.to : "Dhaka, Bangladesh (DAC)", to: "Bangkok, Thailand (BKK)", depDt: "2026-06-01T10:00", arrDt: "2026-06-01T13:30", terminals: "1 / 1", baggage: "30 Kg", rbd: "VBDMY6M", baseFare: "25,000", taxFare: "5,000" });
+        renderFlightInputs();
+        updateLive();
+    }
+
+    function removeFlight(idx) {
+        if(flights.length > 1) {
+            flights.splice(idx, 1);
+            renderFlightInputs();
+            updateLive();
+        }
+    }
+
+    function updateLive() {
+        var pnr = document.getElementById('inp-pnr').value.trim();
+        var mainTkt = passengers[0] ? passengers[0].ticket : document.getElementById('inp-tkt-no').value.trim();
+
+        document.getElementById('view-pnr-top').innerText = pnr;
+        document.getElementById('view-barcode').innerText = pnr + mainTkt;
+
+        var paxTbody = document.getElementById('view-pax-tbody');
+        paxTbody.innerHTML = '';
+        passengers.forEach(function(pax) {
+            var tr = document.createElement('tr');
+            tr.innerHTML = `<td style="font-weight: 700; text-align: left;">${pax.title} ${pax.name}</td><td style="text-align: center;">${pax.ticket}</td><td style="text-align: center;"></td><td style="text-align: center;">${pax.type}</td><td style="text-align: center;">${pax.contact}</td><td style="text-align: center;">${pax.passport}</td>`;
+            paxTbody.appendChild(tr);
+        });
+
+        var flightsTbody = document.getElementById('view-flights-tbody');
+        flightsTbody.innerHTML = '';
+        flights.forEach(function(flt) {
+            var f_from = extractCityAndCode(flt.from);
+            var f_to = extractCityAndCode(flt.to);
+            var dep_dt = formatISODateTime(flt.depDt);
+            var arr_dt = formatISODateTime(flt.arrDt);
+            var terms = (flt.terminals || "1 / M").split('/');
+
+            var tr = document.createElement('tr');
+            tr.innerHTML = `<td style="font-weight: 700; font-size: 9.5px; text-align: center;">${flt.flightNo}</td><td style="text-align: center;">${dep_dt.checkin}</td><td>${f_from.full}</td><td>${f_to.full}</td><td style="text-align: center;">${dep_dt.display}</td><td style="text-align: center;">${arr_dt.display}</td><td style="text-align: center;">${terms[0] ? terms[0].trim() : '1'}</td><td style="text-align: center;">${terms[1] ? terms[1].trim() : 'M'}</td><td style="text-align: center;">Economy</td><td style="text-align: center;">OK</td><td style="text-align: center;">${flt.fleet}<br>Non stop</td>`;
+            flightsTbody.appendChild(tr);
+        });
+
+        var bagTbody = document.getElementById('view-baggage-tbody');
+        bagTbody.innerHTML = '';
+        var totalBaseAll = 0, totalTaxAll = 0, grandTotalAll = 0;
+
+        passengers.forEach(function(pax) {
+            flights.forEach(function(flt) {
+                var f_from = extractCityAndCode(flt.from);
+                var f_to = extractCityAndCode(flt.to);
+                var route = f_from.code + " ➔ " + f_to.code;
+                var b = toNum(flt.baseFare);
+                var t = toNum(flt.taxFare);
+                var tot = b + t;
+
+                totalBaseAll += b; totalTaxAll += t; grandTotalAll += tot;
+
+                var tr = document.createElement('tr');
+                tr.innerHTML = `<td style="text-align: center;">${route}</td><td style="text-align: center;">${pax.type}</td><td>${pax.name}</td><td style="text-align: center; font-weight: 700;">${flt.baggage}</td><td style="text-align: center;">${flt.rbd || 'VBDMY6M'}</td><td style="text-align: center;">BDT</td><td style="text-align: right;">${toFormat(b)}</td><td style="text-align: right;">${toFormat(t)}</td><td style="text-align: right;">${toFormat(tot)}</td><td style="text-align: right;">${toFormat(tot)}</td>`;
+                bagTbody.appendChild(tr);
+            });
+        });
+
+        var trTotal = document.createElement('tr');
+        trTotal.innerHTML = `<td colspan="9" style="text-align: right; font-weight: 700;">Total amount</td><td style="text-align: right; font-weight: 700;">${toFormat(grandTotalAll)}</td>`;
+        bagTbody.appendChild(trTotal);
+
+        var rulesTbody = document.getElementById('view-farerules-tbody');
+        rulesTbody.innerHTML = '';
+        flights.forEach(function(flt) {
+            var f_from = extractCityAndCode(flt.from);
+            var f_to = extractCityAndCode(flt.to);
+            var route = f_from.code + " ➔ " + f_to.code;
+            var dep_dt = formatISODateTime(flt.depDt);
+            var arr_dt = formatISODateTime(flt.arrDt);
+
+            var tr = document.createElement('tr');
+            tr.innerHTML = `<td style="text-align: center;">${route}</td><td style="text-align: center; font-size: 7px;">Not valid before ${dep_dt.validity}<br>Not valid after ${arr_dt.validity}</td><td style="font-size: 7px;">Before 24h: 6,147 BDT<br>Within 24h: 9,835 BDT<br>No-show: 15,982 BDT</td><td style="font-size: 7px;">Before 24h: 12,294 BDT<br>Within 24h: 18,441 BDT<br>No-show: 24,588 BDT</td>`;
+            rulesTbody.appendChild(tr);
+        });
+
+        document.getElementById('view-p2-base').innerText = toFormat(totalBaseAll) + " BDT";
+        document.getElementById('view-p2-tax').innerText = toFormat(totalTaxAll) + " BDT";
+        document.getElementById('view-p2-grand').innerText = toFormat(grandTotalAll) + " BDT";
+        document.getElementById('view-agency').innerText = document.getElementById('inp-agency').value;
+        document.getElementById('view-issue-date').innerText = document.getElementById('inp-issue-date').value;
+        document.getElementById('view-pay-mode').innerText = document.getElementById('inp-pay-mode').value;
+    }
+
+    function printAllPages() { window.print(); }
+</script>
+</body>
+</html>
+    </textarea>
+
+    <!-- CORE LOGIC & ROUTER SCRIPT -->
+    <script>
+        let currentActiveModule = 'receipt';
+
+        // AUTHENTICATION LOGIC
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -1595,7 +2646,7 @@
             users[u] = { email: email, hash: pHash };
             saveUsers(users);
 
-            showAlert("Account created successfully with Email Encryption!", true);
+            showAlert("Account created successfully!", true);
             setTimeout(() => {
                 sessionStorage.setItem('current_user', u);
                 checkAuth();
@@ -1617,6 +2668,7 @@
                 appContainer.classList.remove('hidden');
                 appContainer.classList.add('flex');
                 document.getElementById('currentLoggedUser').innerText = currentUser;
+                loadIsolatedModules();
                 autoScaleInvoice();
             } else {
                 authScreen.classList.remove('hidden');
@@ -1625,40 +2677,139 @@
             }
         }
 
-        // ================= MODULE SWITCHER =================
+        // LOAD BATIK AIR & US-BANGLA FRAMES
+        function loadIsolatedModules() {
+            const frameBatik = document.getElementById('frameBatik');
+            if (frameBatik && !frameBatik.dataset.loaded) {
+                const doc = frameBatik.contentWindow.document;
+                doc.open();
+                doc.write(document.getElementById('src-batik').value);
+                doc.close();
+                frameBatik.dataset.loaded = "true";
+            }
+
+            const frameUS = document.getElementById('frameUSBangla');
+            if (frameUS && !frameUS.dataset.loaded) {
+                const doc = frameUS.contentWindow.document;
+                doc.open();
+                doc.write(document.getElementById('src-usbangla').value);
+                doc.close();
+                frameUS.dataset.loaded = "true";
+            }
+        }
+
+        // 4-MODULE SWITCHER
         function switchAppModule(mod) {
+            currentActiveModule = mod;
             const recMod = document.getElementById('moduleReceipt');
             const tickMod = document.getElementById('moduleTicket');
+            const batikMod = document.getElementById('moduleBatik');
+            const usMod = document.getElementById('moduleUSBangla');
+
             const recBtn = document.getElementById('modReceiptBtn');
             const tickBtn = document.getElementById('modTicketBtn');
+            const batikBtn = document.getElementById('modBatikBtn');
+            const usBtn = document.getElementById('modUSBtn');
+
+            const allMods = [recMod, tickMod, batikMod, usMod];
+            const allBtns = [recBtn, tickBtn, batikBtn, usBtn];
+
+            allMods.forEach(m => { m.classList.add('hidden'); m.classList.remove('block'); });
+            allBtns.forEach(b => { 
+                b.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+            });
+
+            document.body.classList.remove('print-receipt', 'print-ticket');
 
             if (mod === 'receipt') {
-                document.body.classList.remove('print-ticket');
                 document.body.classList.add('print-receipt');
-
                 recMod.classList.remove('hidden');
                 recMod.classList.add('block');
-                tickMod.classList.add('hidden');
-                tickMod.classList.remove('block');
-
-                recBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
-                tickBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+                recBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
                 setTimeout(autoScaleInvoice, 50);
-            } else {
-                document.body.classList.remove('print-receipt');
+            } else if (mod === 'ticket') {
                 document.body.classList.add('print-ticket');
-
-                recMod.classList.add('hidden');
-                recMod.classList.remove('block');
                 tickMod.classList.remove('hidden');
                 tickMod.classList.add('block');
+                tickBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
+            } else if (mod === 'batik') {
+                batikMod.classList.remove('hidden');
+                batikMod.classList.add('block');
+                batikBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-600 text-white transition flex items-center gap-1.5 shadow";
+            } else if (mod === 'usbangla') {
+                usMod.classList.remove('hidden');
+                usMod.classList.add('block');
+                usBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white transition flex items-center gap-1.5 shadow";
+            }
+        }
 
-                tickBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow";
-                recBtn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+        function handleActivePrint() {
+            if (currentActiveModule === 'receipt' || currentActiveModule === 'ticket') {
+                window.print();
+            } else if (currentActiveModule === 'batik') {
+                document.getElementById('frameBatik').contentWindow.print();
+            } else if (currentActiveModule === 'usbangla') {
+                document.getElementById('frameUSBangla').contentWindow.print();
             }
         }
 
         // ================= MODULE 1: INVOICE / RECEIPT GENERATOR =================
+        const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        function getFormattedDate(d, formatType = 'full') {
+            const dayName = daysShort[d.getDay()];
+            const dayNum = String(d.getDate()).padStart(2, '0');
+            const month = monthsShort[d.getMonth()];
+            const year = d.getFullYear();
+            const shortYear = String(year).slice(-2);
+
+            if (formatType === 'full') return `${dayNum} ${month} ${year}`;
+            if (formatType === 'short') return `${dayNum} ${month} ${shortYear}`;
+            if (formatType === 'flight') return `${dayName} ${dayNum} ${month}, ${year}`;
+            if (formatType === 'issued_full') {
+                let hours = d.getHours();
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                return `${dayNum} ${month} ${year} ${hours}:${minutes} ${ampm}`;
+            }
+            return `${dayNum} ${month} ${year}`;
+        }
+
+        function toPickerDatetimeValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
+        function toPickerDateValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+        }
+
+        function formatPickerDateTime(isoString) {
+            if (!isoString) return { dateStr: "", timeStr: "" };
+            const d = new Date(isoString);
+            if (isNaN(d.getTime())) return { dateStr: "", timeStr: "" };
+            
+            const dayName = daysShort[d.getDay()];
+            const dayNum = String(d.getDate()).padStart(2, '0');
+            const month = monthsShort[d.getMonth()];
+            const year = d.getFullYear();
+            
+            let hours = d.getHours();
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            return {
+                dateStr: `${dayName} ${dayNum} ${month}, ${year}`,
+                timeStr: `${hours}:${minutes} ${ampm}`
+            };
+        }
+
         let receiptPassengers = [];
 
         function autoScaleInvoice() {
@@ -1913,7 +3064,6 @@
         ];
         let flightLegs = [];
 
-        // AIRLINE LOGO RESOLVER (CLEAN AIRLINE NAME SUPPORT)
         function getAirlineOfficialLogo(airlineText, flightNoText) {
             const rawAirline = (airlineText || "").toLowerCase().trim();
             const rawFlightNo = (flightNoText || "").toUpperCase().trim();
@@ -1971,7 +3121,6 @@
             return "";
         }
 
-        // Helper to strip any model names inside brackets if present
         function cleanAirlineName(str) {
             if (!str) return "";
             return str.replace(/\s*\([^)]*\)/g, '').trim();
@@ -1982,28 +3131,24 @@
             const issuedStr = getFormattedDate(now, 'issued_full');
             document.getElementById('in_issue_date_ticket').value = issuedStr;
 
-            // Leg 1 Outbound
             const d1Dep = new Date();
             d1Dep.setDate(now.getDate() + 5);
             d1Dep.setHours(10, 0, 0, 0);
             const d1Arr = new Date(d1Dep);
             d1Arr.setHours(11, 10, 0, 0);
 
-            // Leg 2 Outbound Connection
             const d2Dep = new Date(d1Dep);
             d2Dep.setHours(23, 0, 0, 0);
             const d2Arr = new Date(d1Dep);
             d2Arr.setDate(d2Arr.getDate() + 1);
             d2Arr.setHours(0, 55, 0, 0);
 
-            // Leg 3 Return
             const d3Dep = new Date(d1Dep);
             d3Dep.setDate(d3Dep.getDate() + 25);
             d3Dep.setHours(12, 15, 0, 0);
             const d3Arr = new Date(d3Dep);
             d3Arr.setHours(18, 15, 0, 0);
 
-            // Leg 4 Return Connection
             const d4Dep = new Date(d3Dep);
             d4Dep.setDate(d4Dep.getDate() + 1);
             d4Dep.setHours(8, 15, 0, 0);
@@ -2092,7 +3237,7 @@
             if (!depISO || !arrISO) return "";
             const dep = new Date(depISO);
             const arr = new Date(arrISO);
-            if (!isNaN(dep.getTime()) && !isNaN(arr.getTime())) {
+            if (!isNaN(dep.getTime())) {
                 let diffMs = arr.getTime() - dep.getTime();
                 if (diffMs < 0) {
                     diffMs += 24 * 60 * 60 * 1000;
@@ -2139,7 +3284,6 @@
         }
 
         function renderInputs() {
-            // Passenger inputs
             const pContainer = document.getElementById('passenger_list_inputs');
             pContainer.innerHTML = '';
             passengers.forEach((p, idx) => {
@@ -2171,7 +3315,6 @@
                 `;
             });
 
-            // Flight Legs inputs
             const fContainer = document.getElementById('flight_legs_inputs');
             fContainer.innerHTML = '';
             for (let i = 0; i < totalLegs; i++) {
@@ -2329,7 +3472,6 @@
             document.getElementById('out_agent_address').innerHTML = document.getElementById('in_agent_address').value.replace(/\n/g, '<br>');
             document.getElementById('out_issue_date_ticket').innerText = document.getElementById('in_issue_date_ticket').value;
 
-            // Passengers Table
             const pTable = document.getElementById('out_ticket_passenger_table');
             pTable.innerHTML = '';
             passengers.forEach(p => {
@@ -2342,7 +3484,6 @@
                 `;
             });
 
-            // Itinerary Table
             const iTable = document.getElementById('out_itinerary_table');
             const bGrid = document.getElementById('out_baggage_grid');
             iTable.innerHTML = '';
@@ -2353,7 +3494,6 @@
                 const depFormatted = formatPickerDateTime(leg.depDateTime);
                 const arrFormatted = formatPickerDateTime(leg.arrDateTime);
 
-                // Auto Real Airline Logo Resolver
                 const logoUrl = getAirlineOfficialLogo(leg.airline, leg.flightNo);
                 const logoHtml = logoUrl ? 
                     `<div class="airline-logo-thumb"><img src="${logoUrl}" alt="logo" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fa-solid fa-plane text-[#0b25b7] text-xs\\'></i>';"></div>` : 
@@ -2391,7 +3531,6 @@
                 if (i === 0 && totalLegs >= 2) {
                     const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
                     const calculatedTime1 = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
-                    
                     const badge1 = document.getElementById('badge_transit_1');
                     if (badge1) badge1.innerText = calculatedTime1;
 
