@@ -317,7 +317,6 @@
         }
 
         .airticket-module-root .btn-primary-ticket { background: #0b25b7; color: white; }
-        .airticket-module-root .btn-save-ticket { background: #0d9488; color: white; }
         .airticket-module-root .btn-print-ticket { background: #15803d; color: white; }
 
         /* TICKET PREVIEW CARD */
@@ -749,37 +748,35 @@
     </datalist>
 
     <datalist id="global_airlines_models">
-        <option value="Batik Air (Boeing 737-800)">Batik Air (Boeing 737-800)</option>
-        <option value="Batik Air (Boeing 737 MAX 8)">Batik Air (Boeing 737 MAX 8)</option>
-        <option value="Batik Air (Airbus A320-200)">Batik Air (Airbus A320-200)</option>
-        <option value="Batik Air (Airbus A330-300)">Batik Air (Airbus A330-300)</option>
-        <option value="Malaysia Airlines (Boeing 737-800)">Malaysia Airlines (Boeing 737-800)</option>
-        <option value="Malaysia Airlines (Airbus A330-300)">Malaysia Airlines (Airbus A330-300)</option>
-        <option value="Malaysia Airlines (Airbus A350-900)">Malaysia Airlines (Airbus A350-900)</option>
-        <option value="Biman Bangladesh Airlines (Boeing 787-9 Dreamliner)">Biman Bangladesh (B787-9)</option>
-        <option value="Biman Bangladesh Airlines (Boeing 777-300ER)">Biman Bangladesh (B777-300ER)</option>
-        <option value="US-Bangla Airlines (Airbus A330-300)">US-Bangla Airlines (A330-300)</option>
-        <option value="US-Bangla Airlines (Boeing 737-800)">US-Bangla Airlines (B737-800)</option>
-        <option value="Air Astra (ATR 72-600)">Air Astra (ATR 72-600)</option>
-        <option value="Novoair (ATR 72-500)">Novoair (ATR 72-500)</option>
-        <option value="Emirates (Airbus A380-800)">Emirates (A380-800)</option>
-        <option value="Emirates (Boeing 777-300ER)">Emirates (B777-300ER)</option>
-        <option value="Qatar Airways (Airbus A350-1000)">Qatar Airways (A350-1000)</option>
-        <option value="Qatar Airways (Boeing 787-9)">Qatar Airways (B787-9)</option>
-        <option value="Saudia Airlines (Boeing 777-300ER)">Saudia (B777-300ER)</option>
-        <option value="Saudia Airlines (Airbus A330-300)">Saudia (A330-300)</option>
-        <option value="Singapore Airlines (Airbus A350-900)">Singapore Airlines (A350-900)</option>
-        <option value="Singapore Airlines (Boeing 787-10)">Singapore Airlines (B787-10)</option>
-        <option value="Thai Airways (Airbus A350-900)">Thai Airways (A350-900)</option>
-        <option value="flydubai (Boeing 737 MAX 8)">flydubai (B737 MAX 8)</option>
-        <option value="Air Arabia (Airbus A320-200)">Air Arabia (A320-200)</option>
-        <option value="IndiGo (Airbus A321neo)">IndiGo (A321neo)</option>
-        <option value="Turkish Airlines (Boeing 787-9)">Turkish Airlines (B787-9)</option>
-        <option value="Kuwait Airways (Boeing 777-300ER)">Kuwait Airways (B777-300ER)</option>
-        <option value="Oman Air (Boeing 787-9 Dreamliner)">Oman Air (B787-9)</option>
-        <option value="Gulf Air (Boeing 787-9 Dreamliner)">Gulf Air (B787-9)</option>
-        <option value="AirAsia (Airbus A320neo)">AirAsia (A320neo)</option>
-        <option value="British Airways (Boeing 777-200)">British Airways (B777-200)</option>
+        <option value="Batik Air">Batik Air</option>
+        <option value="Malaysia Airlines">Malaysia Airlines</option>
+        <option value="Biman Bangladesh Airlines">Biman Bangladesh Airlines</option>
+        <option value="US-Bangla Airlines">US-Bangla Airlines</option>
+        <option value="Air Astra">Air Astra</option>
+        <option value="Novoair">Novoair</option>
+        <option value="Emirates">Emirates</option>
+        <option value="Qatar Airways">Qatar Airways</option>
+        <option value="Saudia Airlines">Saudia Airlines</option>
+        <option value="Singapore Airlines">Singapore Airlines</option>
+        <option value="Thai Airways">Thai Airways</option>
+        <option value="flydubai">flydubai</option>
+        <option value="Air Arabia">Air Arabia</option>
+        <option value="IndiGo">IndiGo</option>
+        <option value="Turkish Airlines">Turkish Airlines</option>
+        <option value="Kuwait Airways">Kuwait Airways</option>
+        <option value="Oman Air">Oman Air</option>
+        <option value="Gulf Air">Gulf Air</option>
+        <option value="AirAsia">AirAsia</option>
+        <option value="British Airways">British Airways</option>
+        <option value="Etihad Airways">Etihad Airways</option>
+        <option value="SriLankan Airlines">SriLankan Airlines</option>
+        <option value="Cathay Pacific">Cathay Pacific</option>
+        <option value="Air India">Air India</option>
+        <option value="Vistara">Vistara</option>
+        <option value="Scoot">Scoot</option>
+        <option value="Flynas">Flynas</option>
+        <option value="Jazeera Airways">Jazeera Airways</option>
+        <option value="SalamAir">SalamAir</option>
     </datalist>
 
     <div id="authScreen" class="fixed inset-0 z-[999] bg-slate-950 flex items-center justify-center p-4 overflow-y-auto">
@@ -916,10 +913,6 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <button onclick="saveAndDownloadFullData()" class="text-xs bg-teal-600 hover:bg-teal-700 text-white font-semibold px-3 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Save / Download Data</span>
-                </button>
                 <button onclick="window.print()" class="text-xs bg-[#173a8a] hover:bg-blue-700 text-white font-semibold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center gap-1.5 transition active:scale-95">
                     <i class="fa-solid fa-print"></i>
                     <span>Print / Save PDF</span>
@@ -1268,9 +1261,6 @@
                     <button type="button" id="btnUpdateTicket" class="btn-ticket btn-primary-ticket" onclick="triggerUpdateTicket()">
                         <i class="fa-solid fa-rotate"></i> Update Ticket
                     </button>
-                    <button type="button" class="btn-ticket btn-save-ticket" onclick="saveAndDownloadFullData()">
-                        <i class="fa-solid fa-download"></i> Save / Download Data
-                    </button>
                     <button class="btn-ticket btn-print-ticket" onclick="window.print()">
                         <i class="fa-solid fa-print"></i> Print / Save PDF
                     </button>
@@ -1321,7 +1311,7 @@
                     <table class="itinerary-table">
                         <thead>
                             <tr>
-                                <th style="width: 27%;">FLIGHT & AIRCRAFT</th>
+                                <th style="width: 27%;">AIRLINE</th>
                                 <th style="width: 12%;">AIRLINE PNR</th>
                                 <th style="width: 25%;">DEPARTURE</th>
                                 <th style="width: 11%; text-align: center;">DURATION</th>
@@ -1923,7 +1913,7 @@
         ];
         let flightLegs = [];
 
-        // AIRLINE LOGO RESOLVER (ACCURATE MAPPING & EXTRACTION)
+        // AIRLINE LOGO RESOLVER (CLEAN AIRLINE NAME SUPPORT)
         function getAirlineOfficialLogo(airlineText, flightNoText) {
             const rawAirline = (airlineText || "").toLowerCase().trim();
             const rawFlightNo = (flightNoText || "").toUpperCase().trim();
@@ -1981,6 +1971,12 @@
             return "";
         }
 
+        // Helper to strip any model names inside brackets if present
+        function cleanAirlineName(str) {
+            if (!str) return "";
+            return str.replace(/\s*\([^)]*\)/g, '').trim();
+        }
+
         function initAutomatedFlightLegs() {
             const now = new Date();
             const issuedStr = getFormattedDate(now, 'issued_full');
@@ -2016,7 +2012,7 @@
 
             flightLegs = [
                 {
-                    airline: "Batik Air (Boeing 737-800)",
+                    airline: "Batik Air",
                     flightNo: "OD-162",
                     flightClass: "Economy",
                     pnr: "F6XKZ4",
@@ -2029,7 +2025,7 @@
                     cabin: "Up to 7 KG"
                 },
                 {
-                    airline: "Batik Air (Boeing 737 MAX 8)",
+                    airline: "Batik Air",
                     flightNo: "OD-165",
                     flightClass: "Economy",
                     pnr: "F6XKZ4",
@@ -2042,7 +2038,7 @@
                     cabin: "Up to 7 KG"
                 },
                 {
-                    airline: "Malaysia Airlines (Airbus A330-300)",
+                    airline: "Malaysia Airlines",
                     flightNo: "MH-103",
                     flightClass: "Economy",
                     pnr: "F6XKZ4",
@@ -2055,7 +2051,7 @@
                     cabin: "Up to 7 KG"
                 },
                 {
-                    airline: "Malaysia Airlines (Boeing 737-800)",
+                    airline: "Malaysia Airlines",
                     flightNo: "MH-1384",
                     flightClass: "Economy",
                     pnr: "F6XKZ4",
@@ -2129,7 +2125,7 @@
             if (!arrISO || !nextDepISO) return "Connection";
             const arr = new Date(arrISO);
             const dep = new Date(nextDepISO);
-            if (!isNaN(arr.getTime()) && !isNaN(dep.getTime())) {
+            if (!isNaN(arr.getTime())) {
                 let diffMs = dep.getTime() - arr.getTime();
                 if (diffMs < 0) {
                     diffMs += 24 * 60 * 60 * 1000;
@@ -2187,9 +2183,9 @@
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Airline & Aircraft Model</label>
+                            <label>Airline Name</label>
                             <div class="input-clear-wrap">
-                                <input type="text" id="fl_al_${i}" list="global_airlines_models" value="${leg.airline}" placeholder="Search Airline / Model..." 
+                                <input type="text" id="fl_al_${i}" list="global_airlines_models" value="${cleanAirlineName(leg.airline)}" placeholder="Search Airline..." 
                                     onclick="this.select()" 
                                     oninput="flightLegs[${i}].airline = this.value; renderTicket();">
                                 <button type="button" class="clear-btn" title="Clear Field" onclick="clearAirportField(${i}, 'airline', 'fl_al_${i}')">✕</button>
@@ -2294,7 +2290,7 @@
                 const chk = document.getElementById(`fl_chk_${i}`);
                 const cab = document.getElementById(`fl_cab_${i}`);
 
-                if (al) leg.airline = al.value;
+                if (al) leg.airline = cleanAirlineName(al.value);
                 if (no) leg.flightNo = no.value;
                 if (cls) leg.flightClass = cls.value;
                 if (pnr) leg.pnr = pnr.value;
@@ -2363,13 +2359,15 @@
                     `<div class="airline-logo-thumb"><img src="${logoUrl}" alt="logo" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\\'fa-solid fa-plane text-[#0b25b7] text-xs\\'></i>';"></div>` : 
                     `<div class="airline-logo-thumb"><i class="fa-solid fa-plane text-[#0b25b7] text-xs"></i></div>`;
 
+                const cleanName = cleanAirlineName(leg.airline);
+
                 iTable.innerHTML += `
                     <tr>
                         <td>
                             <div class="flight-carrier-box">
                                 ${logoHtml}
                                 <div class="flight-carrier">
-                                    <strong>${leg.airline}</strong>
+                                    <strong>${cleanName}</strong>
                                     <span>${leg.flightNo} • ${leg.flightClass}</span>
                                 </div>
                             </div>
@@ -2466,45 +2464,6 @@
                 };
                 reader.readAsDataURL(file);
             }
-        }
-
-        // ================= SAVE / DOWNLOAD DATA SYSTEM =================
-        function saveAndDownloadFullData() {
-            const allData = {
-                receiptData: {
-                    company: document.getElementById('in_company').value,
-                    address: document.getElementById('in_address').value,
-                    tel: document.getElementById('in_tel').value,
-                    email: document.getElementById('in_email').value,
-                    branch: document.getElementById('in_branch').value,
-                    submissionDate: document.getElementById('in_sub_date').value,
-                    receiptNumber: document.getElementById('in_receipt').value,
-                    status: document.getElementById('in_status').value,
-                    reference: document.getElementById('in_ref').value,
-                    currency: document.getElementById('in_currency').value,
-                    issueDate: document.getElementById('in_issue_date_rec').value,
-                    flightDate: document.getElementById('in_flight_date').value,
-                    ancillary: document.getElementById('in_ancillary').value,
-                    passengers: receiptPassengers
-                },
-                ticketData: {
-                    agencyName: document.getElementById('in_agent_name').value,
-                    agencyEmail: document.getElementById('in_agent_email').value,
-                    agencyAddress: document.getElementById('in_agent_address').value,
-                    issueDate: document.getElementById('in_issue_date_ticket').value,
-                    totalLegs: totalLegs,
-                    passengers: passengers,
-                    flightLegs: flightLegs
-                },
-                exportedAt: new Date().toISOString()
-            };
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `Lasker_Portal_Backup_${Date.now()}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
         }
 
         // Initialize on load
