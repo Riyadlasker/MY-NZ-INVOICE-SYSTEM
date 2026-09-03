@@ -229,7 +229,6 @@
             color: #ffffff;
         }
 
-        /* PASSENGER CARD BOX STYLES */
         .airticket-module-root .passenger-card-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -624,7 +623,6 @@
             line-height: 1.4;
         }
 
-        /* IFRAME WRAPPERS */
         .external-module-frame {
             width: 100%;
             height: calc(100vh - 60px);
@@ -632,7 +630,6 @@
             display: block;
         }
 
-        /* PRINT RULES */
         @media print {
             .no-print {
                 display: none !important;
@@ -646,7 +643,8 @@
 
             body.print-receipt #moduleTicket,
             body.print-receipt #moduleBatik,
-            body.print-receipt #moduleUSBangla {
+            body.print-receipt #moduleUSBangla,
+            body.print-receipt #moduleMalaysia {
                 display: none !important;
             }
             body.print-receipt #moduleReceipt {
@@ -687,7 +685,8 @@
 
             body.print-ticket #moduleReceipt,
             body.print-ticket #moduleBatik,
-            body.print-ticket #moduleUSBangla {
+            body.print-ticket #moduleUSBangla,
+            body.print-ticket #moduleMalaysia {
                 display: none !important;
             }
             body.print-ticket #moduleTicket {
@@ -902,7 +901,7 @@
     <!-- AUTHENTICATED APP CONTAINER -->
     <div id="appContainer" class="hidden flex-col flex-1">
         
-        <!-- HEADER WITH ALL 4 HUBS -->
+        <!-- HEADER WITH ALL 5 HUBS -->
         <header class="bg-slate-900/95 border-b border-slate-800 text-white px-4 md:px-6 py-2.5 sticky top-0 z-50 flex flex-wrap justify-between items-center no-print backdrop-blur-md gap-2">
             <div class="flex items-center space-x-3">
                 <div class="h-9 w-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center font-bold text-white shadow-md text-sm">
@@ -917,7 +916,7 @@
                 </div>
             </div>
 
-            <!-- MODULE SELECTOR (4 TABS) -->
+            <!-- MODULE SELECTOR (5 TABS) -->
             <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap gap-1">
                 <button id="modReceiptBtn" onclick="switchAppModule('receipt')" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5 shadow">
                     <span>📄</span> Receipt
@@ -930,6 +929,9 @@
                 </button>
                 <button id="modUSBtn" onclick="switchAppModule('usbangla')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
                     <span>🔵</span> US-Bangla
+                </button>
+                <button id="modMalaysiaBtn" onclick="switchAppModule('malaysia')" class="px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+                    <span>🔵</span> Malaysia Airlines
                 </button>
             </div>
 
@@ -1386,14 +1388,19 @@
             </div>
         </div>
 
-        <!-- MODULE 3: BATIK AIR GENERATOR (EMBEDDED IN SECURE CONTAINER) -->
+        <!-- MODULE 3: BATIK AIR GENERATOR -->
         <div id="moduleBatik" class="hidden w-full flex-1 bg-[#eef2f7]">
             <iframe id="frameBatik" class="external-module-frame"></iframe>
         </div>
 
-        <!-- MODULE 4: US-BANGLA AIRLINES (EMBEDDED IN SECURE CONTAINER) -->
+        <!-- MODULE 4: US-BANGLA AIRLINES -->
         <div id="moduleUSBangla" class="hidden w-full flex-1 bg-[#1e293b]">
             <iframe id="frameUSBangla" class="external-module-frame"></iframe>
+        </div>
+
+        <!-- MODULE 5: MALAYSIA AIRLINES -->
+        <div id="moduleMalaysia" class="hidden w-full flex-1 bg-[#1e293b]">
+            <iframe id="frameMalaysia" class="external-module-frame"></iframe>
         </div>
 
     </div>
@@ -2475,11 +2482,564 @@
 </html>
     </textarea>
 
+    <textarea id="src-malaysia" style="display:none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaysia Airlines - Official Border Format E-Ticket</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        body { background-color: #334155; color: #333333; min-height: 100vh; }
+        .app-layout { display: flex; height: 100vh; overflow: hidden; }
+        .sidebar-panel { width: 440px; min-width: 440px; background: #ffffff; border-right: 1px solid #cbd5e1; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.2); z-index: 50; }
+        .panel-header { padding: 16px 20px; background: #1D4478; color: #ffffff; display: flex; justify-content: space-between; align-items: center; }
+        .panel-header h2 { font-size: 15px; font-weight: 800; }
+        .sidebar-scroll { padding: 16px 18px; overflow-y: auto; flex: 1; }
+        .form-section { margin-bottom: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; }
+        .form-section-title { font-size: 11.5px; font-weight: 800; color: #1D4478; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .form-group { margin-bottom: 8px; }
+        .form-group label { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: 700; color: #475569; margin-bottom: 3px; }
+        .form-control { width: 100%; padding: 7px 9px; font-size: 11.5px; border: 1px solid #cbd5e1; border-radius: 5px; background: #ffffff; color: #0f172a; outline: none; }
+        .form-control:focus { border-color: #0073BA; box-shadow: 0 0 0 2px rgba(0, 115, 186, 0.15); }
+        .btn-auto-mini { background: #e0f2fe; color: #0284c7; border: none; padding: 1px 5px; font-size: 9.5px; font-weight: 700; border-radius: 3px; cursor: pointer; }
+        .btn-auto-mini:hover { background: #bae6fd; }
+        .dynamic-item-card { background: #ffffff; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; margin-bottom: 10px; position: relative; }
+        .btn-cross-delete { position: absolute; top: 6px; right: 6px; background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-cross-delete:hover { background: #dc2626; color: #ffffff; }
+        .btn-add-item { background: #e0f2fe; color: #0369a1; border: 1px dashed #0284c7; padding: 7px 10px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 4px; transition: 0.2s; }
+        .btn-add-item:hover { background: #bae6fd; }
+        .input-clear-wrapper { position: relative; display: flex; align-items: center; }
+        .input-clear-wrapper .form-control { padding-right: 26px; }
+        .btn-field-clear { position: absolute; right: 6px; background: none; border: none; color: #94a3b8; font-size: 13px; font-weight: bold; cursor: pointer; padding: 2px 4px; border-radius: 3px; line-height: 1; }
+        .btn-field-clear:hover { color: #ef4444; background: #fee2e2; }
+        .btn-action-bar { padding: 14px 18px; background: #ffffff; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 11px; font-size: 13.5px; font-weight: 700; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-primary { background: #0073BA; color: #ffffff; }
+        .btn-primary:hover { background: #005a91; }
+        .preview-workspace { flex: 1; overflow-y: auto; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; background-color: #475569; }
+        .page { width: 210mm; height: 297mm; min-height: 297mm; max-height: 297mm; background: #ffffff; padding: 14mm 16mm 0mm 16mm; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; font-size: 8.5px; line-height: 1.35; color: #333333; border: 1.5px solid #111111; }
+        .page-bottom-blue-bar { height: 11px; background-color: #1D4478; width: calc(100% + 32mm); margin-left: -16mm; margin-top: 10px; border-top: 1px solid #111111; }
+        .mh-header { display: grid; grid-template-columns: 58% 42%; align-items: flex-start; margin-bottom: 16px; }
+        .mh-header-left { display: flex; flex-direction: column; padding-right: 15px; }
+        .mh-logo-container { display: flex; align-items: center; }
+        .mh-logo-img { height: 64px; width: auto; max-width: 320px; object-fit: contain; display: block; }
+        .mh-pax-info { margin-top: 24px; font-size: 9px; line-height: 1.7; }
+        .mh-pax-info span.lbl { color: #006BB6; font-weight: 800; }
+        .mh-pax-info span.val { color: #333333; font-weight: 600; }
+        .mh-header-right { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding-left: 10px; }
+        .mh-qr-box { width: 65px; height: 65px; border: none !important; padding: 0; margin: 0 0 16px 0; background: transparent; display: block; }
+        .mh-qr-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .mh-office-text { font-size: 8.5px; line-height: 1.45; color: #555555; text-align: left; }
+        .mh-office-text strong { color: #111111; display: block; margin-bottom: 3px; font-size: 9.5px; font-weight: 800; letter-spacing: 0.2px; }
+        .mh-office-text span.val-date { color: #111111; font-weight: 600; }
+        .mh-main-banner { background-color: #1D4478; color: #ffffff; font-weight: 800; font-size: 12px; padding: 6px 14px; letter-spacing: 0.4px; margin-bottom: 12px; }
+        .mh-sub-heading { font-size: 10px; font-weight: 800; color: #111111; margin-bottom: 5px; }
+        .mh-notice-list { font-size: 7.8px; line-height: 1.45; margin-bottom: 12px; color: #333333; }
+        .mh-notice-list p { margin-bottom: 2px; }
+        .mh-table { width: 100%; border-collapse: collapse; font-size: 8px; margin-bottom: 6px; }
+        .mh-table th { background-color: #0073BA; color: #ffffff; font-weight: 700; padding: 6px 8px; text-align: left; font-size: 8px; }
+        .mh-table td { background-color: #E8F4FA; padding: 7px 8px; vertical-align: top; color: #222222; font-size: 8px; border-bottom: 1px solid #ffffff; }
+        .mh-sub-card { border-bottom: 1.5px solid #0073BA; padding: 7px 2px 5px 2px; margin-bottom: 4px; }
+        .mh-sub-grid { display: grid; grid-template-columns: 1.1fr 1.3fr 1fr; gap: 10px; font-size: 7.5px; line-height: 1.6; }
+        .mh-sub-grid strong { color: #006BB6; }
+        .mh-remarks-title { font-size: 10.5px; font-weight: 800; color: #1D4478; margin-top: 10px; margin-bottom: 4px; }
+        .mh-remarks-table { width: 100%; border-collapse: collapse; font-size: 7.5px; margin-top: 4px; margin-bottom: 8px; }
+        .mh-remarks-table th, .mh-remarks-table td { border: 0.75px solid #BFBFBF; padding: 5px 6px; }
+        .mh-remarks-table th { background-color: #ffffff; color: #222222; font-weight: 700; text-align: center; }
+        .tbl-airline-mh { color: #1D4478; font-weight: 700; text-align: center; }
+        .tbl-airline-mas { color: #00A651; font-weight: 700; text-align: center; }
+        .page-2-banner { background-color: #1D4478; color: #ffffff; font-weight: 800; font-size: 12px; padding: 6px 14px; letter-spacing: 0.4px; margin-bottom: 22px; }
+        .page-2-content h3 { color: #0073BA; font-size: 10.5px; font-weight: 800; margin-bottom: 4px; }
+        .page-2-content p { font-size: 7.6px; line-height: 1.45; color: #333333; }
+
+        @page { size: A4 portrait; margin: 0mm; }
+        @media print {
+            html, body { width: 210mm !important; height: auto !important; min-height: auto !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; overflow: visible !important; }
+            .app-layout { display: block !important; width: 210mm !important; height: auto !important; overflow: visible !important; }
+            .sidebar-panel { display: none !important; }
+            .preview-workspace { display: block !important; width: 210mm !important; height: auto !important; padding: 0 !important; margin: 0 !important; background: none !important; overflow: visible !important; }
+            .page { box-shadow: none !important; margin: 0 !important; width: 210mm !important; height: 297mm !important; min-height: 297mm !important; max-height: 297mm !important; padding: 14mm 16mm 0mm 16mm !important; border: 1.5px solid #111111 !important; page-break-before: always !important; break-before: page !important; page-break-after: always !important; break-after: page !important; }
+            .page:first-of-type { page-break-before: auto !important; break-before: auto !important; }
+            .page:last-of-type { page-break-after: auto !important; break-after: auto !important; }
+        }
+    </style>
+</head>
+<body>
+<datalist id="mh-airports">
+    <option value="Hazrat Shahjalal International Airport (DAC)">Dhaka, Bangladesh</option>
+    <option value="Kuala Lumpur International Airport (KUL)">Kuala Lumpur, Malaysia</option>
+    <option value="Singapore Changi Airport (SIN)">Singapore</option>
+    <option value="Suvarnabhumi Airport (BKK)">Bangkok, Thailand</option>
+    <option value="Dubai International Airport (DXB)">Dubai, UAE</option>
+    <option value="Sharjah International Airport (SHJ)">Sharjah, UAE</option>
+    <option value="Doha Hamad International Airport (DOH)">Doha, Qatar</option>
+    <option value="Jeddah King Abdulaziz Intl Airport (JED)">Jeddah, Saudi Arabia</option>
+    <option value="Medina Prince Mohammad Intl (MED)">Medina, Saudi Arabia</option>
+    <option value="Riyadh King Khalid Intl Airport (RUH)">Riyadh, Saudi Arabia</option>
+    <option value="London Heathrow Airport (LHR)">London, UK</option>
+    <option value="Melbourne Airport (MEL)">Melbourne, Australia</option>
+    <option value="Sydney Kingsford Smith Airport (SYD)">Sydney, Australia</option>
+</datalist>
+
+<div class="app-layout">
+    <div class="sidebar-panel">
+        <div class="panel-header">
+            <h2>✈️ Malaysia Airlines Generator</h2>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 4px;">Border Format</span>
+        </div>
+        <div class="sidebar-scroll">
+            <div class="form-section">
+                <div class="form-section-title"><span>👥 Passenger List</span></div>
+                <div id="pax-input-container"></div>
+                <button type="button" class="btn-add-item" onclick="addPassenger()">➕ Add Passenger</button>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title">🔖 Booking & Office Details</div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Booking Ref (PNR)<button type="button" class="btn-auto-mini" onclick="autoGeneratePNR()">🎲 Auto PNR</button></label>
+                        <input type="text" id="inp-mh-pnr" class="form-control" value="FMXXNQ" oninput="updateLive()">
+                    </div>
+                    <div class="form-group">
+                        <label>Issue Date<button type="button" class="btn-auto-mini" onclick="autoSetCurrentDate()">📅 Today</button></label>
+                        <input type="text" id="inp-mh-issue-date" class="form-control" value="02 Sep, 26" oninput="updateLive()">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Telephone</label>
+                    <input type="text" id="inp-mh-tel" class="form-control" value="+60378433000 (OS) 1300883000 (MY)" oninput="updateLive()">
+                </div>
+                <div class="form-group">
+                    <label>Issuing Office</label>
+                    <input type="text" id="inp-mh-office" class="form-control" value="MALAYSIA AIRLINES, GROUP PORTAL, TBA, KUALA LUMPUR" oninput="updateLive()">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title"><span>🛫 Flights / Sectors</span></div>
+                <div id="flight-input-container"></div>
+                <button type="button" class="btn-add-item" onclick="addFlight()">➕ Add Flight / Sector</button>
+            </div>
+        </div>
+
+        <div class="btn-action-bar">
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Print 2-Page Ticket</button>
+        </div>
+    </div>
+
+    <div class="preview-workspace">
+        <div class="page" id="page1">
+            <div>
+                <div class="mh-header">
+                    <div class="mh-header-left">
+                        <div class="mh-logo-container">
+                            <img src="Malaysia-Airlines-Logo.png" alt="Malaysia Airlines Logo" class="mh-logo-img" onerror="this.src='Malaysia-Airlines-Logo_2.png'">
+                        </div>
+                        <div class="mh-pax-info" id="view-mh-pax-container"></div>
+                    </div>
+                    <div class="mh-header-right">
+                        <div class="mh-qr-box">
+                            <img src="qr code.png" alt="Ticket QR Code" class="mh-qr-img" onerror="this.src='image_f6bc65.png'">
+                        </div>
+                        <div class="mh-office-text">
+                            <strong>ISSUING OFFICE</strong>
+                            <span id="view-mh-office">MALAYSIA AIRLINES, GROUP PORTAL, TBA,<br>KUALA LUMPUR</span><br><br>
+                            <strong>TELEPHONE</strong>
+                            <span id="view-mh-tel">+60378433000 (OS) 1300883000 (MY)</span><br>
+                            <strong>DATE:</strong> <span class="val-date" id="view-mh-issue-date">02 Sep, 26</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mh-main-banner">ELECTRONIC TICKET RECEIPT</div>
+
+                <div class="mh-sub-heading">Important Notice</div>
+                <div class="mh-notice-list">
+                    <p>Please note on the boarding gate closing times:</p>
+                    <p>a. Gates will be closed 30 minutes prior to departure for Malaysia Airlines flights.</p>
+                    <p>b. Gates will be closed 10 minutes prior to departure for MASwings flights.</p>
+                    <p>c. Meals will be served on Malaysia Airlines flights over 60 minutes.</p>
+                    <p>Meal service may differ on MASwings and codeshare flights.</p>
+                    <p>Information on Malaysia Airlines check-in counters at KL International Airport</p>
+                    <p>a. International Economy Class check-in counter is now located at Row H</p>
+                </div>
+
+                <div class="mh-sub-heading">Itinerary Details</div>
+                <table class="mh-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 27%;">From</th>
+                            <th style="width: 27%;">To</th>
+                            <th style="width: 10%;">Flight</th>
+                            <th style="width: 13%;">Departure</th>
+                            <th style="width: 13%;">Arrival</th>
+                            <th style="width: 10%;">Last Check-in</th>
+                        </tr>
+                    </thead>
+                    <tbody id="view-flights-tbody"></tbody>
+                </table>
+
+                <div id="view-sub-details-container"></div>
+
+                <div style="font-size: 6.8px; color: #555555; margin-bottom: 12px; line-height: 1.35;">
+                    <strong>OK</strong> = Confirm, <strong>NVB</strong> = Not valid before, <strong>NVA</strong> = Not valid after. Each passenger can check in a specific amount of baggage at no extra cost as indicated above in the column baggage. Each piece of baggage may not exceed 32 kilos.
+                </div>
+
+                <div class="mh-remarks-title">ELECTRONIC TICKET REMARKS</div>
+                <div style="font-size: 8px; font-weight: 700; margin-bottom: 3px;">The Cabin Baggage Allowance</div>
+                <table class="mh-remarks-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 16%;">Airlines</th>
+                            <th style="width: 16%;">Class of Travel</th>
+                            <th style="width: 18%;">No. of Places Allowed</th>
+                            <th style="width: 20%;">Maximum Weight</th>
+                            <th style="width: 30%;">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3" class="tbl-airline-mh">MALAYSIA<br>AIRLINES</td>
+                            <td style="text-align: center;">Economy</td>
+                            <td style="text-align: center;">One Piece</td>
+                            <td style="text-align: center;">7 kg (15 lb)</td>
+                            <td rowspan="2" style="font-size: 6.8px; line-height: 1.25;">The cabin baggage allowance for Enrich Platinum and Gold/ oneworld Emerald and Sapphire members remains as per their ticketed class of travel.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">Business</td>
+                            <td style="text-align: center;">Two Piece</td>
+                            <td style="text-align: center;">14 kg (31 lb) - in total</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">Business Suite</td>
+                            <td style="text-align: center;">Two Piece</td>
+                            <td style="text-align: center;">14 kg (31 lb) - in total</td>
+                            <td style="font-size: 6.8px; line-height: 1.25;">The additional free baggage allowance applies to checked-in baggage only.</td>
+                        </tr>
+                        <tr>
+                            <td class="tbl-airline-mas">MASwings</td>
+                            <td style="text-align: center;">Economy</td>
+                            <td style="text-align: center;">One Piece</td>
+                            <td style="text-align: center;">no more than 7 kg</td>
+                            <td style="font-size: 6.8px; line-height: 1.25;">Permitted size 56cm (H) x 36cm (L) x 23cm (W) OR 115 cubic cm.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="font-size: 7px; line-height: 1.35; color: #333333;">
+                    The carriage of certain hazardous materials, like aerosols, fireworks, and flammable liquids, aboard the aircraft is forbidden. If you do not understand these restrictions, further information may be obtained from your airline.
+                </div>
+            </div>
+
+            <div class="page-bottom-blue-bar"></div>
+        </div>
+
+        <div class="page" id="page2">
+            <div>
+                <div class="page-2-banner">LEGAL AND PASSENGER NOTICES</div>
+                <div class="page-2-content">
+                    <h3>ELECTRONIC TICKET</h3>
+                    <p>
+                        <strong>NOTICE:</strong> CARRIAGE AND OTHER SERVICES PROVIDED BY THE CARRIER ARE SUBJECT TO CONDITIONS OF CARRIAGE, WHICH ARE HEREBY INCORPORATED BY REFERENCE. THESE CONDITIONS MAY BE OBTAINED FROM THE ISSUING CARRIER.
+                    </p>
+                </div>
+            </div>
+
+            <div class="page-bottom-blue-bar"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var passengers = [{ name: "HOSSAIN/ MR SHIHAB", ticket: "NZ6283151963684578" }];
+    var flights = [
+        { flightNo: "MH 197", from: "Hazrat Shahjalal International Airport (DAC)", to: "Kuala Lumpur International Airport (KUL)", depDt: "2026-09-04T02:05", arrDt: "2026-09-04T08:00", flightClass: "N", baggage: "30K", farebasis: "NLGVOWMY", status: "OK", duration: "3h 55m" }
+    ];
+
+    function formatAirportName(str) {
+        if (!str) return "-";
+        var clean = str.replace(/\s*\([A-Z]{3}\)/i, '');
+        return clean.replace(/Airport/i, '<br>Airport');
+    }
+
+    function clearFlightInput(idx, field) {
+        flights[idx][field] = '';
+        renderFlightInputs();
+        updateLive();
+    }
+
+    function calcDuration(depVal, arrVal) {
+        if (depVal && arrVal) {
+            var d1 = new Date(depVal);
+            var d2 = new Date(arrVal);
+            var diffMs = d2 - d1;
+            if (diffMs > 0) {
+                var diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+                var diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+                return diffHrs + "h " + diffMins + "m";
+            }
+        }
+        return "3h 55m";
+    }
+
+    function formatISODT(isoStr) {
+        if(!isoStr) return { time: "-", date: "-", fullDate: "-" };
+        var d = new Date(isoStr);
+        if(isNaN(d.getTime())) return { time: "-", date: "-", fullDate: "-" };
+
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var day = ("0" + d.getDate()).slice(-2);
+        var month = months[d.getMonth()];
+        var year = d.getFullYear();
+        var hours = ("0" + d.getHours()).slice(-2);
+        var mins = ("0" + d.getMinutes()).slice(-2);
+
+        return {
+            time: hours + ":" + mins,
+            date: day + " " + month + "<br>" + year,
+            fullDate: day + " " + month + " " + year
+        };
+    }
+
+    function autoGeneratePNR() {
+        var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        var res = "";
+        for(var i=0; i<6; i++) {
+            res += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById('inp-mh-pnr').value = res;
+        updateLive();
+    }
+
+    function autoSetCurrentDate() {
+        var d = new Date();
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var day = ("0" + d.getDate()).slice(-2);
+        var month = months[d.getMonth()];
+        var year = String(d.getFullYear()).slice(-2);
+        document.getElementById('inp-mh-issue-date').value = day + " " + month + ", " + year;
+        updateLive();
+    }
+
+    function renderPaxInputs() {
+        var container = document.getElementById('pax-input-container');
+        container.innerHTML = '';
+        passengers.forEach(function(pax, idx) {
+            var card = document.createElement('div');
+            card.className = 'dynamic-item-card';
+            card.innerHTML = `
+                ${passengers.length > 1 ? `<button type="button" class="btn-cross-delete" title="Delete Passenger" onclick="removePassenger(${idx})">✖</button>` : ''}
+                <div class="form-group">
+                    <label>Passenger #${idx + 1} Name</label>
+                    <input type="text" class="form-control" value="${pax.name}" oninput="passengers[${idx}].name = this.value; updateLive();">
+                </div>
+                <div class="form-group">
+                    <label>Ticket Number</label>
+                    <input type="text" class="form-control" value="${pax.ticket}" oninput="passengers[${idx}].ticket = this.value; updateLive();">
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function addPassenger() {
+        var baseTktNum = parseInt(passengers[passengers.length - 1].ticket.replace(/\D/g, '')) || 6283151963684578;
+        passengers.push({
+            name: "PASSENGER/ MR NEW",
+            ticket: "NZ" + (baseTktNum + 1)
+        });
+        renderPaxInputs();
+        updateLive();
+    }
+
+    function removePassenger(idx) {
+        if (passengers.length > 1) {
+            passengers.splice(idx, 1);
+            renderPaxInputs();
+            updateLive();
+        }
+    }
+
+    function renderFlightInputs() {
+        var container = document.getElementById('flight-input-container');
+        container.innerHTML = '';
+        flights.forEach(function(flt, idx) {
+            var card = document.createElement('div');
+            card.className = 'dynamic-item-card';
+            card.innerHTML = `
+                ${flights.length > 1 ? `<button type="button" class="btn-cross-delete" title="Delete Sector" onclick="removeFlight(${idx})">✖</button>` : ''}
+                <div style="font-size: 11px; font-weight: 800; color: #1D4478; margin-bottom: 6px;">Sector ${idx + 1}</div>
+                <div class="form-group">
+                    <label>From (Origin)</label>
+                    <div class="input-clear-wrapper">
+                        <input type="text" list="mh-airports" class="form-control" value="${flt.from}" oninput="flights[${idx}].from = this.value; updateLive();">
+                        <button type="button" class="btn-field-clear" onclick="clearFlightInput(${idx}, 'from')">✖</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>To (Destination)</label>
+                    <div class="input-clear-wrapper">
+                        <input type="text" list="mh-airports" class="form-control" value="${flt.to}" oninput="flights[${idx}].to = this.value; updateLive();">
+                        <button type="button" class="btn-field-clear" onclick="clearFlightInput(${idx}, 'to')">✖</button>
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Flight No</label>
+                        <input type="text" class="form-control" value="${flt.flightNo}" oninput="flights[${idx}].flightNo = this.value; updateLive();">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" class="form-control" value="${flt.duration}" oninput="flights[${idx}].duration = this.value; updateLive();">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Departure DT</label>
+                        <input type="datetime-local" class="form-control" value="${flt.depDt}" oninput="flights[${idx}].depDt = this.value; flights[${idx}].duration = calcDuration(this.value, flights[${idx}].arrDt); renderFlightInputs(); updateLive();">
+                    </div>
+                    <div class="form-group">
+                        <label>Arrival DT</label>
+                        <input type="datetime-local" class="form-control" value="${flt.arrDt}" oninput="flights[${idx}].arrDt = this.value; flights[${idx}].duration = calcDuration(flights[${idx}].depDt, this.value); renderFlightInputs(); updateLive();">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Class</label>
+                        <input type="text" class="form-control" value="${flt.flightClass}" oninput="flights[${idx}].flightClass = this.value; updateLive();">
+                    </div>
+                    <div class="form-group">
+                        <label>Baggage</label>
+                        <input type="text" class="form-control" value="${flt.baggage}" oninput="flights[${idx}].baggage = this.value; updateLive();">
+                    </div>
+                </div>
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Fare Basis</label>
+                        <input type="text" class="form-control" value="${flt.farebasis}" oninput="flights[${idx}].farebasis = this.value; updateLive();">
+                    </div>
+                    <div class="form-group">
+                        <label>Booking Status</label>
+                        <input type="text" class="form-control" value="${flt.status}" oninput="flights[${idx}].status = this.value; updateLive();">
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function addFlight() {
+        var lastFlight = flights[flights.length - 1];
+        flights.push({
+            flightNo: "MH 198",
+            from: lastFlight ? lastFlight.to : "Kuala Lumpur International Airport (KUL)",
+            to: "Hazrat Shahjalal International Airport (DAC)",
+            depDt: "2026-09-15T18:00",
+            arrDt: "2026-09-15T21:55",
+            flightClass: "N",
+            baggage: "30K",
+            farebasis: "NLGVOWMY",
+            status: "OK",
+            duration: "3h 55m"
+        });
+        renderFlightInputs();
+        updateLive();
+    }
+
+    function removeFlight(idx) {
+        if (flights.length > 1) {
+            flights.splice(idx, 1);
+            renderFlightInputs();
+            updateLive();
+        }
+    }
+
+    function updateLive() {
+        var pnr = document.getElementById('inp-mh-pnr').value;
+        var paxContainer = document.getElementById('view-mh-pax-container');
+        paxContainer.innerHTML = '';
+
+        passengers.forEach(function(pax) {
+            var block = document.createElement('div');
+            block.style.marginBottom = passengers.length > 1 ? "5px" : "0px";
+            block.innerHTML = `
+                <div><span class="lbl">PASSENGER NAME :</span> <span class="val">${pax.name}</span></div>
+                <div><span class="lbl">BOOKING REFERENCE :</span> <span class="val">${pnr}</span></div>
+                <div><span class="lbl">TICKET NUMBER :</span> <span class="val">${pax.ticket}</span></div>
+            `;
+            paxContainer.appendChild(block);
+        });
+
+        document.getElementById('view-mh-issue-date').innerText = document.getElementById('inp-mh-issue-date').value;
+        document.getElementById('view-mh-tel').innerText = document.getElementById('inp-mh-tel').value;
+        document.getElementById('view-mh-office').innerHTML = document.getElementById('inp-mh-office').value.replace(/KUALA LUMPUR/i, '<br>KUALA LUMPUR');
+
+        var flightsTbody = document.getElementById('view-flights-tbody');
+        flightsTbody.innerHTML = '';
+
+        var subDetailsContainer = document.getElementById('view-sub-details-container');
+        subDetailsContainer.innerHTML = '';
+
+        flights.forEach(function(flt) {
+            var depObj = formatISODateTime(flt.depDt);
+            var arrObj = formatISODateTime(flt.arrDt);
+
+            var tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${formatAirportName(flt.from)}</td>
+                <td>${formatAirportName(flt.to)}</td>
+                <td style="font-weight: 700;">${flt.flightNo.replace(' ', '<br>')}</td>
+                <td><strong>${depObj.time}</strong><br>${depObj.date}</td>
+                <td><strong>${arrObj.time}</strong><br>${arrObj.date}</td>
+                <td></td>
+            `;
+            flightsTbody.appendChild(tr);
+
+            var subCard = document.createElement('div');
+            subCard.className = 'mh-sub-card';
+            subCard.innerHTML = `
+                <div class="mh-sub-grid">
+                    <div>
+                        <strong>Class :</strong> ${flt.flightClass}<br>
+                        <strong>Baggage :</strong> ${flt.baggage}<br>
+                        <strong>Fare Basis :</strong> ${flt.farebasis}
+                    </div>
+                    <div>
+                        <strong>Operated by :</strong> MALAYSIA AIRLINES<br>
+                        <strong>Marketed by :</strong> MALAYSIA AIRLINES<br>
+                        <strong>Booking Status :</strong> ${flt.status}
+                    </div>
+                    <div>
+                        <strong>NVB :</strong> ${depObj.fullDate}<br>
+                        <strong>NVA :</strong> ${depObj.fullDate}<br>
+                        <strong>Duration :</strong> ${flt.duration}
+                    </div>
+                </div>
+            `;
+            subDetailsContainer.appendChild(subCard);
+        });
+    }
+
+    window.onload = function() {
+        renderPaxInputs();
+        renderFlightInputs();
+        updateLive();
+    };
+</script>
+
+</body>
+</html>
+    </textarea>
+
     <!-- CORE LOGIC & ROUTER SCRIPT -->
     <script>
         let currentActiveModule = 'receipt';
 
-        // AUTHENTICATION LOGIC
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -2677,7 +3237,6 @@
             }
         }
 
-        // LOAD BATIK AIR & US-BANGLA FRAMES
         function loadIsolatedModules() {
             const frameBatik = document.getElementById('frameBatik');
             if (frameBatik && !frameBatik.dataset.loaded) {
@@ -2696,27 +3255,37 @@
                 doc.close();
                 frameUS.dataset.loaded = "true";
             }
+
+            const frameMalaysia = document.getElementById('frameMalaysia');
+            if (frameMalaysia && !frameMalaysia.dataset.loaded) {
+                const doc = frameMalaysia.contentWindow.document;
+                doc.open();
+                doc.write(document.getElementById('src-malaysia').value);
+                doc.close();
+                frameMalaysia.dataset.loaded = "true";
+            }
         }
 
-        // 4-MODULE SWITCHER
         function switchAppModule(mod) {
             currentActiveModule = mod;
             const recMod = document.getElementById('moduleReceipt');
             const tickMod = document.getElementById('moduleTicket');
             const batikMod = document.getElementById('moduleBatik');
             const usMod = document.getElementById('moduleUSBangla');
+            const malaysiaMod = document.getElementById('moduleMalaysia');
 
             const recBtn = document.getElementById('modReceiptBtn');
             const tickBtn = document.getElementById('modTicketBtn');
             const batikBtn = document.getElementById('modBatikBtn');
             const usBtn = document.getElementById('modUSBtn');
+            const malaysiaBtn = document.getElementById('modMalaysiaBtn');
 
-            const allMods = [recMod, tickMod, batikMod, usMod];
-            const allBtns = [recBtn, tickBtn, batikBtn, usBtn];
+            const allMods = [recMod, tickMod, batikMod, usMod, malaysiaMod];
+            const allBtns = [recBtn, tickBtn, batikBtn, usBtn, malaysiaBtn];
 
-            allMods.forEach(m => { m.classList.add('hidden'); m.classList.remove('block'); });
+            allMods.forEach(m => { if(m) { m.classList.add('hidden'); m.classList.remove('block'); } });
             allBtns.forEach(b => { 
-                b.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
+                if(b) b.className = "px-3 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5";
             });
 
             document.body.classList.remove('print-receipt', 'print-ticket');
@@ -2740,6 +3309,10 @@
                 usMod.classList.remove('hidden');
                 usMod.classList.add('block');
                 usBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white transition flex items-center gap-1.5 shadow";
+            } else if (mod === 'malaysia') {
+                malaysiaMod.classList.remove('hidden');
+                malaysiaMod.classList.add('block');
+                malaysiaBtn.className = "px-3 py-1.5 text-xs font-bold rounded-lg bg-blue-700 text-white transition flex items-center gap-1.5 shadow";
             }
         }
 
@@ -2750,10 +3323,11 @@
                 document.getElementById('frameBatik').contentWindow.print();
             } else if (currentActiveModule === 'usbangla') {
                 document.getElementById('frameUSBangla').contentWindow.print();
+            } else if (currentActiveModule === 'malaysia') {
+                document.getElementById('frameMalaysia').contentWindow.print();
             }
         }
 
-        // ================= MODULE 1: INVOICE / RECEIPT GENERATOR =================
         const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -2778,36 +3352,9 @@
             return `${dayNum} ${month} ${year}`;
         }
 
-        function toPickerDatetimeValue(dateObj) {
-            const pad = (n) => String(n).padStart(2, '0');
-            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
-        }
-
         function toPickerDateValue(dateObj) {
             const pad = (n) => String(n).padStart(2, '0');
             return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
-        }
-
-        function formatPickerDateTime(isoString) {
-            if (!isoString) return { dateStr: "", timeStr: "" };
-            const d = new Date(isoString);
-            if (isNaN(d.getTime())) return { dateStr: "", timeStr: "" };
-            
-            const dayName = daysShort[d.getDay()];
-            const dayNum = String(d.getDate()).padStart(2, '0');
-            const month = monthsShort[d.getMonth()];
-            const year = d.getFullYear();
-            
-            let hours = d.getHours();
-            const minutes = String(d.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-
-            return {
-                dateStr: `${dayName} ${dayNum} ${month}, ${year}`,
-                timeStr: `${hours}:${minutes} ${ampm}`
-            };
         }
 
         let receiptPassengers = [];
@@ -3057,9 +3604,8 @@
             autoScaleInvoice();
         }
 
-        // ================= MODULE 2: AIR TICKET GENERATOR =================
         let totalLegs = 4;
-        let passengers = [
+        let ticketPassengers = [
             { name: "MR MD RIYAD", passport: "EN0343623", ticket: "2323945234052" }
         ];
         let flightLegs = [];
@@ -3129,7 +3675,8 @@
         function initAutomatedFlightLegs() {
             const now = new Date();
             const issuedStr = getFormattedDate(now, 'issued_full');
-            document.getElementById('in_issue_date_ticket').value = issuedStr;
+            const el = document.getElementById('in_issue_date_ticket');
+            if(el) el.value = issuedStr;
 
             const d1Dep = new Date();
             d1Dep.setDate(now.getDate() + 5);
@@ -3211,6 +3758,33 @@
             ];
         }
 
+        function toPickerDatetimeValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
+        function formatPickerDateTime(isoString) {
+            if (!isoString) return { dateStr: "", timeStr: "" };
+            const d = new Date(isoString);
+            if (isNaN(d.getTime())) return { dateStr: "", timeStr: "" };
+            
+            const dayName = daysShort[d.getDay()];
+            const dayNum = String(d.getDate()).padStart(2, '0');
+            const month = monthsShort[d.getMonth()];
+            const year = d.getFullYear();
+            
+            let hours = d.getHours();
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            return {
+                dateStr: `${dayName} ${dayNum} ${month}, ${year}`,
+                timeStr: `${hours}:${minutes} ${ampm}`
+            };
+        }
+
         function extractIATA(str) {
             if (!str) return "APT";
             const match = str.match(/\(([A-Za-z]{3})\)/);
@@ -3221,16 +3795,6 @@
                 if (w.length === 3 && /^[A-Za-z]+$/.test(w)) return w.toUpperCase();
             }
             return str.replace(/[^A-Za-z]/g, '').substring(0, 3).toUpperCase() || "APT";
-        }
-
-        function clearAirportField(legIndex, fieldKey, inputId) {
-            flightLegs[legIndex][fieldKey] = '';
-            const inp = document.getElementById(inputId);
-            if (inp) {
-                inp.value = '';
-                inp.focus();
-            }
-            renderTicket();
         }
 
         function calculateDurationFromISO(depISO, arrISO) {
@@ -3285,13 +3849,14 @@
 
         function renderInputs() {
             const pContainer = document.getElementById('passenger_list_inputs');
+            if(!pContainer) return;
             pContainer.innerHTML = '';
-            passengers.forEach((p, idx) => {
+            ticketPassengers.forEach((p, idx) => {
                 pContainer.innerHTML += `
                     <div class="passenger-card-box">
                         <div class="passenger-card-header">
                             <span class="passenger-card-title"><i class="fa-solid fa-user"></i> Passenger #${idx + 1}</span>
-                            ${passengers.length > 1 ? `
+                            ${ticketPassengers.length > 1 ? `
                                 <button type="button" class="btn-del-box" onclick="deletePassenger(${idx})">
                                     <i class="fa-solid fa-trash"></i> Remove
                                 </button>
@@ -3300,15 +3865,15 @@
                         <div class="passenger-input-grid">
                             <div class="form-group">
                                 <label>Full Name</label>
-                                <input type="text" id="p_name_${idx}" placeholder="e.g. MR JOHN DOE" value="${p.name}" oninput="passengers[${idx}].name = this.value; renderTicket();">
+                                <input type="text" id="p_name_${idx}" placeholder="e.g. MR JOHN DOE" value="${p.name}" oninput="ticketPassengers[${idx}].name = this.value; renderTicket();">
                             </div>
                             <div class="form-group">
                                 <label>Passport Number</label>
-                                <input type="text" id="p_passport_${idx}" placeholder="e.g. EN0343623" value="${p.passport}" oninput="passengers[${idx}].passport = this.value; renderTicket();">
+                                <input type="text" id="p_passport_${idx}" placeholder="e.g. EN0343623" value="${p.passport}" oninput="ticketPassengers[${idx}].passport = this.value; renderTicket();">
                             </div>
                             <div class="form-group">
                                 <label>Ticket Number</label>
-                                <input type="text" id="p_ticket_${idx}" placeholder="e.g. 2323945234052" value="${p.ticket}" oninput="passengers[${idx}].ticket = this.value; renderTicket();">
+                                <input type="text" id="p_ticket_${idx}" placeholder="e.g. 2323945234052" value="${p.ticket}" oninput="ticketPassengers[${idx}].ticket = this.value; renderTicket();">
                             </div>
                         </div>
                     </div>
@@ -3316,9 +3881,11 @@
             });
 
             const fContainer = document.getElementById('flight_legs_inputs');
+            if(!fContainer) return;
             fContainer.innerHTML = '';
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
+                if(!leg) continue;
 
                 fContainer.innerHTML += `
                     <div class="form-section-title">
@@ -3349,7 +3916,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Departure Airport (Search / 1-Click Clear)</label>
+                            <label>Departure Airport</label>
                             <div class="input-clear-wrap">
                                 <input type="text" id="in_dep_apt_${i}" list="global_airports" value="${leg.depApt}" placeholder="Search Airport..." 
                                     onclick="this.select()" 
@@ -3359,12 +3926,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Departure Date & Time Picker</label>
+                            <label>Departure Date & Time</label>
                             <input type="datetime-local" id="fl_dept_picker_${i}" value="${leg.depDateTime}" class="font-semibold text-slate-800" onchange="updateLegTimes(${i})">
                         </div>
 
                         <div class="form-group">
-                            <label>Arrival Airport (Search / 1-Click Clear)</label>
+                            <label>Arrival Airport</label>
                             <div class="input-clear-wrap">
                                 <input type="text" id="in_arr_apt_${i}" list="global_airports" value="${leg.arrApt}" placeholder="Search Airport..." 
                                     onclick="this.select()" 
@@ -3374,7 +3941,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Arrival / Landing Date & Time Picker</label>
+                            <label>Arrival Date & Time</label>
                             <input type="datetime-local" id="fl_arrt_picker_${i}" value="${leg.arrDateTime}" class="font-semibold text-slate-800" onchange="updateLegTimes(${i})">
                         </div>
 
@@ -3410,7 +3977,7 @@
         }
 
         function triggerUpdateTicket() {
-            passengers.forEach((p, idx) => {
+            ticketPassengers.forEach((p, idx) => {
                 const n = document.getElementById(`p_name_${idx}`);
                 const pass = document.getElementById(`p_passport_${idx}`);
                 const t = document.getElementById(`p_ticket_${idx}`);
@@ -3421,6 +3988,7 @@
 
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
+                if(!leg) continue;
                 const al = document.getElementById(`fl_al_${i}`);
                 const no = document.getElementById(`fl_no_${i}`);
                 const cls = document.getElementById(`fl_cls_${i}`);
@@ -3467,30 +4035,37 @@
         }
 
         function renderTicket() {
-            document.getElementById('out_agent_name').innerText = document.getElementById('in_agent_name').value;
-            document.getElementById('out_agent_email').innerText = document.getElementById('in_agent_email').value;
-            document.getElementById('out_agent_address').innerHTML = document.getElementById('in_agent_address').value.replace(/\n/g, '<br>');
-            document.getElementById('out_issue_date_ticket').innerText = document.getElementById('in_issue_date_ticket').value;
+            const agName = document.getElementById('out_agent_name');
+            if(agName) agName.innerText = document.getElementById('in_agent_name').value;
+            const agEmail = document.getElementById('out_agent_email');
+            if(agEmail) agEmail.innerText = document.getElementById('in_agent_email').value;
+            const agAdd = document.getElementById('out_agent_address');
+            if(agAdd) agAdd.innerHTML = document.getElementById('in_agent_address').value.replace(/\n/g, '<br>');
+            const isDt = document.getElementById('out_issue_date_ticket');
+            if(isDt) isDt.innerText = document.getElementById('in_issue_date_ticket').value;
 
             const pTable = document.getElementById('out_ticket_passenger_table');
-            pTable.innerHTML = '';
-            passengers.forEach(p => {
-                pTable.innerHTML += `
-                    <tr>
-                        <td>${p.name.toUpperCase() || 'PASSENGER NAME'}</td>
-                        <td>${p.passport || '-'}</td>
-                        <td>${p.ticket || '-'}</td>
-                    </tr>
-                `;
-            });
+            if(pTable) {
+                pTable.innerHTML = '';
+                ticketPassengers.forEach(p => {
+                    pTable.innerHTML += `
+                        <tr>
+                            <td>${p.name.toUpperCase() || 'PASSENGER NAME'}</td>
+                            <td>${p.passport || '-'}</td>
+                            <td>${p.ticket || '-'}</td>
+                        </tr>
+                    `;
+                });
+            }
 
             const iTable = document.getElementById('out_itinerary_table');
             const bGrid = document.getElementById('out_baggage_grid');
-            iTable.innerHTML = '';
-            bGrid.innerHTML = '';
+            if(iTable) iTable.innerHTML = '';
+            if(bGrid) bGrid.innerHTML = '';
 
             for (let i = 0; i < totalLegs; i++) {
                 const leg = flightLegs[i];
+                if(!leg) continue;
                 const depFormatted = formatPickerDateTime(leg.depDateTime);
                 const arrFormatted = formatPickerDateTime(leg.arrDateTime);
 
@@ -3501,90 +4076,94 @@
 
                 const cleanName = cleanAirlineName(leg.airline);
 
-                iTable.innerHTML += `
-                    <tr>
-                        <td>
-                            <div class="flight-carrier-box">
-                                ${logoHtml}
-                                <div class="flight-carrier">
-                                    <strong>${cleanName}</strong>
-                                    <span>${leg.flightNo} • ${leg.flightClass}</span>
+                if(iTable) {
+                    iTable.innerHTML += `
+                        <tr>
+                            <td>
+                                <div class="flight-carrier-box">
+                                    ${logoHtml}
+                                    <div class="flight-carrier">
+                                        <strong>${cleanName}</strong>
+                                        <span>${leg.flightNo} • ${leg.flightClass}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td><strong>${leg.pnr}</strong></td>
-                        <td class="airport-block">
-                            <div class="airport-name">${leg.depApt}</div>
-                            <div class="time-date">${depFormatted.timeStr}<br>${depFormatted.dateStr}</div>
-                        </td>
-                        <td class="duration-col">
-                            <i class="fa-solid fa-plane"></i>
-                            <span>${leg.dur}</span>
-                        </td>
-                        <td class="airport-block">
-                            <div class="airport-name">${leg.arrApt}</div>
-                            <div class="time-date">${arrFormatted.timeStr}<br>${arrFormatted.dateStr}</div>
-                        </td>
-                    </tr>
-                `;
-
-                if (i === 0 && totalLegs >= 2) {
-                    const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
-                    const calculatedTime1 = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
-                    const badge1 = document.getElementById('badge_transit_1');
-                    if (badge1) badge1.innerText = calculatedTime1;
-
-                    iTable.innerHTML += `
-                        <tr class="transit-row">
-                            <td colspan="5">
-                                ${transitAirportName} | <span>Transit Time: ${calculatedTime1}</span>
+                            </td>
+                            <td><strong>${leg.pnr}</strong></td>
+                            <td class="airport-block">
+                                <div class="airport-name">${leg.depApt}</div>
+                                <div class="time-date">${depFormatted.timeStr}<br>${depFormatted.dateStr}</div>
+                            </td>
+                            <td class="duration-col">
+                                <i class="fa-solid fa-plane"></i>
+                                <span>${leg.dur}</span>
+                            </td>
+                            <td class="airport-block">
+                                <div class="airport-name">${leg.arrApt}</div>
+                                <div class="time-date">${arrFormatted.timeStr}<br>${arrFormatted.dateStr}</div>
                             </td>
                         </tr>
                     `;
-                } else if (i === 2 && totalLegs >= 4) {
-                    const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
-                    const calculatedTime2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
-                    const badge2 = document.getElementById('badge_transit_2');
-                    if (badge2) badge2.innerText = calculatedTime2;
 
-                    iTable.innerHTML += `
-                        <tr class="transit-row">
-                            <td colspan="5">
-                                ${transitAirportName} | <span>Transit Time: ${calculatedTime2}</span>
-                            </td>
-                        </tr>
-                    `;
+                    if (i === 0 && totalLegs >= 2) {
+                        const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
+                        const calculatedTime1 = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
+                        const badge1 = document.getElementById('badge_transit_1');
+                        if (badge1) badge1.innerText = calculatedTime1;
+
+                        iTable.innerHTML += `
+                            <tr class="transit-row">
+                                <td colspan="5">
+                                    ${transitAirportName} | <span>Transit Time: ${calculatedTime1}</span>
+                                </td>
+                            </tr>
+                        `;
+                    } else if (i === 2 && totalLegs >= 4) {
+                        const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
+                        const calculatedTime2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
+                        const badge2 = document.getElementById('badge_transit_2');
+                        if (badge2) badge2.innerText = calculatedTime2;
+
+                        iTable.innerHTML += `
+                            <tr class="transit-row">
+                                <td colspan="5">
+                                    ${transitAirportName} | <span>Transit Time: ${calculatedTime2}</span>
+                                </td>
+                            </tr>
+                        `;
+                    }
                 }
 
-                const depCode = extractIATA(leg.depApt);
-                const arrCode = extractIATA(leg.arrApt);
-                bGrid.innerHTML += `
-                    <div class="baggage-card">
-                        <div class="route">${depCode} &rarr; ${arrCode}</div>
-                        <div class="info-line"><strong>Adult Check-in:</strong> ${leg.checkin}</div>
-                        <div class="info-line"><strong>In Hand:</strong> ${leg.cabin}</div>
-                    </div>
-                `;
+                if(bGrid) {
+                    const depCode = extractIATA(leg.depApt);
+                    const arrCode = extractIATA(leg.arrApt);
+                    bGrid.innerHTML += `
+                        <div class="baggage-card">
+                            <div class="route">${depCode} &rarr; ${arrCode}</div>
+                            <div class="info-line"><strong>Adult Check-in:</strong> ${leg.checkin}</div>
+                            <div class="info-line"><strong>In Hand:</strong> ${leg.cabin}</div>
+                        </div>
+                    `;
+                }
             }
         }
 
         function changeLegCount(count, btn) {
             totalLegs = count;
             document.querySelectorAll('.trip-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(btn) btn.classList.add('active');
             renderInputs();
             renderTicket();
         }
 
         function addTicketPassenger() {
-            passengers.push({ name: "", passport: "", ticket: "" });
+            ticketPassengers.push({ name: "", passport: "", ticket: "" });
             renderInputs();
             renderTicket();
         }
 
         function deletePassenger(idx) {
-            if (passengers.length > 1) {
-                passengers.splice(idx, 1);
+            if (ticketPassengers.length > 1) {
+                ticketPassengers.splice(idx, 1);
                 renderInputs();
                 renderTicket();
             } else {
@@ -3605,7 +4184,6 @@
             }
         }
 
-        // Initialize on load
         window.onload = function() {
             checkAuth();
             loadDefaultReceiptData();
