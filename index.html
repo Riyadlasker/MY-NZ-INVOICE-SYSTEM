@@ -1306,6 +1306,7 @@ div[role="dialog"] ~ div[aria-hidden="true"][style*="position: fixed"] {
                     <div class="trip-selector">
                         <button type="button" class="trip-btn" onclick="changeLegCount(1, this)">1 Leg</button>
                         <button type="button" class="trip-btn" onclick="changeLegCount(2, this)">2 Legs (Transit)</button>
+                        <button type="button" class="trip-btn" onclick="changeRoundTrip(this)">ROUND TRIP</button>
                         <button type="button" class="trip-btn active" onclick="changeLegCount(4, this)">4 Legs (Round-Trip)</button>
                     </div>
                 </div>
@@ -4627,6 +4628,7 @@ document.body.addEventListener("click", function (event) {
 
         // ================= MODULE 2: AIR TICKET GENERATOR =================
         let totalLegs = 4;
+        let roundTripMode = false;
         let passengers = [
             { name: "MR MD RIYAD", passport: "EN0343623", ticket: "2323945234052" }
         ];
@@ -4890,7 +4892,7 @@ document.body.addEventListener("click", function (event) {
 
                 fContainer.innerHTML += `
                     <div class="form-section-title">
-                        <span><i class="fa-solid fa-plane"></i> Flight Leg ${i + 1} ${i >= 2 ? '(Return)' : '(Outbound)'}</span>
+                        <span><i class="fa-solid fa-plane"></i> Flight Leg ${i + 1} ${roundTripMode ? (i === 0 ? '(Outbound)' : '(Return)') : (i >= 2 ? '(Return)' : '(Outbound)')}</span>
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
@@ -4957,7 +4959,7 @@ document.body.addEventListener("click", function (event) {
                     </div>
                 `;
 
-                if (i === 0 && totalLegs >= 2) {
+                if (!roundTripMode && i === 0 && totalLegs >= 2) {
                     const tVal = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
                     fContainer.innerHTML += `
                         <div class="transit-badge-box">
@@ -4965,7 +4967,7 @@ document.body.addEventListener("click", function (event) {
                             <strong id="badge_transit_1">${tVal}</strong>
                         </div>
                     `;
-                } else if (i === 2 && totalLegs >= 4) {
+                } else if (!roundTripMode && i === 2 && totalLegs >= 4) {
                     const tVal2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
                     fContainer.innerHTML += `
                         <div class="transit-badge-box">
@@ -5096,7 +5098,7 @@ document.body.addEventListener("click", function (event) {
                     </tr>
                 `;
 
-                if (i === 0 && totalLegs >= 2) {
+                if (!roundTripMode && i === 0 && totalLegs >= 2) {
                     const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
                     const calculatedTime1 = calculateTransitFromISO(flightLegs[0].arrDateTime, flightLegs[1].depDateTime);
                     const badge1 = document.getElementById('badge_transit_1');
@@ -5109,7 +5111,7 @@ document.body.addEventListener("click", function (event) {
                             </td>
                         </tr>
                     `;
-                } else if (i === 2 && totalLegs >= 4) {
+                } else if (!roundTripMode && i === 2 && totalLegs >= 4) {
                     const transitAirportName = leg.arrApt.split('(')[0].trim() || "Transit Airport";
                     const calculatedTime2 = calculateTransitFromISO(flightLegs[2].arrDateTime, flightLegs[3].depDateTime);
                     const badge2 = document.getElementById('badge_transit_2');
@@ -5137,7 +5139,17 @@ document.body.addEventListener("click", function (event) {
         }
 
         function changeLegCount(count, btn) {
+            roundTripMode = false;
             totalLegs = count;
+            document.querySelectorAll('.trip-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderInputs();
+            renderTicket();
+        }
+
+        function changeRoundTrip(btn) {
+            roundTripMode = true;
+            totalLegs = 2;
             document.querySelectorAll('.trip-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             renderInputs();
